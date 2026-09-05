@@ -45,3 +45,9 @@ No platform collaboration/export feature is asserted. No API/custom software/age
 | V041-05 | Remove repository archives, including v0.3. Use branches, prior PRs and Git history instead. This supersedes archive retention instructions; original uploaded files are unchanged. |
 
 V041-02 supersedes the Markdown-only presentation in V04-12 and V04-16; handoff content and actual-source transfer remain unchanged. v0.4.1 is a packaging release, not a scheduling-policy revision.
+
+## Approved release automation follow-up
+
+- Publishing a release triggers dynamic ZIP generation and attachment from the tagged source; a manual trigger supports existing releases and recovery.
+- Release assets are the download source. The later user decision supersedes storing ZIP copies in the repository; README clearly links to the latest release.
+- Release notes describe user impact, update actions, actual validation and limitations, with generated download links/checksums. Squadron updates remain manual and are adopted next week.

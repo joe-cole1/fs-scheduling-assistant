@@ -72,6 +72,8 @@ PR descriptions and final responses should explain what changed, why, what was c
 
 ## Word packages and updates
 
-Maintain guide sources in packaging/guides and generate current ZIPs with scripts/build_packages.py. Read packaging/README.md before changing the build. Keep only current full packages and the current update in downloads; no versioned archive folders. Do not hand-edit generated ZIP contents. Rebuild, structurally check and render changed Word documents before publishing packages.
+Maintain guide sources in packaging/guides and generate current ZIPs with scripts/build_packages.py. Read packaging/README.md before changing the build. Keep generated ZIPs and manifests out of the repository tree. GitHub Releases hold the full packages and update; README points to the latest published release. No archive folders. Do not hand-edit generated ZIP contents. Rebuild, structurally check and render changed Word documents before publishing packages.
 
 Updates replace System and START HERE only and are adopted next week. Never include Local Guidance or weekly work in an update. Do not turn routine repo edits into an automatic operational update. Preserve upload startup, exact filenames and short prompts. Actual ChatGPT Mil ingestion and instruction-following require separate testing; do not claim they passed from document QC alone.
+
+The authorized release workflow builds from the exact published tag and attaches checked assets. Preserve human release notes and use the release-notes template/configuration. Match the tag to packaging/version.txt; never move a published tag or overwrite differing release assets. Keep action/dependency versions pinned, permissions limited and event inputs out of shell code. Publishing triggers the build; it does not install anything on a squadron drive. Re-runs may fill missing assets after verifying existing bytes. Do not claim hosted workflow success from local tests.

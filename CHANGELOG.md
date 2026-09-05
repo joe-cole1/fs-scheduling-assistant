@@ -1,5 +1,12 @@
 # Change log
 
+## Unreleased — release automation
+
+- Build and check all three ZIPs when a release is published; support manual backfill of an existing release. Build the tagged source and require a matching package version.
+- Store downloads as release assets and point README to the latest release; remove committed ZIPs and manifest. No repository archive folders or branch writeback.
+- Add categorized GitHub release notes, a human summary template, verified download links and checksums. Existing human notes are preserved; differing release assets cannot be silently replaced.
+- Make the update change note a maintained source file. Scheduling behavior and Word contents remain unchanged in this infrastructure follow-up.
+
 ## v0.4.1 — Word downloads and simple updates
 
 - Added dedicated Pantons and first-time squadron ZIPs, short START HERE, uploadable primer, numbered Word guides, Word forms and reusable weekly folders.

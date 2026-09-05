@@ -1,0 +1,22 @@
+changelog:
+  exclude:
+    labels:
+      - skip-release-notes
+  categories:
+    - title: Workflow or policy changes requiring attention
+      labels:
+        - breaking-change
+        - policy-change
+    - title: Fixes
+      labels:
+        - bug
+    - title: Guides and forms
+      labels:
+        - documentation
+    - title: Build and distribution
+      labels:
+        - packaging
+        - dependencies
+    - title: Other changes
+      labels:
+        - '*'
