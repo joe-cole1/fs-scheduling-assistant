@@ -6,3 +6,8 @@ handoffs/
 *.tmp
 __pycache__/
 .DS_Store
+
+# Generated operator assets belong on GitHub Releases.
+/downloads/
+/package-output/
+/release-source/

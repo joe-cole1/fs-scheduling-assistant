@@ -2,13 +2,17 @@
 
 Download a ZIP, extract it into your scheduling location, and open **START HERE.docx**. Everything a scheduler needs is in Word. You do not need to understand GitHub or code.
 
-## Download — package v0.4.1
+## Download the latest release
 
-- **[Pantons setup ZIP](downloads/Pantons_Setup.zip?raw=true)** — approved Pantons local profile plus the complete kit.
-- **[First-time squadron setup ZIP](downloads/First_Time_Squadron_Setup.zip?raw=true)** — complete kit with a blank local profile and guided setup questions.
-- **[Update an existing setup](downloads/Update_Existing_Setup.zip?raw=true)** — use next week; follow UPDATE INSTRUCTIONS.docx. Keeps local guidance and weekly work in place.
+- **[Pantons setup ZIP](https://github.com/joe-cole1/fs-scheduling-assistant/releases/latest/download/Pantons_Setup.zip)** — approved Pantons local profile plus the complete kit.
+- **[First-time squadron setup ZIP](https://github.com/joe-cole1/fs-scheduling-assistant/releases/latest/download/First_Time_Squadron_Setup.zip)** — complete kit with a blank local profile and guided setup questions.
+- **[Update an existing setup](https://github.com/joe-cole1/fs-scheduling-assistant/releases/latest/download/Update_Existing_Setup.zip)** — use next week; follow UPDATE INSTRUCTIONS.docx. Keeps local guidance and weekly work in place.
 
-If GitHub shows a file page, click **Download raw file**. Right-click the downloaded ZIP and select **Extract All**. Open the extracted folder, then START HERE.docx. The repository is currently private; someone with access must download the ZIP and place it in your approved shared location. ChatGPT Mil itself needs no GitHub access.
+You can also open the [latest release](https://github.com/joe-cole1/fs-scheduling-assistant/releases/latest) and choose a named ZIP under **Assets**. Use the named setup ZIPs; GitHub’s automatic **Source code** downloads do not contain the built Word kit.
+
+Right-click the downloaded ZIP and select **Extract All**. Open the extracted folder, then START HERE.docx. The repository is currently private; someone with access must download the ZIP and place it in your approved shared location. ChatGPT Mil itself needs no GitHub access.
+
+Immediately after a release is published, its ZIPs may still be building. If downloads are missing, the maintainer should check **Actions → Build release downloads** before distributing it.
 
 Moving from the earlier Markdown kit? Use a full setup ZIP once and carry over your approved local guidance and weekly work. Subsequent updates replace only the System folder and START HERE. Do not extract a full setup over your existing files.
 
@@ -27,7 +31,7 @@ DOCX opening and package structure are checked separately from model behavior. *
 
 ## For maintainers
 
-Read [AGENTS.md](AGENTS.md), [architecture](ARCHITECTURE.md) and [packaging instructions](packaging/README.md). Markdown is maintained source; the ZIPs are the operator product. Number deliberate package updates and rebuild the current downloads together. Earlier versions remain in Git history, not archive folders.
+Read [AGENTS.md](AGENTS.md), [architecture](ARCHITECTURE.md) and [packaging instructions](packaging/README.md). Markdown is maintained source; the ZIPs are the operator product. Number deliberate package updates. Publishing a release builds and checks the ZIPs from its tagged source and attaches them to that release. Generated ZIPs are not stored in the repository file tree. See [how to publish](packaging/README.md#publish-a-release). Earlier versions remain in Git history and Releases, not archive folders.
 
 - [Approved decisions](docs/v0.4/design-decisions.md) and [policy preservation](docs/v0.4/policy-crosswalk.md)
 - [Primer source](docs/v0.4/system-primer.md) and [Pantons local rules](local-profiles/pantons-v0.4.md)
