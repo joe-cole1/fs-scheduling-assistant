@@ -13,6 +13,7 @@ The repository holds reusable instructions, blank forms, approved local workflow
 | Component | Repository location | Responsibility |
 | --- | --- | --- |
 | Operator entry point | [README.md](README.md) | Beginner steps, expected inputs and paste-ready phase commands |
+| Initial squadron setup | [Setup guide](docs/v0.4/first-time-setup.md) and [blank local-profile starter](templates/setup/local_profile_template.md) | Shared-drive organization, source inventory and human-confirmed local products before weekly use |
 | Contributor instructions | [AGENTS.md](AGENTS.md) | Reading order, change discipline, policy preservation and verification |
 | Reusable behavior | [System primer](docs/v0.4/system-primer.md) | Phase controls, evidence handling, analysis, human authority and output contracts |
 | Local policy | [Pantons profile](local-profiles/pantons-v0.4.md) | Exact Pantons scheduling rules; another squadron supplies its own approved profile |
@@ -105,6 +106,8 @@ The decision record is the common reference for a decision's substance and dispo
 The active analysis file can be a proposal; it does not automatically replace an approved baseline. Multi-day reflows require date-specific immediate baselines. A newly signed daily revision becomes current when humans identify it as such. A republished weekly schedule requires explicit baseline selection so history is not silently reset.
 
 ## Continuity and historical testing
+
+First-time squadron setup is an administrative planning conversation, not a sixth operational phase. The shared-drive recommendation separates the downloaded kit, current local configuration, weekly working products and historical test material. It does not create drive access, approval status or automatic synchronization. Setup drafts remain distinct from confirmed facts and approved rules; a new weekly chat loads the actual current products once an execution week is chosen.
 
 Prefer one conversation per execution week. When a user/session changes, transfer a current-state Markdown handoff and the current source packet. Preserve exact DO decisions, confirmation scope, version roles, completed actuals, open issues and candidate statuses. Full transcripts are optional reference; multiple chats do not automatically synchronize or merge their proposals.
 
