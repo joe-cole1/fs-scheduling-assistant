@@ -56,7 +56,7 @@ class ReleaseTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             r.validate_reproducibility_contract(contract | {'requirements_sha256': '0' * 64}, requirements)
 
-    def test_v041_is_only_missing-contract_legacy_exception(self):
+    def test_v041_is_only_missing_contract_legacy_exception(self):
         legacy = r.tagged_build_contract('a' * 40, 'v0.4.1')
         self.assertTrue(legacy['legacy'])
         self.assertEqual(legacy['requirements_path'], r.LEGACY_REQUIREMENTS)
