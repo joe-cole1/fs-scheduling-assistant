@@ -12,4 +12,4 @@ Humans retain source-file modification, scheduling, coordination, publication, a
 
 No automatic playbook promotion. Preserve stable candidate IDs and Pending, Approved, and Rejected decisions. A weekly exception does not become standing policy without explicit DO approval.
 
-For handoffs, a human saves the current-state Markdown and chooses the actual source files to transfer. No account or CAC credential sharing is part of this workflow. A shared snapshot or exported transcript is not evidence that users share one live conversation.
+For handoffs, a human saves the current-state handoff and chooses the actual source files to transfer. No account or CAC credential sharing is part of this workflow. A shared snapshot or exported transcript is not evidence that users share one live conversation.

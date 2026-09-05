@@ -4,7 +4,7 @@ These instructions apply throughout `fs-scheduling-assistant`. Read this file at
 
 ## Purpose and working relationship
 
-This is a Markdown-first, human-led fighter-squadron scheduling analysis package. The squadron DO is the product authority. Act as a planning, design, implementation and quality-control partner. The first operational workflow must work through document uploads and conversation in ChatGPT Mil, without APIs, custom software, connectors, autonomous agents, shared chats or any particular model as prerequisites.
+This is a Word-facing, human-led fighter-squadron scheduling analysis package. The squadron DO is the product authority. Act as a planning, design, implementation and quality-control partner. The first operational workflow must work through document uploads and conversation in ChatGPT Mil, without APIs, custom software, connectors, autonomous agents, shared chats or any particular model as prerequisites.
 
 - For an unresolved substantive product/policy decision, explain why it matters, recommend an answer with relevant tradeoffs, ask exactly one question in ordinary chat, and wait.
 - Once the user approves a design or requests implementation, carry out the authorized work. Resolve routine formatting and implementation details yourself; do not ask for repeated permission.
@@ -38,11 +38,11 @@ Preserve these essential contracts across every edit:
 - **Actuals and blind tests are different.** Live execution results and historical actuals knowable by the declared cutoff are legitimate. Disallowed hindsight during a historical blind test requires a clean restart in an isolated context, including clean handoffs/transcripts. Never quarantine-and-continue after exposure.
 - **Playbook governance persists.** Preserve stable candidate IDs and Pending/Approved/Rejected history. No automatic lesson promotion, weekly-to-standing conversion or revival of rejected lessons without materially new evidence.
 
-Keep [archive/v0.3](archive/v0.3/README.md) and original baseline files unchanged. It is historical reference, not the current operational primer. Do not rewrite an archive to make it agree with a later release. Label text extractions as extractions and retain provenance hashes; do not claim they preserve the original binary or page layout.
+Do not keep historical archives in the current repository tree or download packages. Use Git history and prior PRs for provenance. This is an explicit product-authority packaging decision; do not recreate the removed archive. Preserve external original source files.
 
 ## Write for a pilot new to scheduling
 
-The README is the operator's entry point. Assume the reader understands flying but has never built the schedule or used this package.
+The README is the download entry point; START HERE.docx and numbered Word guides are the operator instructions. Assume the reader understands flying but has never built the schedule or used this package.
 
 - For each phase, state what to do, which existing products to upload, what may be missing, the exact prompt to paste, what output to expect and when to move on.
 - Keep copy/paste prompts executable after replacing clearly marked placeholders. Define terms such as active schedule, baseline, sell and buy in plain language.
@@ -50,7 +50,7 @@ The README is the operator's entry point. Assume the reader understands flying b
 - Use standard squadron products as inputs. Forms capture missing guidance, changes and recommendations; do not require users to transcribe information already supplied elsewhere.
 - Personnel forms capture actionable effects, exact effective times and mandatory/recommended status without unnecessary personal explanations.
 - Keep reusable workflow separate from Pantons-specific policy. Another squadron must be able to identify which local rules it must supply or approve.
-- Preserve concise Markdown handoffs plus actual source products. Full transcripts are optional reference. Do not assume native export, shared multiuser chat, cross-chat memory or access to another user's uploads. Verify current platform features only when they materially affect the task.
+- Preserve concise Word-compatible handoffs plus actual source products. Full transcripts are optional reference. Do not assume native export, shared multiuser chat, cross-chat memory or access to another user's uploads. Verify current platform features only when they materially affect the task.
 
 ## Repository and GitHub practices
 
@@ -62,10 +62,16 @@ The README is the operator's entry point. Assume the reader understands flying b
 
 ## Validate proportionately and report honestly
 
-For each change, inspect the affected contracts across README prompts, primer, local profile, forms, report instructions and examples. When behavior changes, update the relevant design record, crosswalk, change log and validation cases. Routine editorial changes do not require rewriting all of them.
+For each change, inspect the affected contracts across operator guide prompts, primer, local profile, forms, report instructions and examples. When behavior changes, update the relevant design record, crosswalk, change log and validation cases. Routine editorial changes do not require rewriting all of them.
 
 Check relative links, anchors, table structure, fenced prompts, filenames, version labels and synthetic-example labeling where affected. Check baseline hashes if baseline preservation is relevant. For changes sent through connector APIs, verify the resulting remote files or blob hashes against the reviewed contents. Use `rg` for file/text searches when available.
 
 Use [the validation plan](docs/v0.4/validation-plan.md) for meaningful behavior checks. Do not add tests that merely mirror prose or perform broad repeated testing without a concrete risk. Distinguish static document review from actual model runs, historical adjudication and operational validation. Cases not run stay **Not run**. Never carry an old QC result forward as proof of checks on newly changed content.
 
 PR descriptions and final responses should explain what changed, why, what was checked, and material limitations. Link the PR or relevant file. Do not claim ChatGPT Mil access, model reliability, operational readiness or public releasability without the corresponding evidence and human decisions.
+
+## Word packages and updates
+
+Maintain guide sources in packaging/guides and generate current ZIPs with scripts/build_packages.py. Read packaging/README.md before changing the build. Keep only current full packages and the current update in downloads; no versioned archive folders. Do not hand-edit generated ZIP contents. Rebuild, structurally check and render changed Word documents before publishing packages.
+
+Updates replace System and START HERE only and are adopted next week. Never include Local Guidance or weekly work in an update. Do not turn routine repo edits into an automatic operational update. Preserve upload startup, exact filenames and short prompts. Actual ChatGPT Mil ingestion and instruction-following require separate testing; do not claim they passed from document QC alone.

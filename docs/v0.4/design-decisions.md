@@ -33,3 +33,15 @@ Authority: explicit DO/product-authority decisions in the v0.4 planning conversa
 ## Not assumed or changed
 
 No platform collaboration/export feature is asserted. No API/custom software/agent prerequisite. No public release or repository merge is implied by creation of the review branch. No new numerical duty, rest, weather or syllabus limits. No mandatory documentary proof to accept a scoped human confirmation. No assistant source-file modification or lesson promotion.
+
+## Approved beginner packaging decisions — v0.4.1
+
+| ID | Approved decision |
+| --- | --- |
+| V041-01 | Two complete downloads: dedicated Pantons and first-time other-squadron setup. |
+| V041-02 | Short START HERE plus separate numbered Word guides in Instructions; upload the startup primer and use short activation/phase prompts. |
+| V041-03 | Permanent extracted folder with a ready-made weekly folder to copy. Keep local guidance and weekly work outside replaceable System. |
+| V041-04 | Manual numbered updates adopted next week. No elaborate weekly system copies or automatic update mechanism. |
+| V041-05 | Remove repository archives, including v0.3. Use branches, prior PRs and Git history instead. This supersedes archive retention instructions; original uploaded files are unchanged. |
+
+V041-02 supersedes the Markdown-only presentation in V04-12 and V04-16; handoff content and actual-source transfer remain unchanged. v0.4.1 is a packaging release, not a scheduling-policy revision.

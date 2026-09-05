@@ -1,5 +1,13 @@
 # Change log
 
+## v0.4.1 — Word downloads and simple updates
+
+- Added dedicated Pantons and first-time squadron ZIPs, short START HERE, uploadable primer, numbered Word guides, Word forms and reusable weekly folders.
+- Added one manual update ZIP that replaces System next week while preserving local guidance and weekly work.
+- Made README downloads-first. Maintained sources and a reproducible build utility accompany current packages.
+- Removed current-tree v0.3 archive at the product authority’s direction; earlier PRs and Git history retain provenance. External originals are untouched.
+- Word-compatible reports/handoffs replace Markdown as an operator requirement. No scheduling rules changed. ChatGPT Mil ingestion and model behavior remain untested.
+
 ## v0.4 documentation follow-up — first-time squadron setup
 
 - Added a shared-drive folder recommendation, explicit GitHub copy/local-create mapping, existing-product inventory and first-time planning Q&A prompt.

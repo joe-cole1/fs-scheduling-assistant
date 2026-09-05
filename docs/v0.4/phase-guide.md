@@ -1,6 +1,6 @@
 # Phase-by-phase operating guide — v0.4
 
-Use the [README](../../README.md) for copy/paste commands and input lists. This guide defines responsibility, readiness, decisions and carried state. The phases overlap; Thursday can contain drafting, sell and corrections. A phase is work status, not a clock-triggered permission.
+Use the numbered Word guides in the download package for copy/paste commands and input lists. This guide defines responsibility, readiness, decisions and carried state. The phases overlap; Thursday can contain drafting, sell and corrections. A phase is work status, not a clock-triggered permission.
 
 ## 1. Product gathering and generation
 
