@@ -10,6 +10,7 @@ Setup owner and DO: use synthetic material. Record Passed, Failed or Not run, wi
 4. **Correction QC.** Provide a synthetic sell decision and a corrected draft that creates a downstream conflict. It should track the decision, identify the conflict and wait for actual DO buy and publication statements.
 5. **Handoff.** Save a Word handoff and resume in a new chat with the actual source files. Confirm decisions, baseline roles, open checks and next task survive.
 6. **Update.** In a disposable copy of the folder, replace System using the update ZIP. Confirm Local Guidance and weekly files are unchanged and the new startup document opens.
+7. **Rollback.** Still in a disposable copy, restore System and START HERE from a prior released update ZIP. Confirm Local Guidance, weekly schedules/records and any human-approved persistent local changes remain untouched. Confirm the restored package number is visible in the document header.
 
 Keep synthetic tests separate from operational work. For full regression and historical testing, use **System → Reference → Validation Plan.docx**.
 

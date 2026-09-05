@@ -8,6 +8,8 @@ The execution week is the week you will fly. The prior week is the week immediat
 2. Put existing source products in **Inputs**, schedule versions in **Schedules**, and reports, decisions and handoffs in **Working Record**. Keep filenames that identify the version. Preserve the presented, bought, published and signed daily schedules when they exist.
 3. Open a new ChatGPT Mil conversation for this week. Upload **System → UPLOAD THIS TO START.docx** and the current **Local Profile.docx**, **Stable References.docx**, **Playbook.docx** and needed source references from **Local Guidance**.
 
+A normal fresh chat for a brand-new execution week does **not** need a handoff. Use **08 Hand off to another user.docx** only when the execution week already has recorded state and you are moving that ongoing week to another chat or user.
+
 Do not copy the whole System folder into each week. These folders organize human work; the chat cannot see them unless you upload the files.
 
 ## Activate the assistant
@@ -28,7 +30,7 @@ Wait for my analysis request; answer planning questions when I ask them.
 Schedulers will create the initial lineup. Do not create it for us.
 ```
 
-Then follow **03 Gather products.docx**. If the week is already underway, use **08 Hand off to another user.docx** to resume its recorded state instead of declaring a fresh phase 1.
+Then follow **03 Gather products.docx**. If this execution week is already underway and you are resuming its existing recorded state in a replacement chat, follow **08 Hand off to another user.docx** instead of declaring a fresh phase 1.
 
 ## Two terms you will use
 

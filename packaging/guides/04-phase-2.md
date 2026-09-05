@@ -1,7 +1,6 @@
 # Review the draft
 
-Use this after **02 Start a week.docx**. In a continuing chat, upload only new or revised inputs. For a new chat, follow **08 Hand off to another user.docx** first.
-
+Use this after **02 Start a week.docx**. In a continuing chat, upload only new or revised inputs. If this execution week already has recorded state and you are moving it to a replacement chat or another user, follow **08 Hand off to another user.docx** first. A normal fresh chat for a brand-new execution week does not need a handoff.
 
 **Usually Wednesday–Thursday.** Build the initial lineup yourself using the squadron's normal schedule. Upload:
 
@@ -25,6 +24,5 @@ Do not modify the schedule or imply that a recommendation is approved.
 ```
 
 **You should get:** ranked changes with evidence, feasibility checks, tradeoffs and decisions needed. Humans edit the source schedule. If you upload a revised draft, identify it as the new active version. **Move on when the humans choose the version to present at the sell.**
-
 
 **Save:** keep updated source schedule versions in **Schedules** and the report, current run control and cumulative decision record in **Working Record**. Ask the assistant for a Word file if supported, or paste its output into Word and save it yourself.

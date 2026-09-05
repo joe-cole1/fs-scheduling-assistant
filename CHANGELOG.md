@@ -8,6 +8,9 @@
 - Reconcile the current repository QC record with the successful hosted v0.4.1 asset/upload/release-note run while preserving the tagged v0.4.1 QC record as historical evidence.
 - Distinguish structured human release summaries from GitHub-generated change notes. The generated download block no longer implies human validation exists when the required summary headings are absent.
 - Add a tagged reproducibility contract for future releases: exact CPython 3.12.14, dependency-file hash, stored ZIP members, double-build byte comparison, and a frozen v0.4.1 legacy dependency path. Existing differing assets remain immutable by policy.
+- Clarify that a normal new execution-week chat does not need a handoff; handoff-first wording now applies only when an already-started week's recorded state moves to a replacement chat/user.
+- Replace the believable September 2026 reproducibility timestamps with the documented neutral 1980 ZIP-epoch sentinel and make the package number in generated document headers the authoritative installed-version signal.
+- Add a prior-release System rollback procedure and package simulation. Rollback restores only System/START HERE and preserves local guidance, playbook, weekly schedules/records, approvals and human-approved persistent migrations.
 
 ## Unreleased — release automation
 

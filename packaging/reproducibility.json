@@ -3,6 +3,7 @@
   "package_format": 1,
   "python_version": "3.12.14",
   "archive_mode": "stored",
+  "metadata_timestamp": "1980-01-01T00:00:00Z",
   "requirements_sha256": "53d5b4135df6806be4fa74cae24fe1a0174bceddde4bad5d197656b7531b5171",
   "legacy_exception": "v0.4.1 predates this contract. Its successful hosted asset build used CPython 3.12.14 and the original DEFLATE-based tagged builder plus controller dependency fallback."
 }

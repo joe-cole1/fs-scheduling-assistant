@@ -1,7 +1,6 @@
 # Schedule sell
 
-Use this after **02 Start a week.docx**. In a continuing chat, upload only new or revised inputs. For a new chat, follow **08 Hand off to another user.docx** first.
-
+Use this after **02 Start a week.docx**. In a continuing chat, upload only new or revised inputs. If this execution week already has recorded state and you are moving it to a replacement chat or another user, follow **08 Hand off to another user.docx** first. A normal fresh chat for a brand-new execution week does not need a handoff.
 
 **Usually Thursday.** Upload:
 
@@ -28,6 +27,5 @@ from directed corrections. Schedulers will incorporate the changes.
 ```
 
 **You should get:** a decision brief and a list of DO-directed corrections. **Next:** schedulers apply those directions to the schedule. Do not describe the meeting as formal approval of an uncorrected version.
-
 
 **Save:** keep updated source schedule versions in **Schedules** and the report, current run control and cumulative decision record in **Working Record**. Ask the assistant for a Word file if supported, or paste its output into Word and save it yourself.
