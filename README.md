@@ -10,6 +10,8 @@ You do not need to understand the whole repository. Follow the steps below. Text
 
 **A baseline is simply the older schedule you want changes compared against.** An active schedule is the one being reviewed. A proposed change is not approved just because the assistant recommends it. In this guide, “sell” means the DO review meeting; “buy” means formal DO approval AFTER corrections and QC.
 
+**First time for your squadron?** Start with [First-time squadron setup](docs/v0.4/first-time-setup.md). It gives you a shared-drive folder layout, an exact copy/create checklist, a blank local-profile starter and a planning Q&A prompt to generate missing setup products. Then return here for weekly work. ChatGPT Mil needs uploaded files, not GitHub or shared-drive access.
+
 ### 0. Set up the chat once for the execution week
 
 1. Open a new ChatGPT Mil conversation. Name it for the week you will fly, for example `Scheduling — week of [date]`.
