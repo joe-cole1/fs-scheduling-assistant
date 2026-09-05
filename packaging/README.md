@@ -4,16 +4,29 @@ Operators use the root README's **latest release** links, download a named ZIP a
 
 ## Publish a release
 
-1. **Prepare the source change in a PR.** For a new package version, update `packaging/version.txt`, `packaging/update-note.md` and CHANGELOG.md. Use a deliberate version such as `0.4.2`; the release tag will be `v0.4.2`. Keep the short update note accurate, including any required action or known limitation. If a persistent installed artifact changes, also update `packaging/persistent-artifacts.json`, bump the package version, and append the required migration record instead of silently changing the seed or layout.
+1. **Prepare the source change in a PR.** Update `packaging/update-note.md` and CHANGELOG.md for the release contents. `packaging/version.txt` remains useful for local/development builds, but it is **not** release authority. If a persistent installed artifact changes, also update `packaging/persistent-artifacts.json` and its migration record as required by the package checks.
 2. **Review before publishing.** The PR runs **Validate operator packages**, which installs the pinned dependencies, validates persistent-state declarations, builds all three ZIPs twice, byte-compares them, checks package integrity/source coverage and runs the regression suite. A green hosted gate does not replace visual review: render/review new or changed Word pages and record actual model/operational validation separately. Merge the reviewed source changes into the default branch. Do not commit generated ZIPs.
-3. **On GitHub, open Releases → Draft a new release.** Create the matching tag on the reviewed default-branch commit. A tag identifies the source that will be built; do not move an old tag to new content.
+3. **On GitHub, open Releases → Draft a new release.** Choose the release tag/version you want, such as `v0.5.0`, on the reviewed default-branch commit. **That release tag is the authoritative package version.** A tag identifies both the source that will be built and the version printed into the generated package. Do not move an old tag to new content.
 4. **Write the release notes.** Use [the short template](release-notes-template.md) and keep its exact **What changed**, **What you need to do**, and **Validation and known limitations** headings. Click **Generate release notes** to add merged PRs, contributor credits and the full comparison link below your human summary. Review the result. If those three headings are absent, the release workflow preserves the text but explicitly states that no structured human validation summary was present; generated PR notes are not treated as validation evidence.
-5. **Click Publish release.** For normal squadron distribution, publish a full release and mark it Latest. The **Build release downloads** workflow validates the tag/build contract, builds and checks all three ZIPs from that tag, uploads them plus a manifest/checksums, then adds verified download links to the notes. Your written notes are preserved. Publishing alone does not establish that the build succeeded.
+5. **Click Publish release.** For normal squadron distribution, publish a full release and mark it Latest. The **Build release downloads** workflow validates the tag/build contract, builds and checks all three ZIPs from that exact tagged commit, injects the release tag's version into the disposable build workspace, uploads the assets plus manifest/checksums, then adds verified download links to the notes. Your written notes are preserved. Publishing alone does not establish that the build succeeded.
 6. **Wait for the green workflow result.** Confirm the three named ZIPs appear under Assets and the README downloads work before distributing the release. The automatic **Source code** ZIP/tar.gz is not the operator kit. If the job fails, use the recovery directions below.
 
 The release is visible while the build runs, so its download links may briefly be unavailable. This is the explicitly chosen publish-then-build flow. A draft-build-then-publish flow would be necessary if assets must exist at the instant of publication or if immutable releases are enabled. Do not disable immutability or weaken repository controls to work around a failure. The workflow reports an immutable release with missing assets before attempting an upload.
 
 Publication retains the repository's visibility; it does not make a private repository public. Users still need access or a human-provided copy in an approved shared location. Human review controls releasability, and no actual operational products belong in the repository or release notes.
+
+## Release version authority
+
+For GitHub Releases, the published tag is the single source of truth for package identity. A release tagged `v0.5.0` builds package `0.5.0` even if the tagged source's `packaging/version.txt` still contains an older local-build value. The workflow writes the validated tag version only into the temporary `release-source/packaging/version.txt` checkout before running the tagged builder/checker. It does not change the tag, commit, repository branch or published source archive.
+
+This preserves the useful integrity controls without requiring two independent human version selections:
+
+- the tag must be a valid version-shaped tag;
+- the release must already exist and refer to that tag;
+- the tagged commit must be merged into the default branch;
+- all package source other than injected release identity comes from that exact tag;
+- the tagged reproducibility/dependency contract must validate;
+- existing differing release assets are never overwritten.
 
 ## Fill an existing release or recover a failed build
 
@@ -21,7 +34,7 @@ Publication retains the repository's visibility; it does not make a private repo
 2. Use the default branch for the workflow. Enter the existing published tag and run it.
 3. Check the completed run and release Assets.
 
-The selected tag must exist, be merged into the default branch, and match `packaging/version.txt` at that tag. Both full releases and prereleases can receive assets; GitHub's Latest links select full releases. No draft is published by the workflow. Editing a published release's notes does not rebuild it.
+The selected tag must exist and its commit must be merged into the default branch. **It does not need to match `packaging/version.txt`; the selected release tag supplies the package version.** Both full releases and prereleases can receive assets; GitHub's Latest links select full releases. No draft is published by the workflow. Editing a published release's notes does not rebuild it.
 
 A partial upload can be rerun: existing files are downloaded and compared, missing files are attached, and every expected file is checked again. Different existing bytes stop the run; the workflow does not replace them. For changed source or intentional changes to published content, prepare a new version. Repeated runs replace only the marked generated notes section, retaining all text outside it.
 
@@ -57,12 +70,7 @@ Local maintainers can run `actionlint -shellcheck= -pyflakes= .github/workflows/
 
 `packaging/persistent-artifacts.json` is the maintained declaration for files/layout that survive a routine System update: the Pantons local-profile seed, generic local-profile seed, stable-reference/playbook templates and reusable weekly-folder layout. Source-backed entries store their current Git blob fingerprint. The package validation fails if one of those sources changes without updating the declaration.
 
-On a PR, `scripts/check_persistent_migrations.py` compares the declaration with the target branch. A persistent change must:
-
-1. bump `packaging/version.txt`;
-2. update the affected artifact declaration;
-3. append, never rewrite, a migration record covering every changed persistent artifact; and
-4. provide explicit review/merge instructions when human action is required.
+On a PR, `scripts/check_persistent_migrations.py` compares the declaration with the target branch. Persistent changes remain deliberately explicit because they affect human-maintained installed state. Follow the checker-required migration declaration/version metadata for those changes; this development metadata does not override the eventual GitHub release tag.
 
 Routine releases with no persistent change keep the current non-destructive update behavior. When actionable migration history exists, the update ZIP adds **PERSISTENT MIGRATIONS.docx** and clearly marked reference-only source copies where applicable. Those files stay in the temporary update folder; they are comparison material, not replacements for Local Guidance. The appropriate human decides whether/how to merge a policy or local-content change.
 
@@ -86,7 +94,7 @@ The package checker simulates both update and rollback surfaces and verifies tha
 ## Sources and local build
 
 - `guides/`: START HERE and numbered Word guide sources, including activation, phase, handoff, update and rollback instructions.
-- `version.txt`: package version, checked against the release tag.
+- `version.txt`: local/development build version. GitHub release builds override it in their temporary workspace from the authoritative release tag.
 - `update-note.md`: current short change note embedded in UPDATE INSTRUCTIONS.docx.
 - `persistent-artifacts.json`: persistent installed-state fingerprints, reusable weekly-folder layout and append-only migration history.
 - `reproducibility.json`: tagged package-format/runtime/dependency-hash/metadata contract for releases after v0.4.1.
@@ -96,8 +104,8 @@ The package checker simulates both update and rollback surfaces and verifies tha
 - `../templates/`: Word form sources. Wide tables become labeled records; repeated inventories become topic lists plus one reusable entry, retaining meaningful source labels/content.
 - `../local-profiles/`: approved local seed for a first Pantons installation; the generic kit receives the blank profile.
 - `../scripts/build_packages.py` and `check_packages.py`: deterministic generation plus package-format, metadata, source-coverage, update-preservation and rollback-preservation checks.
-- `../scripts/check_persistent_migrations.py`: persistent fingerprint and PR migration-declaration enforcement.
-- `../scripts/release_packages.py`: release identity/version/tagged-contract checks, asset verification and release-note assembly. The controller comes from the default branch; the actual document builder and inputs come from the released tag.
+- `../scripts/prepare_release.py`: resolves the published tag, verifies the tagged commit/build contract and makes the tag the package-version authority.
+- `../scripts/release_packages.py`: shared release integrity, tagged-contract, asset verification and release-note functions. The controller comes from the default branch; the actual document builder and inputs come from the released tag.
 
 From the repository root, use CPython 3.12.14:
 
