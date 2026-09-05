@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 import argparse
 import hashlib
 import json
+import platform
 import re
 import shutil
 import zipfile
@@ -17,6 +18,7 @@ from docx.enum.style import WD_STYLE_TYPE
 ROOT = Path(__file__).resolve().parents[1]
 VERSION = (ROOT / 'packaging/version.txt').read_text().strip()
 PERSISTENT = json.loads((ROOT / 'packaging/persistent-artifacts.json').read_text())
+REPRO = json.loads((ROOT / 'packaging/reproducibility.json').read_text())
 WEEKLY_DIRS = PERSISTENT['artifacts']['weekly_folder_layout']['directories']
 MIGRATION_DOC = 'PERSISTENT MIGRATIONS.docx'
 GUIDES = [
@@ -59,6 +61,19 @@ LINK_NAMES.update({'first-time-setup.md':'01 First time setup.docx',
                    'README.md':'START HERE.docx'})
 
 
+def validate_reproducibility_contract():
+    if REPRO.get('schema_version') != 1 or REPRO.get('package_format') != 1:
+        raise ValueError('Unsupported packaging/reproducibility.json contract')
+    running=platform.python_version()
+    if running != REPRO.get('python_version'):
+        raise ValueError(f'Package build requires Python {REPRO.get("python_version")}; running {running}')
+    if REPRO.get('archive_mode') != 'stored':
+        raise ValueError('Current package format requires archive_mode=stored')
+    requirements=(ROOT/'packaging/requirements.txt').read_bytes()
+    if hashlib.sha256(requirements).hexdigest() != REPRO.get('requirements_sha256'):
+        raise ValueError('packaging/requirements.txt changed without updating reproducibility.json')
+
+
 def actionable_migrations():
     return [item for item in PERSISTENT['migrations'] if item['action'] != 'none']
 
@@ -94,12 +109,7 @@ def el(tag, **attrs):
 
 
 def configure(doc):
-    """compact_reference_guide preset; compact customer_pack title, no cover page.
-
-    Named overrides: title 24pt/8pt after, subtitle 10pt/8pt after; prompt 10.5pt
-    Calibri on F4F6F9; record labels 11pt bold. Wide source tables become readable
-    labeled records so no table or field gets squeezed into tiny columns.
-    """
+    """compact_reference_guide preset; compact customer_pack title, no cover page."""
     sec=doc.sections[0]
     sec.page_width=Inches(8.5); sec.page_height=Inches(11)
     sec.top_margin=sec.bottom_margin=sec.left_margin=sec.right_margin=Inches(1)
@@ -213,21 +223,22 @@ def write_doc(source, destination, subtitle=None):
     with zipfile.ZipFile(destination) as z:
         for n in z.namelist():
             if n.startswith('docProps/thumbnail'): contents[n]=z.read(n)
-    with zipfile.ZipFile(destination,'w',zipfile.ZIP_DEFLATED,compresslevel=9) as z:
+    with zipfile.ZipFile(destination,'w',compression=zipfile.ZIP_STORED) as z:
         for n in sorted(contents):
-            info=zipfile.ZipInfo(n,(2026,9,5,0,0,0));info.compress_type=zipfile.ZIP_DEFLATED;z.writestr(info,contents[n])
+            info=zipfile.ZipInfo(n,(2026,9,5,0,0,0));info.compress_type=zipfile.ZIP_STORED;z.writestr(info,contents[n])
 
 
 def make_zip(folder,destination):
     destination.parent.mkdir(exist_ok=True,parents=True)
-    with zipfile.ZipFile(destination,'w',zipfile.ZIP_DEFLATED,compresslevel=9) as z:
+    with zipfile.ZipFile(destination,'w',compression=zipfile.ZIP_STORED) as z:
         for p in sorted(folder.rglob('*')):
             name=p.relative_to(folder).as_posix()+('/' if p.is_dir() else '')
-            info=zipfile.ZipInfo(name,(2026,9,5,0,0,0));info.compress_type=zipfile.ZIP_DEFLATED
+            info=zipfile.ZipInfo(name,(2026,9,5,0,0,0));info.compress_type=zipfile.ZIP_STORED
             z.writestr(info,b'' if p.is_dir() else p.read_bytes())
 
 
 def build(out):
+    validate_reproducibility_contract()
     staging=out/'build';downloads=out/'downloads'
     if staging.exists(): shutil.rmtree(staging)
     common=staging/'common';system=common/'System'
