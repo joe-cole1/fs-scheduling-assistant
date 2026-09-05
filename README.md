@@ -262,6 +262,7 @@ Use existing schedules, trackers, leave/commitment products, maintenance plans, 
 
 ## Review and adoption
 
+- Contributors: read [AGENTS.md](AGENTS.md) for working instructions and [ARCHITECTURE.md](ARCHITECTURE.md) for the system map.
 - [Report contracts](docs/v0.4/report-contracts.md)
 - [Approved design decisions](docs/v0.4/design-decisions.md)
 - [Policy preservation crosswalk](docs/v0.4/policy-crosswalk.md)
