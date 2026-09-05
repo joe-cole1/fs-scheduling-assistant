@@ -1,7 +1,6 @@
 # Execution reflows
 
-Use this after **02 Start a week.docx**. In a continuing chat, upload only new or revised inputs. For a new chat, follow **08 Hand off to another user.docx** first.
-
+Use this after **02 Start a week.docx**. In a continuing chat, upload only new or revised inputs. If this execution week already has recorded state and you are moving it to a replacement chat or another user, follow **08 Hand off to another user.docx** first. A normal fresh chat for a brand-new execution week does not need a handoff.
 
 Upload:
 
@@ -31,6 +30,5 @@ requirements. Keep proposals separate from approved daily schedules.
 ```
 
 Feasible personnel and mission changes within published times, turn pattern, coordinated support and DO guidance use daily scheduler and Top 3 sign-off. Changes outside those boundaries return to the DO. **Every waiver goes through the DO and the applicable waiver authority.** After humans sign a daily revision, tell the assistant its exact version so it can become that day's immediate baseline.
-
 
 **Save:** keep updated source schedule versions in **Schedules** and the report, current run control and cumulative decision record in **Working Record**. Ask the assistant for a Word file if supported, or paste its output into Word and save it yourself.

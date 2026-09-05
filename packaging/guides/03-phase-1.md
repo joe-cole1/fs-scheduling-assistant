@@ -1,7 +1,6 @@
 # Gather products
 
-Use this after **02 Start a week.docx**. In a continuing chat, upload only new or revised inputs. For a new chat, follow **08 Hand off to another user.docx** first.
-
+Use this after **02 Start a week.docx**. In a continuing chat, upload only new or revised inputs. If this execution week already has recorded state and you are moving it to a replacement chat or another user, follow **08 Hand off to another user.docx** first. A normal fresh chat for a brand-new execution week does not need a handoff.
 
 **Usually Monday–Tuesday before the execution week.** Get the products your squadron already uses. Excel, PDFs, readable screenshots, calendar exports and plain-text notes are acceptable. You do not need to reformat everything into our forms.
 
@@ -42,6 +41,5 @@ Cite the facts that support your recommendation and flag missing information.
 ```
 
 **You should get:** an input/gap list, useful planning answers and clearly marked proposed guidance. **Move on when the scheduler decides to start drafting.** A missing product does not automatically stop drafting.
-
 
 **Save:** keep updated source schedule versions in **Schedules** and the report, current run control and cumulative decision record in **Working Record**. Ask the assistant for a Word file if supported, or paste its output into Word and save it yourself.

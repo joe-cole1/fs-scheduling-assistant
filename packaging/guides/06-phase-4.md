@@ -1,7 +1,6 @@
 # Correct QC buy and publish
 
-Use this after **02 Start a week.docx**. In a continuing chat, upload only new or revised inputs. For a new chat, follow **08 Hand off to another user.docx** first.
-
+Use this after **02 Start a week.docx**. In a continuing chat, upload only new or revised inputs. If this execution week already has recorded state and you are moving it to a replacement chat or another user, follow **08 Hand off to another user.docx** first. A normal fresh chat for a brand-new execution week does not need a handoff.
 
 **Usually Thursday–Friday.** Upload:
 
@@ -48,6 +47,5 @@ and its recorded human disposition; do not silently assume they match.
 ```
 
 **You should get:** a correction/QC record and separate entries for formal buy and publication. The assistant does not send the schedule to Wing, OG, Maintenance or anyone else.
-
 
 **Save:** keep updated source schedule versions in **Schedules** and the report, current run control and cumulative decision record in **Working Record**. Ask the assistant for a Word file if supported, or paste its output into Word and save it yourself.

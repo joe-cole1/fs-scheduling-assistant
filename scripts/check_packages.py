@@ -11,8 +11,9 @@ from docx import Document
 
 from build_packages import (
     ROOT, VERSION, GUIDES, FORMS, REFERENCES, PERSISTENT, WEEKLY_DIRS,
-    MIGRATION_DOC, actionable_migrations, clean, persistent_migration_source,
-    update_instructions_source, validate_reproducibility_contract,
+    MIGRATION_DOC, METADATA_TIMESTAMP, ZIP_TIMESTAMP, actionable_migrations,
+    clean, persistent_migration_source, update_instructions_source,
+    validate_reproducibility_contract,
 )
 from check_persistent_migrations import validate_current as validate_persistent
 
@@ -86,9 +87,15 @@ def _migration_reference_entries():
     return entries
 
 
+def _datetime_tuple(value):
+    return (value.year,value.month,value.day,value.hour,value.minute,value.second)
+
+
 def check(out):
     validate_persistent()
     validate_reproducibility_contract()
+    assert ZIP_TIMESTAMP==(1980,1,1,0,0,0)
+    assert _datetime_tuple(METADATA_TIMESTAMP)==ZIP_TIMESTAMP
     manifest=json.loads((out/'downloads/manifest.json').read_text())
     assert manifest['package_version']==VERSION
     contents={}
@@ -100,6 +107,7 @@ def check(out):
             assert z.namelist()==entry['files']
             assert len(set(z.namelist()))==len(z.namelist())
             assert all(info.compress_type==zipfile.ZIP_STORED for info in z.infolist()), ('Outer ZIP compression drift',name)
+            assert all(info.date_time==ZIP_TIMESTAMP for info in z.infolist()), ('Outer ZIP timestamp drift',name)
             contents[name]={n:z.read(n) for n in z.namelist() if not n.endswith('/')}
         for n,data in contents[name].items():
             assert '..' not in PurePosixPath(n).parts and not n.startswith('/')
@@ -108,12 +116,15 @@ def check(out):
                 assert z.testzip() is None
                 assert not any('vbaProject' in x for x in z.namelist())
                 assert all(info.compress_type==zipfile.ZIP_STORED for info in z.infolist()), ('DOCX compression drift',n)
+                assert all(info.date_time==ZIP_TIMESTAMP for info in z.infolist()), ('DOCX timestamp drift',n)
             d=Document(BytesIO(data));sec=d.sections[0]
             assert sec.page_width.twips==12240 and sec.page_height.twips==15840
             assert all(x.twips==1440 for x in (sec.left_margin,sec.right_margin,sec.top_margin,sec.bottom_margin))
             assert d.styles['Normal'].font.size.pt==11
             assert d.styles['Normal'].paragraph_format.line_spacing==1.25
             assert not d.tables
+            assert d.core_properties.created and _datetime_tuple(d.core_properties.created)==ZIP_TIMESTAMP, ('DOCX created metadata drift',n)
+            assert d.core_properties.modified and _datetime_tuple(d.core_properties.modified)==ZIP_TIMESTAMP, ('DOCX modified metadata drift',n)
             assert '.md' not in text(data), ('Operator Markdown reference',n)
     pantons=contents['Pantons_Setup.zip'];generic=contents['First_Time_Squadron_Setup.zip'];update=contents['Update_Existing_Setup.zip']
     a='Pantons Scheduling Assistant/';b='Squadron Scheduling Assistant/'
@@ -153,11 +164,16 @@ def check(out):
         for name,source in migration_refs.items():
             source_coverage((ROOT/source).read_text(),text(update[name]))
 
+    # Simulate a normal update and then a rollback of only the replaceable surfaces.
+    # Local guidance and weekly operational state must survive both directions.
     with tempfile.TemporaryDirectory() as temp:
         base=Path(temp)
         with zipfile.ZipFile(out/'downloads/Pantons_Setup.zip') as z:z.extractall(base)
         install=base/'Pantons Scheduling Assistant'
+        prior_replaceable={n.removeprefix(a):data for n,data in pantons.items()
+                           if n==a+'START HERE.docx' or n.startswith(a+'System/')}
         samples={'Local Guidance/Local Profile.docx':b'LOCAL APPROVED RULES',
+                 'Local Guidance/Playbook.docx':b'HUMAN PLAYBOOK',
                  'Week of 2099-01-04/Schedules/Published.xlsx':b'WEEKLY BASELINE',
                  'Week of 2099-01-04/Working Record/Decisions.docx':b'HUMAN DECISIONS'}
         for name,data in samples.items():
@@ -172,7 +188,18 @@ def check(out):
         for name,data in samples.items():assert (install/name).read_bytes()==data
         for name in WEEKLY_DIRS:
             assert (install/'COPY THIS FOLDER FOR EACH NEW WEEK'/name).is_dir()
-    print('PASS: ZIP integrity/stored format; Word geometry; full source coverage; common System; local-policy isolation; persistent-state declaration; manual update preservation.')
+
+        # Represent a subsequently installed/broken System, then restore the prior
+        # release's captured System + START HERE exactly as Guide 09 instructs.
+        (install/'System/newer-only.docx').write_bytes(b'BROKEN NEWER SYSTEM')
+        (install/'START HERE.docx').write_bytes(b'BROKEN NEWER START')
+        shutil.rmtree(install/'System')
+        for name,data in prior_replaceable.items():
+            p=install/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(data)
+        assert not (install/'System/newer-only.docx').exists()
+        for name,data in prior_replaceable.items():assert (install/name).read_bytes()==data
+        for name,data in samples.items():assert (install/name).read_bytes()==data
+    print('PASS: ZIP integrity/stored format; deterministic sentinel metadata; full source coverage; common System; local-policy isolation; persistent-state declaration; update/rollback preservation.')
 
 
 if __name__=='__main__':check(Path(sys.argv[1]))

@@ -21,6 +21,11 @@ PERSISTENT = json.loads((ROOT / 'packaging/persistent-artifacts.json').read_text
 REPRO = json.loads((ROOT / 'packaging/reproducibility.json').read_text())
 WEEKLY_DIRS = PERSISTENT['artifacts']['weekly_folder_layout']['directories']
 MIGRATION_DOC = 'PERSISTENT MIGRATIONS.docx'
+METADATA_SENTINEL = '1980-01-01T00:00:00Z'
+METADATA_TIMESTAMP = datetime.fromisoformat(REPRO.get('metadata_timestamp', '').replace('Z','+00:00')) if REPRO.get('metadata_timestamp') else None
+ZIP_TIMESTAMP = ((METADATA_TIMESTAMP.year, METADATA_TIMESTAMP.month, METADATA_TIMESTAMP.day,
+                  METADATA_TIMESTAMP.hour, METADATA_TIMESTAMP.minute, METADATA_TIMESTAMP.second)
+                 if METADATA_TIMESTAMP else None)
 GUIDES = [
     ('01-setup.md', '01 First time setup.docx'),
     ('02-start-week.md', '02 Start a week.docx'),
@@ -69,6 +74,8 @@ def validate_reproducibility_contract():
         raise ValueError(f'Package build requires Python {REPRO.get("python_version")}; running {running}')
     if REPRO.get('archive_mode') != 'stored':
         raise ValueError('Current package format requires archive_mode=stored')
+    if REPRO.get('metadata_timestamp') != METADATA_SENTINEL or ZIP_TIMESTAMP != (1980,1,1,0,0,0):
+        raise ValueError('Package format 1 requires the documented 1980-01-01 metadata sentinel')
     requirements=(ROOT/'packaging/requirements.txt').read_bytes()
     if hashlib.sha256(requirements).hexdigest() != REPRO.get('requirements_sha256'):
         raise ValueError('packaging/requirements.txt changed without updating reproducibility.json')
@@ -82,7 +89,7 @@ def update_instructions_source():
     change_note=(ROOT/'packaging/update-note.md').read_text().strip()
     if not change_note:
         raise ValueError('packaging/update-note.md must describe this release')
-    return '# Update to package '+VERSION+'\n\n'+change_note+'\n\n## Use next week\n\n1. Extract this update into a temporary folder, separate from your squadron scheduling folder.\n2. Before starting next week’s planning, replace the entire System folder in your permanent scheduling folder with the supplied System folder.\n3. Replace START HERE.docx with the supplied copy.\n4. Keep Local Guidance, COPY THIS FOLDER FOR EACH NEW WEEK, and every Week of date folder in place. Never save local guidance or completed work inside System.\n5. If **PERSISTENT MIGRATIONS.docx** is included, read it before deleting the temporary update folder. Review and merge only the explicitly listed persistent changes; reference-only files are never automatic replacements or approvals.\n6. Follow the new System → Instructions → 02 Start a week.docx when starting next week’s chat. Upload the new startup document.\n\nThis update does not change an existing conversation or any operational approvals. Current-week work and decisions carry forward. Routine updates include no local guidance or weekly folders. A release that deliberately changes persistent local seeds or folder structure must declare that migration and may include clearly marked reference-only copies outside System for human review.\n\n## Coming from the earlier Markdown kit?\n\nUse the appropriate full setup ZIP once. Copy your existing approved local guidance and weekly work into the new layout; preserve their contents. Future updates use the System replacement above plus any explicitly declared persistent-migration review.\n\nSee System → Instructions → 09 Update next week.docx for details. Downloading an update grants no new scheduling approval or waiver.\n'
+    return '# Update to package '+VERSION+'\n\n'+change_note+'\n\n## Use next week\n\n1. Extract this update into a temporary folder, separate from your squadron scheduling folder.\n2. Before starting next week’s planning, replace the entire System folder in your permanent scheduling folder with the supplied System folder.\n3. Replace START HERE.docx with the supplied copy.\n4. Keep Local Guidance, COPY THIS FOLDER FOR EACH NEW WEEK, and every Week of date folder in place. Never save local guidance or completed work inside System.\n5. If **PERSISTENT MIGRATIONS.docx** is included, read it before deleting the temporary update folder. Review and merge only the explicitly listed persistent changes; reference-only files are never automatic replacements or approvals.\n6. Follow the new System → Instructions → 02 Start a week.docx when starting next week’s chat. Upload the new startup document.\n\nThe package number in generated document headers is the authoritative installed System version. File dates are deterministic packaging metadata, not release/install timestamps.\n\nThis update does not change an existing conversation or any operational approvals. Current-week work and decisions carry forward. Routine updates include no local guidance or weekly folders. A release that deliberately changes persistent local seeds or folder structure must declare that migration and may include clearly marked reference-only copies outside System for human review.\n\n## Rollback\n\nTo restore a prior System release, download that release’s Update_Existing_Setup.zip and follow System → Instructions → 09 Update next week.docx. Replace only System and START HERE. Do not roll back Local Guidance, weekly work or operational decisions automatically.\n\n## Coming from the earlier Markdown kit?\n\nUse the appropriate full setup ZIP once. Copy your existing approved local guidance and weekly work into the new layout; preserve their contents. Future updates use the System replacement above plus any explicitly declared persistent-migration review.\n\nSee System → Instructions → 09 Update next week.docx for details. Downloading an update or rollback grants no new scheduling approval or waiver.\n'
 
 
 def persistent_migration_source():
@@ -140,7 +147,7 @@ def configure(doc):
     foot=sec.footer.paragraphs[0];foot.alignment=2
     foot.add_run('Page ');field=el('fldSimple',instr='PAGE');foot._p.append(field)
     props=doc.core_properties;props.author='';props.last_modified_by='';props.title='Scheduling Assistant'
-    props.created=props.modified=datetime(2026,9,5,tzinfo=timezone.utc)
+    props.created=props.modified=METADATA_TIMESTAMP
     props.revision=1
 
 
@@ -225,7 +232,7 @@ def write_doc(source, destination, subtitle=None):
             if n.startswith('docProps/thumbnail'): contents[n]=z.read(n)
     with zipfile.ZipFile(destination,'w',compression=zipfile.ZIP_STORED) as z:
         for n in sorted(contents):
-            info=zipfile.ZipInfo(n,(2026,9,5,0,0,0));info.compress_type=zipfile.ZIP_STORED;z.writestr(info,contents[n])
+            info=zipfile.ZipInfo(n,ZIP_TIMESTAMP);info.compress_type=zipfile.ZIP_STORED;z.writestr(info,contents[n])
 
 
 def make_zip(folder,destination):
@@ -233,7 +240,7 @@ def make_zip(folder,destination):
     with zipfile.ZipFile(destination,'w',compression=zipfile.ZIP_STORED) as z:
         for p in sorted(folder.rglob('*')):
             name=p.relative_to(folder).as_posix()+('/' if p.is_dir() else '')
-            info=zipfile.ZipInfo(name,(2026,9,5,0,0,0));info.compress_type=zipfile.ZIP_STORED
+            info=zipfile.ZipInfo(name,ZIP_TIMESTAMP);info.compress_type=zipfile.ZIP_STORED
             z.writestr(info,b'' if p.is_dir() else p.read_bytes())
 
 
