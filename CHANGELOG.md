@@ -2,6 +2,8 @@
 
 ## Unreleased — release automation
 
+- Fixed GitHub rejection of runner-only contexts in job-level environment values. Initialize temporary paths inside a runner step and validate workflow definitions with actionlint on PRs.
+
 - Build and check all three ZIPs when a release is published; support manual backfill of an existing release. Build the tagged source and require a matching package version.
 - Store downloads as release assets and point README to the latest release; remove committed ZIPs and manifest. No repository archive folders or branch writeback.
 - Add categorized GitHub release notes, a human summary template, verified download links and checksums. Existing human notes are preserved; differing release assets cannot be silently replaced.

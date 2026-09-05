@@ -29,6 +29,10 @@ A partial upload can be rerun: existing files are downloaded and compared, missi
 
 The workflow needs GitHub Actions enabled and its `GITHUB_TOKEN` allowed to write release contents. It requests only `contents: write`, has no branch writes and uses no personal token. Organization/repository restrictions remain in force. A failure leaves the logs available and does not falsely mark downloads as ready. Do not distribute a partial release.
 
+## Workflow validation
+
+Changes to workflow files run **Validate GitHub workflows** on PRs and main. It uses checksum-pinned actionlint to validate GitHub Actions expressions and context availability; plain YAML parsing is insufficient. Local maintainers can run `actionlint -shellcheck= -pyflakes= .github/workflows/*.yml` before pushing. A green validation job checks definitions, not release upload behavior.
+
 ## Sources and local build
 
 - `guides/`: START HERE and numbered Word guide sources, including activation, phase and handoff prompts.

@@ -26,9 +26,12 @@ jobs:
       contents: write # Attach files and update release notes only; scripts never push.
     env:
       RELEASE_TAG: ${{ github.event.release.tag_name || inputs.tag }}
-      PACKAGE_OUTPUT: ${{ runner.temp }}/release-packages
-      RELEASE_STATE: ${{ runner.temp }}/release-state.json
     steps:
+      - name: Set temporary build paths
+        shell: bash
+        run: |
+          echo "PACKAGE_OUTPUT=$RUNNER_TEMP/release-packages" >> "$GITHUB_ENV"
+          echo "RELEASE_STATE=$RUNNER_TEMP/release-state.json" >> "$GITHUB_ENV"
       # Controller comes from the default branch to support backfilling v0.4.1,
       # which predates this workflow. Package sources always come from the tag.
       - name: Check out release tooling
