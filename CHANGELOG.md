@@ -1,5 +1,12 @@
 # Change log
 
+## v0.4 documentation follow-up — first-time squadron setup
+
+- Added a shared-drive folder recommendation, explicit GitHub copy/local-create mapping, existing-product inventory and first-time planning Q&A prompt.
+- Added a blank local-profile starter for adopting squadrons; no Pantons policy values are prefilled.
+- Documented setup draft generation, human confirmation/approval, current-file indexing, first-week transition and configuration updates. Setup is administrative work, not a sixth operational phase or platform feature.
+- Linked the guide from README and architecture; added unrun setup-specific validation cases. Operational scheduling policy and original archives are unchanged.
+
 ## v0.4 — approved design implemented, operational validation pending
 
 - Reorganized the system around product gathering, initial draft, sell, corrections/QC/approval/publication and execution reflows. Phase transitions follow work status, not weekday.
