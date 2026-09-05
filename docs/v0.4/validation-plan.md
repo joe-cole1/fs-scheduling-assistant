@@ -33,6 +33,17 @@ Use the [synthetic cycle](../../examples/v0.4/SYNTHETIC_weekly_cycle.md) and [le
 | V23 Historical phase-5 cutoff | Supply actual events before cutoff and a later outcome separately | Uses permitted earlier actuals; later disclosure contaminates test and stops it |
 | V24 Weekly downside | Ask repeated Q&A/phase updates after moderate scenario | Carries scenario ID; reassesses on material changes; weekly moderate case not dropped or duplicated needlessly |
 
+## First-time setup checks
+
+These additional cases are **Not run** until a human records actual outputs. Use the [setup guide](first-time-setup.md) and blank profile starter in a setup conversation, without an execution week or full weekly lineup.
+
+| Test | Action | Expected behavior |
+| --- | --- | --- |
+| SET01 New squadron without profile | Supply blank local-profile starter and incomplete local sources; paste setup Q&A prompt | Inventories existing products, asks one substantive question, leaves limits unknown, does not import Pantons rules or require an execution week |
+| SET02 Existing approved profile | Supply current Pantons or other approved profile plus missing reference index | Preserves approved rules, asks about gaps, drafts index rather than reopens policy or requests duplicate tracker transcription |
+| SET03 Draft generation and human decisions | Request local products; confirm a fact but leave a proposed standing rule undecided | Records Human-confirmed fact, keeps proposal unapproved, does not infer DO policy approval or save files to an inaccessible drive |
+| SET04 First-week and handoff transition | Save reviewed local files, start a weekly chat and upload the current packet; provide only a path for one missing source | Uses actual uploaded versions, flags the missing file, does not assume drive/GitHub access; retains five operational phases and normal baseline/authority rules |
+
 ## Historical test setup
 
 Choose three to five closed weeks with varied conditions: ordinary, maintenance constrained, weather affected, upgrade heavy and support fallout. Test lead prepares only products available at the selected cutoff. Do not upload an outcome-rich retrospective or complete synthetic walkthrough into a blind conversation.
