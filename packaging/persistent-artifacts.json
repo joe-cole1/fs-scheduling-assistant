@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "artifacts": {
+    "pantons_local_profile": {
+      "source": "local-profiles/pantons-v0.4.md",
+      "git_blob_sha": "9f8d2d8b38a17bd9f83761d89bb966d8d33ee61c",
+      "migration_filename": "Pantons Local Profile - REFERENCE ONLY.docx"
+    },
+    "generic_local_profile": {
+      "source": "templates/setup/local_profile_template.md",
+      "git_blob_sha": "b74d0b197842f216b61265ec303d942d2cf1ea16",
+      "migration_filename": "Blank Local Profile - REFERENCE ONLY.docx"
+    },
+    "stable_references_template": {
+      "source": "templates/v0.4/04_stable_local_rules_and_references.md",
+      "git_blob_sha": "c3e056d8bd2a7f0b28f2ff5a3e6a7c49c6841d8e",
+      "migration_filename": "Stable References Template - REFERENCE ONLY.docx"
+    },
+    "playbook_template": {
+      "source": "templates/v0.4/09_playbook.md",
+      "git_blob_sha": "ece80552b3ae7ecf4d560f203eeeb08f624fa1f2",
+      "migration_filename": "Playbook Template - REFERENCE ONLY.docx"
+    },
+    "weekly_folder_layout": {
+      "directories": [
+        "Inputs",
+        "Schedules",
+        "Working Record"
+      ]
+    }
+  },
+  "migrations": [
+    {
+      "id": "PERSIST-000",
+      "introduced_in": "0.4.1",
+      "artifacts": [],
+      "action": "none",
+      "summary": "Baseline registration of persistent installed state. No migration is required for v0.4.1.",
+      "instructions": []
+    }
+  ]
+}

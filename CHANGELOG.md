@@ -1,5 +1,11 @@
 # Change log
 
+## Unreleased — adversarial-review hardening
+
+- Add a read-only hosted operator-package CI gate that validates persistent-state declarations, builds/checks all three ZIPs and runs package/release regression tests before package-affecting changes merge.
+- Register persistent installed artifacts and the reusable weekly-folder layout in an append-only migration declaration. Future persistent changes require a package-version bump plus explicit human migration instructions instead of silently diverging fresh and existing installs.
+- Expand Markdown-to-Word source coverage across START HERE, every numbered guide, every blank form/reference, both local-profile seeds, the startup primer and update/migration instructions; verify meaningful table row content and full copy/paste prompts.
+
 ## Unreleased — release automation
 
 - Fixed GitHub rejection of runner-only contexts in job-level environment values. Initialize temporary paths inside a runner step and validate workflow definitions with actionlint on PRs.

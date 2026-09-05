@@ -16,6 +16,9 @@ from docx.enum.style import WD_STYLE_TYPE
 
 ROOT = Path(__file__).resolve().parents[1]
 VERSION = (ROOT / 'packaging/version.txt').read_text().strip()
+PERSISTENT = json.loads((ROOT / 'packaging/persistent-artifacts.json').read_text())
+WEEKLY_DIRS = PERSISTENT['artifacts']['weekly_folder_layout']['directories']
+MIGRATION_DOC = 'PERSISTENT MIGRATIONS.docx'
 GUIDES = [
     ('01-setup.md', '01 First time setup.docx'),
     ('02-start-week.md', '02 Start a week.docx'),
@@ -56,6 +59,34 @@ LINK_NAMES.update({'first-time-setup.md':'01 First time setup.docx',
                    'README.md':'START HERE.docx'})
 
 
+def actionable_migrations():
+    return [item for item in PERSISTENT['migrations'] if item['action'] != 'none']
+
+
+def update_instructions_source():
+    change_note=(ROOT/'packaging/update-note.md').read_text().strip()
+    if not change_note:
+        raise ValueError('packaging/update-note.md must describe this release')
+    return '# Update to package '+VERSION+'\n\n'+change_note+'\n\n## Use next week\n\n1. Extract this update into a temporary folder, separate from your squadron scheduling folder.\n2. Before starting next week’s planning, replace the entire System folder in your permanent scheduling folder with the supplied System folder.\n3. Replace START HERE.docx with the supplied copy.\n4. Keep Local Guidance, COPY THIS FOLDER FOR EACH NEW WEEK, and every Week of date folder in place. Never save local guidance or completed work inside System.\n5. If **PERSISTENT MIGRATIONS.docx** is included, read it before deleting the temporary update folder. Review and merge only the explicitly listed persistent changes; reference-only files are never automatic replacements or approvals.\n6. Follow the new System → Instructions → 02 Start a week.docx when starting next week’s chat. Upload the new startup document.\n\nThis update does not change an existing conversation or any operational approvals. Current-week work and decisions carry forward. Routine updates include no local guidance or weekly folders. A release that deliberately changes persistent local seeds or folder structure must declare that migration and may include clearly marked reference-only copies outside System for human review.\n\n## Coming from the earlier Markdown kit?\n\nUse the appropriate full setup ZIP once. Copy your existing approved local guidance and weekly work into the new layout; preserve their contents. Future updates use the System replacement above plus any explicitly declared persistent-migration review.\n\nSee System → Instructions → 09 Update next week.docx for details. Downloading an update grants no new scheduling approval or waiver.\n'
+
+
+def persistent_migration_source():
+    migrations=actionable_migrations()
+    if not migrations:
+        return ''
+    lines=[
+        '# Persistent migration review',
+        '',
+        'This document appears only when a release deliberately changes persistent installed state. Do not overwrite Local Guidance or weekly work. Review each migration, compare any reference-only copy with your current human-maintained file, and merge only changes that the appropriate human authority accepts.',
+        ''
+    ]
+    for item in migrations:
+        lines += [f'## {item["id"]} — package {item["introduced_in"]}', '', item['summary'], '', '**Affected persistent artifacts:** '+', '.join(item['artifacts']), '', 'Required actions:']
+        lines += [f'{index}. {instruction}' for index,instruction in enumerate(item['instructions'],1)]
+        lines += ['', 'Reference-only source copies, when applicable, are provided under **Persistent Migration Sources**. They are comparison material, not installed replacements and not evidence of approval.', '']
+    return '\n'.join(lines)
+
+
 def el(tag, **attrs):
     node = OxmlElement('w:'+tag)
     for k,v in attrs.items(): node.set(qn('w:'+k), str(v))
@@ -88,7 +119,6 @@ def configure(doc):
         if name.startswith('Heading') or name in ('Title','Subtitle','Record Label'): pf.keep_with_next=True
     styles['Prompt']._element.get_or_add_pPr().append(el('shd',fill='F4F6F9'))
     styles['Prompt'].paragraph_format.keep_together=True
-    # Explicit real numbering, matching preset indents (rounded to DXA).
     numbering=doc.part.numbering_part.element
     for abstract_id,fmt,marker in [(70,'bullet','•'),(71,'decimal','%1.')]:
         a=el('abstractNum',abstractNumId=abstract_id);lvl=el('lvl',ilvl=0)
@@ -134,7 +164,6 @@ def write_doc(source, destination, subtitle=None):
         if line.startswith('```'):
             i+=1;buf=[]
             while i<len(lines) and not lines[i].startswith('```'): buf.append(lines[i]);i+=1
-            # Preserve copyable prompt as a single paragraph with natural line wrapping.
             prompt=re.sub(r'(?<![.:])\n(?=\S)',' ','\n'.join(buf))
             p=doc.add_paragraph(style='Prompt');p.add_run(prompt);i+=1;continue
         if line.startswith('|'):
@@ -144,8 +173,6 @@ def write_doc(source, destination, subtitle=None):
                 if not all(re.fullmatch(r'\s*:?-+:?\s*',v) for v in row): rows.append([v.strip().replace('\\|','|') for v in row])
                 i+=1
             headers=rows[0]
-            # Blank source inventories need one repeatable entry, not many pages of
-            # duplicated empty fields. All topic labels and source fields survive.
             if len(headers)>2 and len(rows)>4 and all(all(re.fullmatch(r'\[.*\]',v) for v in r[1:]) for r in rows[1:]):
                 inline(doc.add_paragraph(),'Cover these topics; reference supplied products instead of retyping them:')
                 for row in rows[1:]: listpara(doc,row[0],70)
@@ -153,7 +180,6 @@ def write_doc(source, destination, subtitle=None):
                 for h,v in zip(headers,['[topic]']+rows[1][1:]):
                     inline(doc.add_paragraph(),'**'+h+':** '+v)
                 continue
-            # Definition lists/records preserve every source cell with readable fill-in fields.
             for row in rows[1:]:
                 if len(row)!=len(headers): raise ValueError(('ragged table',destination,row))
                 if len(headers)==2:
@@ -183,9 +209,7 @@ def write_doc(source, destination, subtitle=None):
         inline(doc.add_paragraph(),' '.join(buf))
     destination.parent.mkdir(parents=True,exist_ok=True)
     doc.save(destination)
-    # Fixed inner ZIP metadata makes builds reproducible and avoids personal metadata.
     with zipfile.ZipFile(destination) as z: contents={n:z.read(n) for n in z.namelist() if not n.startswith('docProps/thumbnail')}
-    # Keep relationship/content type consistency by retaining the standard thumbnail if present.
     with zipfile.ZipFile(destination) as z:
         for n in z.namelist():
             if n.startswith('docProps/thumbnail'): contents[n]=z.read(n)
@@ -217,20 +241,29 @@ def build(out):
         write_doc((ROOT/'templates/v0.4'/source).read_text(),system/'Blank Forms'/name)
     for source,name in REFERENCES:
         write_doc((ROOT/source).read_text(),system/'Reference'/name)
-    change_note=(ROOT/'packaging/update-note.md').read_text().strip()
-    if not change_note: raise ValueError('packaging/update-note.md must describe this release')
-    release='# Update to package '+VERSION+'\n\n'+change_note+'\n\n## Use next week\n\n1. Extract this update into a temporary folder, separate from your squadron scheduling folder.\n2. Before starting next week’s planning, replace the entire System folder in your permanent scheduling folder with the supplied System folder.\n3. Replace START HERE.docx with the supplied copy.\n4. Keep Local Guidance, COPY THIS FOLDER FOR EACH NEW WEEK, and every Week of date folder in place. Never save local guidance or completed work inside System.\n5. Follow the new System → Instructions → 02 Start a week.docx when starting next week’s chat. Upload the new startup document.\n\nThis update does not change an existing conversation or any operational approvals. Current-week work and decisions carry forward. No local guidance or weekly folders are included in this update.\n\n## Coming from the earlier Markdown kit?\n\nUse the appropriate full setup ZIP once. Copy your existing approved local guidance and weekly work into the new layout; preserve their contents. Future updates use the System replacement above.\n\nSee System → Instructions → 09 Update next week.docx for details. Downloading an update grants no new scheduling approval or waiver.\n'
+    release=update_instructions_source()
     write_doc(release,staging/'UPDATE INSTRUCTIONS.docx')
     for variant,label,profile in [('Pantons','Pantons Scheduling Assistant','local-profiles/pantons-v0.4.md'),('First_Time_Squadron','Squadron Scheduling Assistant','templates/setup/local_profile_template.md')]:
         dest=staging/variant/label;shutil.copytree(common,dest)
         local=dest/'Local Guidance';write_doc((ROOT/profile).read_text(),local/'Local Profile.docx', 'Pantons approved local profile' if variant=='Pantons' else 'DRAFT — local rules must be supplied and approved')
         for src,name in [('04 Stable References.docx','Stable References.docx'),('09 Playbook.docx','Playbook.docx')]:
             shutil.copy2(system/'Blank Forms'/src,local/name)
-        for directory in ['Inputs','Schedules','Working Record']:
+        for directory in WEEKLY_DIRS:
             (dest/'COPY THIS FOLDER FOR EACH NEW WEEK'/directory).mkdir(parents=True)
         make_zip(staging/variant,downloads/(variant+'_Setup.zip'))
     update=staging/'Update';shutil.copytree(common,update)
     shutil.copy2(staging/'UPDATE INSTRUCTIONS.docx',update/'UPDATE INSTRUCTIONS.docx')
+    migrations=actionable_migrations()
+    if migrations:
+        write_doc(persistent_migration_source(),update/MIGRATION_DOC,'Human-reviewed persistent-state migration')
+        included=set()
+        for item in migrations:
+            for artifact in item['artifacts']:
+                spec=PERSISTENT['artifacts'][artifact]
+                if 'source' not in spec or artifact in included:
+                    continue
+                included.add(artifact)
+                write_doc((ROOT/spec['source']).read_text(),update/'Persistent Migration Sources'/spec['migration_filename'],'REFERENCE ONLY — compare and merge; do not overwrite local guidance')
     make_zip(update,downloads/'Update_Existing_Setup.zip')
     manifests={}
     for p in sorted(downloads.glob('*.zip')):
