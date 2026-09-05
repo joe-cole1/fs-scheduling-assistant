@@ -6,7 +6,7 @@ Update the same weekly record; do not recreate unchanged source facts every sess
 
 | Field | Value |
 | --- | --- |
-| Execution week | [Sunday YYYY-MM-DD through Saturday YYYY-MM-DD; Pantons accounting week] |
+| Execution week | [start date through end date under approved local counting week; Pantons: Sunday–Saturday] |
 | Active phase | [1 Product gathering / 2 Initial draft / 3 Sell / 4 Corrections-QC-approval-publication / 5 Execution reflows] |
 | Requested task | [planning question / full draft review / sell brief / correction QC / reflow / handoff] |
 | Parallel or reopened work | [phase/task or None] |

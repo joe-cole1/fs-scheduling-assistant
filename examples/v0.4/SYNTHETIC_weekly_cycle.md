@@ -79,7 +79,7 @@ Check the candidate before recommending adoption. Within existing times, turn, s
 
 ## Handoff
 
-The outgoing user asks for concise current-state Markdown. It carries `C2` as published weekly baseline, `Wed_S1` as Wednesday immediate baseline, completed X-1, current decisions, the unresolved replacement, missing sources, scenario S-001 and candidate statuses. The receiving user uploads those source files with the primer/profile and handoff. If `SYN_Xs` is missing, the assistant acknowledges that it has not inspected the matrix in this session; prior human confirmations remain scoped human confirmations.
+The outgoing user asks for a concise current-state handoff that a human can save in Word. It carries `C2` as published weekly baseline, `Wed_S1` as Wednesday immediate baseline, completed X-1, current decisions, the unresolved replacement, missing sources, scenario S-001 and candidate statuses. The receiving user uploads those source files with the primer/profile and handoff. If `SYN_Xs` is missing, the assistant acknowledges that it has not inspected the matrix in this session; prior human confirmations remain scoped human confirmations.
 
 ## Separate policy regression mini-cases
 

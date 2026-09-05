@@ -12,7 +12,7 @@ The repository holds reusable instructions, blank forms, approved local workflow
 
 | Component | Repository location | Responsibility |
 | --- | --- | --- |
-| Operator entry point | [README.md](README.md) | Beginner steps, expected inputs and paste-ready phase commands |
+| Operator entry point | [README.md](README.md) | Two complete ZIP downloads and the existing-setup update |
 | Initial squadron setup | [Setup guide](docs/v0.4/first-time-setup.md) and [blank local-profile starter](templates/setup/local_profile_template.md) | Shared-drive organization, source inventory and human-confirmed local products before weekly use |
 | Contributor instructions | [AGENTS.md](AGENTS.md) | Reading order, change discipline, policy preservation and verification |
 | Reusable behavior | [System primer](docs/v0.4/system-primer.md) | Phase controls, evidence handling, analysis, human authority and output contracts |
@@ -23,7 +23,6 @@ The repository holds reusable instructions, blank forms, approved local workflow
 | Governance and history | [Design decisions](docs/v0.4/design-decisions.md), [crosswalk](docs/v0.4/policy-crosswalk.md), [change log](CHANGELOG.md) | Approved design, baseline preservation and change rationale |
 | Validation | [Validation plan](docs/v0.4/validation-plan.md), [QC record](docs/v0.4/repository-qc.md) | Behavioral cases, historical pilot procedure and bounded evidence of checks performed |
 | Worked fixtures | [Synthetic examples](examples/v0.4) | Fictional demonstrations and test stimuli, never issued direction |
-| Historical baseline | [v0.3 archive](archive/v0.3/README.md) | Unchanged historical text extraction and source hashes; not the current primer |
 
 The primer and approved local profile are loaded together for operational use. The stable-reference packet supplies the actual governing publications, dates and parameters. The approved playbook supplies enduring lessons. Weekly DO guidance supplies time-bounded direction. Architectural summaries do not replace any of these sources or authorize resolving a conflict silently.
 
@@ -109,7 +108,7 @@ The active analysis file can be a proposal; it does not automatically replace an
 
 First-time squadron setup is an administrative planning conversation, not a sixth operational phase. The shared-drive recommendation separates the downloaded kit, current local configuration, weekly working products and historical test material. It does not create drive access, approval status or automatic synchronization. Setup drafts remain distinct from confirmed facts and approved rules; a new weekly chat loads the actual current products once an execution week is chosen.
 
-Prefer one conversation per execution week. When a user/session changes, transfer a current-state Markdown handoff and the current source packet. Preserve exact DO decisions, confirmation scope, version roles, completed actuals, open issues and candidate statuses. Full transcripts are optional reference; multiple chats do not automatically synchronize or merge their proposals.
+Prefer one conversation per execution week. When a user/session changes, transfer a current-state Word-compatible handoff and the current source packet. Preserve exact DO decisions, confirmation scope, version roles, completed actuals, open issues and candidate statuses. Full transcripts are optional reference; multiple chats do not automatically synchronize or merge their proposals.
 
 For historical blind tests, every input, handoff and transcript must respect the declared cutoff. Actuals already knowable at a historical execution cutoff are valid; later outcomes are not. Exposure to prohibited hindsight requires an isolated clean restart, not a request to ignore what was seen. The full synthetic walkthrough includes later outcomes and must not be used intact as an earlier-cutoff blind packet.
 
@@ -117,6 +116,14 @@ For historical blind tests, every input, handoff and transcript must respect the
 
 For another squadron, retain reusable workflow and substitute a human-approved local profile and reference packet. Do not copy Pantons event limits, approval roles or training conventions as universal military rules.
 
-For a new behavior, identify the approving decision, then update the affected primer/profile, operator prompt, forms/report contracts, example and validation case together. Keep historical archives unchanged. System, templates and approved playbook can be versioned independently; record the versions actually used in each run.
+For a new behavior, identify the approving decision, then update the affected primer/profile, operator prompt, forms/report contracts, example and validation case together. Use Git history for earlier releases; do not keep repository archives. Number package releases deliberately. Users apply the latest manual update when starting next week; they do not copy system versions into each weekly folder. Local profile/playbook versions and exact schedule baseline identities remain explicit.
 
 No executable runtime, automated scheduling test suite or CI gate is required by this architecture. Static document checks establish structural consistency only. Behavioral cases require actual model outputs, and historical utility requires human adjudication. Keep Not run separate from Passed, and do not treat an earlier QC record as proof for later edits. Optional future software or platform integrations must preserve these human authority and portability boundaries and require an explicitly agreed scope.
+
+## Distribution and installed folders
+
+Maintainers edit Markdown sources and run the small Python packaging utility; operators need only Word and ChatGPT Mil. The utility is not an operational prerequisite. [Packaging instructions](packaging/README.md) define generation and release checks.
+
+Each full ZIP contains START HERE.docx, System (startup primer, numbered guides, blank forms and references), Local Guidance (Pantons approved seed or a blank adopting-squadron draft), and COPY THIS FOLDER FOR EACH NEW WEEK. Humans create weekly Inputs, Schedules and Working Record folders from that template.
+
+The single update ZIP contains System, START HERE.docx and update instructions. It excludes all local guidance and weekly folders by construction. Replacing System next week updates reusable instructions without rewriting local policy. Current downloads are committed with their source changes for review. Old copies live only in Git history. No automatic deployment or shared-drive access exists.

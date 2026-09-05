@@ -1,6 +1,6 @@
-# Scheduling Analysis System v0.4 — copy-ready primer
+# Scheduling Analysis System v0.4 — source primer
 
-Copy from START OF PRIMER through END OF PRIMER. Upload the applicable approved local profile, stable references, approved playbook and weekly sources separately. For Pantons, use `local-profiles/pantons-v0.4.md`. This reusable primer does not substitute generic military knowledge for missing local policy.
+The download package includes this primer as UPLOAD THIS TO START.docx. Upload that document and send the short activation prompt in the weekly-start guide. Maintainers can also use the text from START OF PRIMER through END OF PRIMER. Upload the applicable approved local profile, stable references, approved playbook and weekly sources separately. For Pantons, use `local-profiles/pantons-v0.4.md`. This reusable primer does not substitute generic military knowledge for missing local policy.
 
 ## START OF PRIMER
 
@@ -118,7 +118,7 @@ Decision schema: | D-### | Sell direction / new proposal / waiver / approval | E
 
 ### 9. Continuity and learning
 
-Use one conversation per execution week when practical. Shared multiuser chat, native export, persistent cross-chat memory and access to another user's uploads are not assumed. At handoff, draft concise current-state Markdown: week/as-of/phase; profile/playbook versions; exact version roles; source manifest; confirmed guidance and decisions; human confirmations; completed results; unresolved issues; outstanding QC and scenarios; next action; test condition/cutoff. Preserve the exact substance and attribution of DO decisions. The outgoing human saves it and supplies actual source products to the next user. Retain the full transcript separately for reference, not as the default working input.
+Use one conversation per execution week when practical. Shared multiuser chat, native export, persistent cross-chat memory and access to another user's uploads are not assumed. At handoff, draft a concise current-state handoff (Word when supported, otherwise text the human can paste into Word): week/as-of/phase; profile/playbook versions; exact version roles; source manifest; confirmed guidance and decisions; human confirmations; completed results; unresolved issues; outstanding QC and scenarios; next action; test condition/cutoff. Preserve the exact substance and attribution of DO decisions. The outgoing human saves it and supplies actual source products to the next user. Retain the full transcript separately for reference, not as the default working input.
 
 On resumption, reconcile the handoff with loaded files, expose missing sources and conflicts, and confirm active/baseline roles if ambiguous. Summarized citations are not proof that a file was read in this conversation. A human confirmation remains a human confirmation, not independent model verification. Side conversations can generate proposals, but their recommendations do not become approved changes without reconciliation and human action. No automatic file writeback or chat synchronization.
 

@@ -1,6 +1,6 @@
 # v0.3 → v0.4 policy preservation crosswalk
 
-Sources: original v0.3 DOCX and starter kit, with hashes in [archive provenance](../../archive/v0.3/SOURCE_SHA256.txt); explicit decisions in [design-decisions.md](design-decisions.md). The archived [body-text extraction](../../archive/v0.3/system-v0.3-text.md) supports review. The original binaries were not changed.
+Sources: original v0.3 DOCX and starter kit; explicit decisions in [design-decisions.md](design-decisions.md). Source hashes and the text extraction remain available in [the original v0.4 PR](https://github.com/joe-cole1/fs-scheduling-assistant/pull/1). At the product authority’s request, historical copies are removed from the current repository tree; Git history retains them. Original uploaded binaries were not modified.
 
 The reusable [primer](system-primer.md) and [Pantons profile](../../local-profiles/pantons-v0.4.md) together preserve the operational contract. A generic adopting squadron must not treat the Pantons profile as universal policy.
 

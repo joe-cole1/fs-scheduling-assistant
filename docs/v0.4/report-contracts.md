@@ -1,6 +1,6 @@
 # Report contracts — v0.4
 
-Reports are advisory Markdown. Keep BRIEF decision-oriented and omit empty sections. DETAILED supplies the working analysis. A planning question should receive a direct answer with evidence and limitations, not a complete weekly report. Local scheduling rules come from the approved profile and references.
+Reports are advisory. Provide readable chat output and a Word document when supported; otherwise supply text the human can paste into Word. Markdown is optional, not an operator prerequisite. Keep BRIEF decision-oriented and omit empty sections. DETAILED supplies the working analysis. A planning question should receive a direct answer with evidence and limitations, not a complete weekly report. Local scheduling rules come from the approved profile and references.
 
 ## Common header
 
