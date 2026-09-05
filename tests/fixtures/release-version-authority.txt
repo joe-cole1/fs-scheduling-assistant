@@ -1,1 +1,0 @@
-Release tag is authoritative for GitHub release package version.
