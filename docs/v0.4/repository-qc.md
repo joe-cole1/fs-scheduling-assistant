@@ -2,7 +2,13 @@
 
 Reviewed 2026-09-05 against main commit `927790414e1b583d069baa4ad6280cebae8f928d` (merged Word-package PR #4). This change automates distribution of the existing v0.4.1 package. It does not revise scheduling behavior or establish operational readiness.
 
-## Checks performed
+## Workflow-definition correction
+
+Run [33952707099](https://github.com/joe-cole1/fs-scheduling-assistant/actions/runs/33952707099) failed before a job was created. Actionlint 1.7.7 reproduced two errors in the original job-level environment definitions: `runner.temp` is not available there. The earlier YAML/shell checks did not validate GitHub context availability.
+
+Moved temporary path initialization into a runner step using RUNNER_TEMP and GITHUB_ENV. Actionlint passes on both the corrected release workflow and the new PR validation workflow. The new validation job pins the linter archive checksum. The 13 release regression tests still pass. No package source or Word content changed; release execution/upload remains unverified until a corrected hosted run completes.
+
+## Checks performed before the correction
 
 - Confirmed the local starting files matched the current main tree. Confirmed v0.4.1 already existed as a published, mutable release with no attached assets; documented the manual backfill path.
 - Ran 13 release regression tests with synthetic data. Covered unsafe/mismatched tags, draft and immutable releases, tagged source versus unmerged source, wrong build versions, checksum/inventory mismatches, duplicate assets, partial-upload recovery, moved tags, preservation of human notes, generated PR notes and repeatable generated note sections. Publication calls were mocked; source ancestry used a real disposable local Git repository.
