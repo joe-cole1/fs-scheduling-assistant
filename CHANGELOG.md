@@ -5,11 +5,13 @@
 - Add a read-only hosted operator-package CI gate that validates persistent-state declarations, builds/checks all three ZIPs and runs package/release regression tests before package-affecting changes merge.
 - Register persistent installed artifacts and the reusable weekly-folder layout in an append-only migration declaration. Future persistent changes require a package-version bump plus explicit human migration instructions instead of silently diverging fresh and existing installs.
 - Expand Markdown-to-Word source coverage across START HERE, every numbered guide, every blank form/reference, both local-profile seeds, the startup primer and update/migration instructions; verify meaningful table row content and full copy/paste prompts.
+- Reconcile the current repository QC record with the successful hosted v0.4.1 asset/upload/release-note run while preserving the tagged v0.4.1 QC record as historical evidence.
+- Distinguish structured human release summaries from GitHub-generated change notes. The generated download block no longer implies human validation exists when the required summary headings are absent.
+- Add a tagged reproducibility contract for future releases: exact CPython 3.12.14, dependency-file hash, stored ZIP members, double-build byte comparison, and a frozen v0.4.1 legacy dependency path. Existing differing assets remain immutable by policy.
 
 ## Unreleased — release automation
 
 - Fixed GitHub rejection of runner-only contexts in job-level environment values. Initialize temporary paths inside a runner step and validate workflow definitions with actionlint on PRs.
-
 - Build and check all three ZIPs when a release is published; support manual backfill of an existing release. Build the tagged source and require a matching package version.
 - Store downloads as release assets and point README to the latest release; remove committed ZIPs and manifest. No repository archive folders or branch writeback.
 - Add categorized GitHub release notes, a human summary template, verified download links and checksums. Existing human notes are preserved; differing release assets cannot be silently replaced.

@@ -12,7 +12,7 @@ from docx import Document
 from build_packages import (
     ROOT, VERSION, GUIDES, FORMS, REFERENCES, PERSISTENT, WEEKLY_DIRS,
     MIGRATION_DOC, actionable_migrations, clean, persistent_migration_source,
-    update_instructions_source,
+    update_instructions_source, validate_reproducibility_contract,
 )
 from check_persistent_migrations import validate_current as validate_persistent
 
@@ -66,15 +66,9 @@ def source_coverage(source, actual):
         width=len(rows[0])
         for row_index,row in enumerate(rows):
             assert len(row)==width, ('Ragged source table',row)
-            # Two-column Markdown tables are deliberately rendered as definition
-            # lists, so generic source headers are omitted. Their data rows must
-            # survive. Wider record tables render and therefore verify headers.
             if width==2 and row_index==0:
                 continue
             for cell in row:
-                # Pure bracket placeholders are entry hints, not source facts. The
-                # converter may consolidate repeated blank fields. Headers, row
-                # labels and any fixed/meaningful cell text must still survive.
                 if re.fullmatch(r'\[[^]]+\]',cell.strip()):
                     continue
                 fragment=normalize(cell)
@@ -94,6 +88,7 @@ def _migration_reference_entries():
 
 def check(out):
     validate_persistent()
+    validate_reproducibility_contract()
     manifest=json.loads((out/'downloads/manifest.json').read_text())
     assert manifest['package_version']==VERSION
     contents={}
@@ -104,6 +99,7 @@ def check(out):
             assert z.testzip() is None
             assert z.namelist()==entry['files']
             assert len(set(z.namelist()))==len(z.namelist())
+            assert all(info.compress_type==zipfile.ZIP_STORED for info in z.infolist()), ('Outer ZIP compression drift',name)
             contents[name]={n:z.read(n) for n in z.namelist() if not n.endswith('/')}
         for n,data in contents[name].items():
             assert '..' not in PurePosixPath(n).parts and not n.startswith('/')
@@ -111,6 +107,7 @@ def check(out):
             with zipfile.ZipFile(BytesIO(data)) as z:
                 assert z.testzip() is None
                 assert not any('vbaProject' in x for x in z.namelist())
+                assert all(info.compress_type==zipfile.ZIP_STORED for info in z.infolist()), ('DOCX compression drift',n)
             d=Document(BytesIO(data));sec=d.sections[0]
             assert sec.page_width.twips==12240 and sec.page_height.twips==15840
             assert all(x.twips==1440 for x in (sec.left_margin,sec.right_margin,sec.top_margin,sec.bottom_margin))
@@ -175,7 +172,7 @@ def check(out):
         for name,data in samples.items():assert (install/name).read_bytes()==data
         for name in WEEKLY_DIRS:
             assert (install/'COPY THIS FOLDER FOR EACH NEW WEEK'/name).is_dir()
-    print('PASS: ZIP integrity; Word geometry; full source coverage; common System; local-policy isolation; persistent-state declaration; manual update preservation.')
+    print('PASS: ZIP integrity/stored format; Word geometry; full source coverage; common System; local-policy isolation; persistent-state declaration; manual update preservation.')
 
 
 if __name__=='__main__':check(Path(sys.argv[1]))

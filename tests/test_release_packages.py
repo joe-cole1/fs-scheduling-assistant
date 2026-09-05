@@ -27,7 +27,9 @@ class ReleaseTests(unittest.TestCase):
             manifest['packages'][name] = {'sha256': hashlib.sha256(data).hexdigest()}
         (self.folder / 'manifest.json').write_text(json.dumps(manifest))
         self.release = {'id': 7, 'tag_name': 'v0.4.1', 'draft': False, 'immutable': False, 'assets': [], 'body': 'Human notes.'}
-        self.state = {'repo': 'synthetic/example', 'id': 7, 'tag': 'v0.4.1', 'version': '0.4.1', 'source_sha': 'a' * 40, 'controller_sha': 'b' * 40}
+        self.state = {'repo': 'synthetic/example', 'id': 7, 'tag': 'v0.4.1', 'version': '0.4.1',
+                      'source_sha': 'a' * 40, 'controller_sha': 'b' * 40,
+                      'build_contract': {'legacy': True}}
 
     def test_tag_and_version(self):
         r.validate_release(self.release, 'v0.4.1', '0.4.1')
@@ -44,6 +46,38 @@ class ReleaseTests(unittest.TestCase):
     def test_prerelease_requires_matching_source_version(self):
         release = self.release | {'tag_name': 'v0.4.2-rc.1', 'prerelease': True}
         r.validate_release(release, 'v0.4.2-rc.1', '0.4.2-rc.1')
+
+    def test_reproducibility_contract(self):
+        requirements = b'package==1\n'
+        contract = r.SUPPORTED_REPRO | {'requirements_sha256': hashlib.sha256(requirements).hexdigest()}
+        self.assertEqual(r.validate_reproducibility_contract(contract, requirements), contract)
+        with self.assertRaises(ValueError):
+            r.validate_reproducibility_contract(contract | {'python_version': '3.12.15'}, requirements)
+        with self.assertRaises(ValueError):
+            r.validate_reproducibility_contract(contract | {'requirements_sha256': '0' * 64}, requirements)
+
+    def test_v041_is_only_missing-contract_legacy_exception(self):
+        legacy = r.tagged_build_contract('a' * 40, 'v0.4.1')
+        self.assertTrue(legacy['legacy'])
+        self.assertEqual(legacy['requirements_path'], r.LEGACY_REQUIREMENTS)
+        with patch.object(r, 'git_show_bytes', side_effect=subprocess.CalledProcessError(1, ['git','show'])):
+            with self.assertRaisesRegex(ValueError, 'Future release tags must contain'):
+                r.tagged_build_contract('a' * 40, 'v0.4.2')
+
+    def test_future_contract_is_loaded_from_exact_tagged_bytes(self):
+        requirements = b'package==1\n'
+        contract = r.SUPPORTED_REPRO | {'requirements_sha256': hashlib.sha256(requirements).hexdigest()}
+        def tagged_bytes(sha,path):
+            if path == 'packaging/requirements.txt':
+                return requirements
+            if path == 'packaging/reproducibility.json':
+                return json.dumps(contract).encode()
+            self.fail(path)
+        with patch.object(r, 'git_show_bytes', side_effect=tagged_bytes):
+            loaded = r.tagged_build_contract('c' * 40, 'v0.4.2')
+        self.assertFalse(loaded['legacy'])
+        self.assertEqual(loaded['contract'], contract)
+        self.assertEqual(loaded['requirements_path'], 'release-source/packaging/requirements.txt')
 
     def test_checksum_and_inventory(self):
         r.verify_build(self.folder, '0.4.1')
@@ -73,16 +107,28 @@ class ReleaseTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             r.asset_plan(release, self.folder, lambda n: (self.folder / n).read_bytes())
 
-    def test_notes_preserve_human_text_and_are_idempotent(self):
+    def test_structured_human_notes_are_preserved_and_recognized(self):
         r.verify_build(self.folder, '0.4.1')
-        human = '## Operator impact\n\nKeep this exact human decision.\n'
+        human = ('## What changed\n\nExact human summary.\n\n'
+                 '## What you need to do\n\nUse the update next week.\n\n'
+                 '## Validation and known limitations\n\nActual human validation record.\n')
         first = r.notes(human, self.state, self.folder)
         self.assertTrue(first.startswith(human))
         self.assertEqual(first, r.notes(first, self.state, self.folder))
+        self.assertTrue(r.has_structured_human_summary(first))
+        self.assertIn('human **Validation and known limitations** section above', first)
+        self.assertNotIn('No structured human release-validation summary', first)
         self.assertEqual(first.count(r.START), 1)
         self.assertIn('/releases/download/v0.4.1/Pantons_Setup.zip', first)
         self.assertIn(hashlib.sha256((self.folder / r.ZIPS[0]).read_bytes()).hexdigest(), first)
-        self.assertIn('does not establish visual review', first)
+
+    def test_unstructured_notes_are_preserved_but_not_called_validation(self):
+        human='## Changes\n\nGenerated-looking PR list.\n'
+        result=r.notes(human,self.state,self.folder)
+        self.assertTrue(result.startswith(human))
+        self.assertFalse(r.has_structured_human_summary(result))
+        self.assertIn('No structured human release-validation summary',result)
+        self.assertIn('GitHub-generated change notes are not validation evidence',result)
 
     def test_malformed_notes_fail_without_discarding_text(self):
         for body in (r.START + 'human', r.END + r.START, r.START * 2 + r.END):
@@ -129,6 +175,7 @@ class ReleaseTests(unittest.TestCase):
         self.assertEqual(uploads, list(r.FILES[1:]))
         self.assertEqual(len(edits), 1)
         self.assertTrue(edits[0]['body'].startswith('Human notes.'))
+        self.assertIn('No structured human release-validation summary', edits[0]['body'])
 
     def test_mismatch_or_moved_tag_makes_no_writes(self):
         for flags in ({'mismatch': True}, {'moved': True}):
@@ -156,15 +203,19 @@ class ReleaseTests(unittest.TestCase):
         event = Path(self.temp.name) / 'event.json'
         event.write_text('{}')
         state = Path(self.temp.name) / 'prepared.json'
+        output = Path(self.temp.name) / 'outputs'
         env = {'RELEASE_TAG': 'v0.4.1', 'GITHUB_REPOSITORY': 'synthetic/example',
                'GITHUB_EVENT_PATH': str(event), 'GITHUB_EVENT_NAME': 'workflow_dispatch',
-               'RELEASE_STATE': str(state), 'GITHUB_OUTPUT': str(Path(self.temp.name) / 'outputs')}
+               'RELEASE_STATE': str(state), 'GITHUB_OUTPUT': str(output)}
         original = Path.cwd()
         try:
             os.chdir(repo)
             with patch.dict(os.environ, env), patch.object(r, 'api', return_value=self.release):
                 r.prepare()
-            self.assertEqual(json.loads(state.read_text())['source_sha'], expected)
+            prepared=json.loads(state.read_text())
+            self.assertEqual(prepared['source_sha'], expected)
+            self.assertTrue(prepared['build_contract']['legacy'])
+            self.assertIn('requirements_path='+r.LEGACY_REQUIREMENTS, output.read_text())
             git('checkout', '-b', 'unmerged')
             (repo / 'packaging/version.txt').write_text('0.4.2\n')
             git('commit', '-am', 'Unmerged source')
@@ -177,7 +228,7 @@ class ReleaseTests(unittest.TestCase):
         finally:
             os.chdir(original)
 
-    def test_empty_notes_use_generated_pr_notes(self):
+    def test_empty_notes_use_generated_pr_notes_without_validation_claim(self):
         self.release['body'] = ''
         env, api, run, edits, uploads = self.publication_mocks()
         def with_generated(endpoint, method='GET', payload=None):
@@ -188,6 +239,8 @@ class ReleaseTests(unittest.TestCase):
         with patch.dict(os.environ, env), patch.object(r, 'api', side_effect=with_generated), patch.object(r, 'run', side_effect=run):
             r.publish()
         self.assertIn('Synthetic PR list and contributor credit.', edits[0]['body'])
+        self.assertIn('No structured human release-validation summary', edits[0]['body'])
+        self.assertIn('GitHub-generated change notes are not validation evidence', edits[0]['body'])
 
 
 if __name__ == '__main__':

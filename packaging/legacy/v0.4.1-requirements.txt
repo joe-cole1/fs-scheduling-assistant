@@ -1,0 +1,5 @@
+# Frozen compatibility dependencies for rebuilding the original v0.4.1 tag.
+# Keep unchanged; later releases use their own tagged packaging/requirements.txt.
+python-docx==1.2.0
+lxml==6.1.1
+typing_extensions==4.16.0

@@ -5,10 +5,10 @@ Operators use the root README's **latest release** links, download a named ZIP a
 ## Publish a release
 
 1. **Prepare the source change in a PR.** For a new package version, update `packaging/version.txt`, `packaging/update-note.md` and CHANGELOG.md. Use a deliberate version such as `0.4.2`; the release tag will be `v0.4.2`. Keep the short update note accurate, including any required action or known limitation. If a persistent installed artifact changes, also update `packaging/persistent-artifacts.json`, bump the package version, and append the required migration record instead of silently changing the seed or layout.
-2. **Review before publishing.** The PR runs **Validate operator packages**, which installs the pinned dependencies, validates persistent-state declarations, builds all three ZIPs, checks package integrity/source coverage and runs the regression suite. A green hosted gate does not replace visual review: render/review new or changed Word pages and record actual model/operational validation separately. Merge the reviewed source changes into the default branch. Do not commit generated ZIPs.
+2. **Review before publishing.** The PR runs **Validate operator packages**, which installs the pinned dependencies, validates persistent-state declarations, builds all three ZIPs twice, byte-compares them, checks package integrity/source coverage and runs the regression suite. A green hosted gate does not replace visual review: render/review new or changed Word pages and record actual model/operational validation separately. Merge the reviewed source changes into the default branch. Do not commit generated ZIPs.
 3. **On GitHub, open Releases → Draft a new release.** Create the matching tag on the reviewed default-branch commit. A tag identifies the source that will be built; do not move an old tag to new content.
-4. **Write the release notes.** Use [the short template](release-notes-template.md) for what changed, what users do and validation/limitations. Click **Generate release notes** to add merged PRs, contributor credits and the full comparison link. Review the result. `.github/release.yml` groups labeled PRs and includes unlabeled PRs under Other changes. Labels are optional; no label setup is required to publish.
-5. **Click Publish release.** For normal squadron distribution, publish a full release and mark it Latest. The **Build release downloads** workflow builds and checks all three ZIPs from that tag, uploads them plus a manifest/checksums, then adds verified download links to the notes. Your written notes are preserved. Publishing alone does not establish that the build succeeded.
+4. **Write the release notes.** Use [the short template](release-notes-template.md) and keep its exact **What changed**, **What you need to do**, and **Validation and known limitations** headings. Click **Generate release notes** to add merged PRs, contributor credits and the full comparison link below your human summary. Review the result. If those three headings are absent, the release workflow preserves the text but explicitly states that no structured human validation summary was present; generated PR notes are not treated as validation evidence.
+5. **Click Publish release.** For normal squadron distribution, publish a full release and mark it Latest. The **Build release downloads** workflow validates the tag/build contract, builds and checks all three ZIPs from that tag, uploads them plus a manifest/checksums, then adds verified download links to the notes. Your written notes are preserved. Publishing alone does not establish that the build succeeded.
 6. **Wait for the green workflow result.** Confirm the three named ZIPs appear under Assets and the README downloads work before distributing the release. The automatic **Source code** ZIP/tar.gz is not the operator kit. If the job fails, use the recovery directions below.
 
 The release is visible while the build runs, so its download links may briefly be unavailable. This is the explicitly chosen publish-then-build flow. A draft-build-then-publish flow would be necessary if assets must exist at the instant of publication or if immutable releases are enabled. Do not disable immutability or weaken repository controls to work around a failure. The workflow reports an immutable release with missing assets before attempting an upload.
@@ -17,24 +17,38 @@ Publication retains the repository's visibility; it does not make a private repo
 
 ## Fill an existing release or recover a failed build
 
-After this workflow has been merged into the default branch:
-
 1. Open **Actions → Build release downloads → Run workflow**.
-2. Use the default branch for the workflow. Enter the existing published tag, such as **v0.4.1**, and run it.
-3. Check the completed run and release Assets. This also fills the already-published v0.4.1 release, which predates the workflow. Merely merging the workflow will not replay its old publication event.
+2. Use the default branch for the workflow. Enter the existing published tag and run it.
+3. Check the completed run and release Assets.
 
 The selected tag must exist, be merged into the default branch, and match `packaging/version.txt` at that tag. Both full releases and prereleases can receive assets; GitHub's Latest links select full releases. No draft is published by the workflow. Editing a published release's notes does not rebuild it.
 
-A partial upload can be rerun: existing files are downloaded and compared, missing files are attached, and every expected file is checked again. Different existing bytes stop the run; the workflow does not replace them. For changed source or intentional changes to published content, prepare a new version. Repeated runs replace only the marked generated notes section, retaining the human-written text.
+A partial upload can be rerun: existing files are downloaded and compared, missing files are attached, and every expected file is checked again. Different existing bytes stop the run; the workflow does not replace them. For changed source or intentional changes to published content, prepare a new version. Repeated runs replace only the marked generated notes section, retaining all text outside it.
+
+### v0.4.1 legacy recovery
+
+`v0.4.1` predates the tagged reproducibility contract. Its successful hosted asset build used CPython `3.12.14`, the original DEFLATE-based tagged builder, and the dependency versions now frozen in `packaging/legacy/v0.4.1-requirements.txt`. The release controller recognizes **only** exact tag `v0.4.1` as this legacy exception. Existing differing assets are still never overwritten. If a future environment cannot reproduce a missing v0.4.1 asset byte-for-byte, recovery stops rather than mutating the release.
+
+Every later release must contain its own `packaging/requirements.txt` and `packaging/reproducibility.json`. The controller reads and validates those files from the **tagged source**, not current `main`, before building. Unsupported/missing future contracts fail explicitly.
 
 The workflow needs GitHub Actions enabled and its `GITHUB_TOKEN` allowed to write release contents. It requests only `contents: write`, has no branch writes and uses no personal token. Organization/repository restrictions remain in force. A failure leaves the logs available and does not falsely mark downloads as ready. Do not distribute a partial release.
+
+## Reproducible package format
+
+`packaging/reproducibility.json` defines package format 1. It pins:
+
+- CPython `3.12.14`;
+- the SHA-256 of the tagged `packaging/requirements.txt`;
+- stored ZIP members (`archive_mode: stored`) for generated DOCX containers and outer operator ZIPs.
+
+Stored members deliberately avoid dependency on a runner's zlib implementation. Generated document contents are still deterministic through fixed ordering and deterministic metadata. **Validate operator packages** builds twice in separate output directories and byte-compares all three ZIPs plus the manifest. A future package-format change requires an explicit controller/build update; do not silently reinterpret an old contract.
 
 ## Workflow validation
 
 Two read-only PR/main checks cover different risks:
 
 - **Validate GitHub workflows** runs checksum-pinned actionlint when workflow definitions change. It validates GitHub Actions expressions/context availability; plain YAML parsing is insufficient.
-- **Validate operator packages** runs for package-affecting sources. It validates persistent-state declarations, builds all operator downloads, checks package integrity and Markdown-to-Word source coverage, and runs the package/release unit tests. It does not publish anything.
+- **Validate operator packages** runs for package-affecting sources. It validates persistent-state declarations, builds all operator downloads twice under the exact package interpreter, byte-compares them, checks package integrity/ZIP format/Markdown-to-Word source coverage, and runs the package/release unit tests. It does not publish anything.
 
 Local maintainers can run `actionlint -shellcheck= -pyflakes= .github/workflows/*.yml` before pushing workflow changes. A green hosted package job verifies repository/build behavior, not native Word rendering, ChatGPT Mil instruction following or operational readiness.
 
@@ -54,18 +68,20 @@ Routine releases with no persistent change keep the current non-destructive upda
 ## Sources and local build
 
 - `guides/`: START HERE and numbered Word guide sources, including activation, phase and handoff prompts.
-- `version.txt`: the package version, checked against the release tag.
-- `update-note.md`: the current short change note embedded in UPDATE INSTRUCTIONS.docx. Update it for each deliberate package release.
+- `version.txt`: package version, checked against the release tag.
+- `update-note.md`: current short change note embedded in UPDATE INSTRUCTIONS.docx.
 - `persistent-artifacts.json`: persistent installed-state fingerprints, reusable weekly-folder layout and append-only migration history.
-- `requirements.txt`: exact packaging dependency versions; Python 3.12 is used in Actions.
+- `reproducibility.json`: tagged package-format/runtime/dependency-hash contract for releases after v0.4.1.
+- `requirements.txt`: exact current packaging dependency versions. Its bytes must match the hash recorded in `reproducibility.json`.
+- `legacy/v0.4.1-requirements.txt`: frozen dependency set used only by the v0.4.1 compatibility path.
 - `../docs/v0.4/system-primer.md`: text between the export markers becomes UPLOAD THIS TO START.docx.
 - `../templates/`: Word form sources. Wide tables become labeled records; repeated inventories become topic lists plus one reusable entry, retaining meaningful source labels/content.
 - `../local-profiles/`: approved local seed for a first Pantons installation; the generic kit receives the blank profile.
-- `../scripts/build_packages.py` and `check_packages.py`: deterministic generation plus package, source-coverage and update-preservation checks.
+- `../scripts/build_packages.py` and `check_packages.py`: deterministic generation plus package-format, source-coverage and update-preservation checks.
 - `../scripts/check_persistent_migrations.py`: persistent fingerprint and PR migration-declaration enforcement.
-- `../scripts/release_packages.py`: release identity/version checks, asset verification and release-note assembly. The workflow controller comes from the default branch; the actual document builder and inputs come from the released tag. Older v0.4.1 lacks a dependency file and uses the controller's pinned dependencies as an explicit compatibility fallback.
+- `../scripts/release_packages.py`: release identity/version/tagged-contract checks, asset verification and release-note assembly. The controller comes from the default branch; the actual document builder and inputs come from the released tag.
 
-From the repository root:
+From the repository root, use CPython 3.12.14:
 
 ```sh
 python -m pip install -r packaging/requirements.txt
@@ -75,7 +91,7 @@ python scripts/check_packages.py /path/to/temporary/package-output
 python -m unittest discover -s tests -v
 ```
 
-The temporary output has a `build` folder of DOCX documents and `downloads` with three ZIPs and a manifest. Render and inspect changed documents before release; the automated structural/content checks are not visual review. Keep generated files out of Git. The release workflow adds SHA256SUMS.txt and attaches all five files to the release. It does not generate Word content from GitHub's Source code ZIP or use previously committed ZIPs.
+The temporary output has a `build` folder of DOCX documents and `downloads` with three ZIPs and a manifest. Render and inspect changed documents before release; automated structural/content checks are not visual review. Keep generated files out of Git. The release workflow adds SHA256SUMS.txt and attaches all five files to the release. It does not generate Word content from GitHub's Source code ZIP or use previously committed ZIPs.
 
 Word design: compact_reference_guide, Letter/1-inch margins, Calibri 11pt, 1.25 spacing and real headings/numbering. No macros, scripts, external data connections or executables are packaged. Native Word/ChatGPT Mil behavior needs separate validation; build success is not proof of operational readiness.
 
