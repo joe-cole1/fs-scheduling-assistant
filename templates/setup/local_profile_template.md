@@ -1,6 +1,6 @@
 # Local scheduling profile — blank setup starter
 
-**DRAFT — no local rules are supplied by this template.** Use with the [first-time setup guide](../../docs/v0.4/first-time-setup.md). Populate from the adopting squadron's actual sources and human answers. Do not copy Pantons values or synthetic examples as defaults.
+**DRAFT — no local rules are supplied by this template.** Populate from the adopting squadron's actual sources and human answers. Do not copy Pantons values or synthetic examples as defaults.
 
 ## Document control
 
@@ -35,18 +35,19 @@ Use source references rather than rewriting a supplied publication. Split a topi
 | Forecast inputs and planned completion sources | [Unknown] | [scope] | [source] | [Missing] |
 | Backup roles and conditional/reflow opportunities | [Unknown] | [scope] | [source] | [Missing] |
 
-Separate **approved governing rule**, **human-confirmed fact**, **proposed rule** and **missing/unresolved**. Human confirmation of a fact can close the stated concern without documentary proof; it does not silently establish a new enduring rule or waive a requirement. Source dates and human role/time are captured when supplied, not fabricated.
+Separate **approved governing rule**, **human-confirmed fact**, **proposed rule** and **missing/unresolved**. Human confirmation of a fact can close the stated concern without documentary proof; it does not silently establish a new enduring rule or waive a requirement.
 
 ## Local responsibilities and workflow fit
 
-The v0.4 primer defines human-led authority, sell → corrections/QC → formal DO buy → publication, bounded daily sign-offs, and DO plus applicable-authority waiver routing. Identify the actual local roles and any conflict with those instructions. Do not use a blank field here to silently override the primer.
+The reusable primer defines human-led authority, **Thursday buy/sell as the formal DO buy event when explicitly approved**, post-buy/sell implementation/QC without a routine second buy, separate publication, bounded daily sign-offs, and DO plus applicable-authority waiver routing. Identify the actual local roles and any conflict with those instructions. Do not use a blank field here to silently override the primer.
 
 | Responsibility | Local contributor/authority | Current process or source | Conflict / unresolved decision |
 | --- | --- | --- | --- |
 | Product gathering and source updates | [role] | [value] | [value/None] |
 | Initial lineup creation | [scheduler role] | [value] | [value/None] |
-| Sell direction and formal DO buy | [authority] | [value] | [value/None] |
-| Source edits, correction review and publication | [human roles] | [value] | [value/None] |
+| Thursday buy/sell and formal DO buy | [authority] | [value] | [value/None] |
+| Post-buy/sell source edits and implementation QC | [human roles] | [value] | [value/None] |
+| Weekly publication | [human roles] | [value] | [value/None] |
 | Daily scheduler and Top 3 sign-off | [local roles] | [value] | [value/None] |
 | Changes beyond daily delegation | [DO process] | [value] | [value/None] |
 | Waiver handling | [applicable authority by requirement, plus DO routing] | [value] | [value/None] |
