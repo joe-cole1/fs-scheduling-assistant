@@ -8,7 +8,7 @@ For Pantons, **all scheduling inputs are due NLT COB Monday of the prior week. T
 
 For the normal scheduler workflow, select **Gemini 3.7 Flash** in GenAI.mil when available. Keep the main weekly scheduling conversation in Gemini through planning, build support, Thursday QC, sell support, corrections and execution reflows.
 
-The optional DO adversarial review uses a separate conversation and is covered in **04C Thursday — Optional DO adversarial review.docx**. It is not part of the main scheduler flow.
+The optional DO adversarial review uses a separate conversation and is covered in the **Thursday — Optional DO adversarial review** section of **04 Review the draft.docx**. It is not part of the main scheduler flow.
 
 If the named model is temporarily unavailable, the workflow and human authority boundaries still apply; record the displayed model/version rather than pretending Gemini was used.
 
@@ -41,7 +41,7 @@ Wait for my analysis request; answer planning questions when I ask them.
 Schedulers will create the initial lineup. Do not create it for us.
 ```
 
-Then follow **03 Tuesday — Ingest and plan.docx**. If this execution week is already underway and you are resuming its existing recorded state in a replacement chat, follow **08 Hand off to another user.docx** instead of declaring a fresh phase 1.
+Then follow **03 Gather products.docx**, whose first heading is **Tuesday — Ingest and plan**. If this execution week is already underway and you are resuming its existing recorded state in a replacement chat, follow **08 Hand off to another user.docx** instead of declaring a fresh phase 1.
 
 ## Two terms you will use
 
