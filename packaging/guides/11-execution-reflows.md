@@ -1,6 +1,6 @@
 # Execution week — Reflows
 
-Use this after the weekly schedule has been bought and published. Stay in the main Gemini scheduling conversation when practical; the published weekly schedule remains the cumulative baseline.
+Use this after the weekly schedule has been bought in Thursday's buy/sell and published. Stay in the main Gemini scheduling conversation when practical; the published weekly schedule remains the cumulative baseline.
 
 Upload:
 
@@ -9,7 +9,7 @@ Upload:
 - Actual results so far and changed personnel, maintenance, support or weather facts.
 - Relevant updated trackers, commitments and approval records.
 
-Use **07 Execution Update.docx** from **System → Blank Forms** if useful, or upload existing logs and describe only what changed.
+Use **07 Execution Update.docx** from System → Blank Forms if useful, or upload existing logs and describe only what changed.
 
 ```text
 Execution week — reflow. Phase 5 EXECUTION REFLOWS.
@@ -32,8 +32,8 @@ Identify daily scheduler/Top 3 sign-offs, DO decisions and waiver/coordination
 requirements. Keep proposals separate from approved daily schedules.
 ```
 
-Feasible personnel and mission changes within published times, turn pattern, coordinated support and DO guidance use daily scheduler and Top 3 sign-off. Changes outside those boundaries return to the DO. **Every waiver goes through the DO and the applicable waiver authority.** After humans sign a daily revision, tell Gemini its exact version so it can become that day's immediate baseline.
+Feasible personnel and mission changes within published times, turn pattern, coordinated support and DO guidance use daily scheduler and Top 3 sign-off. Changes outside those boundaries return to the DO. **Every waiver goes through the DO and the applicable waiver authority.** After humans sign a daily revision, tell Gemini its exact version so it becomes that day's immediate baseline.
 
-The optional DO adversarial review is not an automatic execution-reflow step. The DO may choose to use it separately for a particularly consequential reflow, but any accepted finding returns to Gemini only as human DO direction.
+The optional DO adversarial review is not an automatic reflow step. The DO may use it separately for a particularly consequential reflow; an accepted finding returns to Gemini only as human DO direction.
 
-**Save:** keep updated source schedule versions in **Schedules** and the report, current run control and cumulative decision record in **Working Record**.
+**Save:** updated schedule versions in **Schedules** and the report, run control and decision record in **Working Record**.
