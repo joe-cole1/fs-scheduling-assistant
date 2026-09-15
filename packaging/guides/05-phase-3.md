@@ -1,6 +1,6 @@
 # Thursday — Schedule sell
 
-Use this after **04B Thursday — Full QC.docx**. The DO may optionally run **04C Thursday — Optional DO adversarial review.docx** before the sell. That review is separate from the scheduler workflow and is not required.
+Use this after the **Thursday — Full QC** section of **04 Review the draft.docx**. The DO may optionally run the **Thursday — Optional DO adversarial review** section of that guide before the sell. That review is separate from the scheduler workflow and is not required.
 
 Stay in the main Gemini scheduling conversation for the sell package and decision capture.
 
@@ -33,6 +33,6 @@ from directed corrections. Schedulers will incorporate the changes.
 
 **You should get:** a concise decision brief and a list of DO-directed corrections. The optional adversarial review has no authority by itself; only the DO's accepted direction enters the main workflow.
 
-**Next:** schedulers apply the sell directions using **06 Post-sell — Correct QC buy and publish.docx**. Do not describe the sell meeting as formal approval of an uncorrected version.
+**Next:** schedulers apply the sell directions using **06 Correct QC buy and publish.docx**. Do not describe the sell meeting as formal approval of an uncorrected version.
 
 **Save:** keep updated source schedule versions in **Schedules** and the sell package, current run control and cumulative decision record in **Working Record**.
