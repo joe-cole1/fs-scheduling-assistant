@@ -35,7 +35,7 @@ The named weekdays are the normal Pantons rhythm. They do not automatically crea
 1. **Set up once.** Follow Instructions → 01 First time setup.docx. Keep local guidance outside the replaceable System folder.
 2. **Start each week.** Copy COPY THIS FOLDER FOR EACH NEW WEEK and rename the copy. Follow 02 Start a week.docx.
 3. **Upload and chat Tuesday.** Upload UPLOAD THIS TO START.docx, current local guidance and the available squadron products into GenAI.mil. Paste the short prompt in the guide.
-4. **Follow the day-labeled steps in Guide 04 and the remaining phase guides.** Tuesday planning, Wednesday build, Thursday full QC, optional DO adversarial review, sell, post-sell correction/buy/publication and execution reflows are separated explicitly.
+4. **Follow the day-labeled steps in Guides 03–07.** Tuesday planning, Wednesday build, Thursday full QC, optional DO adversarial review, sell, post-sell correction/buy/publication and execution reflows are separated explicitly.
 
 Use the trackers, calendars and schedules your squadron already maintains. Blank forms collect missing guidance and changes; they do not require retyping existing products. The assistant helps consolidate, answer questions and QC. **Schedulers build and edit the schedule; humans approve and publish it.**
 
