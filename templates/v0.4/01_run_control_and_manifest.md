@@ -7,8 +7,8 @@ Update the same weekly record; do not recreate unchanged source facts every sess
 | Field | Value |
 | --- | --- |
 | Execution week | [start date through end date under approved local counting week; Pantons: Sunday–Saturday] |
-| Active phase | [1 Product gathering / 2 Initial draft / 3 Sell / 4 Corrections-QC-approval-publication / 5 Execution reflows] |
-| Requested task | [planning question / full draft review / sell brief / correction QC / reflow / handoff] |
+| Active phase | [1 Product gathering / 2 Initial draft / 3 Schedule buy-sell / 4 Post-buy-sell implementation-QC-publication / 5 Execution reflows] |
+| Requested task | [planning question / build support / full QC / buy-sell brief / implementation QC / publication QC / reflow / handoff] |
 | Parallel or reopened work | [phase/task or None] |
 | As-of / timezone | [date time timezone] |
 | Requested by | [name/callsign/role as provided] |
@@ -27,13 +27,17 @@ Update the same weekly record; do not recreate unchanged source facts every sess
 
 | Role | Exact filename/version | State / confirming human statement |
 | --- | --- | --- |
-| Active schedule being analyzed | [value or None in phase 1] | [working / corrected / approved / published / daily / proposal] |
+| Active schedule being analyzed | [value or None in phase 1] | [working / implementation / published / daily / proposal] |
 | Initial-draft comparison baseline | [human-selected value or explicitly None] | [confirmation] |
-| Sell-presented schedule | [value or Not yet presented] | [presentation date] |
-| Latest corrected version | [value or N/A] | [QC status] |
-| Formally bought weekly schedule | [value or Not yet bought] | [DO decision ID/time] |
+| Thursday buy/sell-presented schedule | [value or Not yet presented] | [presentation date] |
+| DO buy/sell approval | [same presented version or Not bought] | [explicit DO statement / decision ID / time] |
+| Buy/sell directions forming approved baseline | [D-IDs or None] | [exact scope] |
+| Latest post-buy/sell implementation version | [value or N/A] | [QC status; faithful / blocked / material deviation] |
+| Supplemental DO decision(s), if required | [D-IDs or None] | [scope/time] |
 | Published weekly schedule | [value or Not yet published] | [publication confirmation/time] |
 | Weekly cumulative comparison baseline | [published version] | [explicit selection if republished] |
+
+The approved Thursday buy/sell baseline is the exact presented schedule plus recorded DO directions. A faithfully implemented corrected file does not require a routine second DO buy. A material deviation outside that scope returns to the DO before publication.
 
 | Affected execution date | Latest signed daily filename/version | Daily scheduler / Top 3 sign-off record | Immediate baseline used |
 | --- | --- | --- | --- |
@@ -78,4 +82,4 @@ Schedulers decide when drafting begins. Missing products do not prevent unaffect
 
 ## Request
 
-[Ask a bounded question now, or explicitly request the phase analysis when ready. Example: “Begin review of draft v2 using draft v1 as the baseline.”]
+[Ask a bounded question now, or explicitly request the current task. Example: “Begin full QC of draft v2 using draft v1 as the comparison baseline.”]
