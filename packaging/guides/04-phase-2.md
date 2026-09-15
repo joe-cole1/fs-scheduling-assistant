@@ -1,28 +1,48 @@
-# Review the draft
+# Wednesday — Build the schedule
 
-Use this after **02 Start a week.docx**. In a continuing chat, upload only new or revised inputs. If this execution week already has recorded state and you are moving it to a replacement chat or another user, follow **08 Hand off to another user.docx** first. A normal fresh chat for a brand-new execution week does not need a handoff.
+Use this after **03 Tuesday — Ingest and plan.docx**. Wednesday is the normal day for schedulers to get the bulk of the weekly schedule built using the Tuesday planning picture.
 
-**Usually Wednesday–Thursday.** Build the initial lineup yourself using the squadron's normal schedule. Upload:
+The schedulers own the lineup. Gemini supports the build with bounded questions, conflict checks and iterative analysis; it does not replace the human schedule build.
 
-- Your draft, with a clear filename/version and exact event/go times.
-- Any updated products from phase 1.
-- An earlier draft if you want a comparison. For the first draft, say there is no comparison baseline.
+Upload or identify:
+
+- The current working draft, with a clear filename/version and exact event/go times.
+- Any products updated since Tuesday.
+- The Tuesday planning report or the same conversation state.
+- An earlier draft if you want change comparison. For the first draft, say there is no comparison baseline.
+
+During the build, ask Gemini targeted questions such as:
+
+- Is this checkride placement feasible with the evaluator, aircraft, support and surrounding duty?
+- Which legal upgrade event best fits this open line?
+- What does moving this formation do to the rest of the week?
+- Are we missing a directed DV/senior-leader flyer?
+- Can this unused primary line be filled without displacing a higher priority?
+
+For a broad Wednesday review, paste:
 
 ```text
-Phase 2 — Initial draft. Begin review.
-Active schedule: [exact filename and version].
+Wednesday — schedule build support. Phase 2 INITIAL DRAFT.
+Primary scheduler workflow: Gemini.
+Active schedule: [exact filename/version].
 Comparison baseline: [exact earlier filename/version, or NONE — first draft].
 As of: [date/time/timezone].
-Use DETAILED output and CONFLICTS ONLY ingestion.
 
-Review the scheduler-built draft. Find hard conflicts, approval needs, upgrade
-risks, unused feasible primary lines and worthwhile training opportunities.
-Recommend exact changes and alternatives. Fully check every downstream effect
-of a cascade, including displaced training, before calling it feasible.
-Include the 30-day outlook and one moderate downside case for this week.
-Do not modify the schedule or imply that a recommendation is approved.
+Support the scheduler-built draft while we continue constructing it. Identify
+blocking hard conflicts, approval needs, obvious checkride/DV/upgrade placement
+problems, important missed training opportunities and major resource constraints.
+Recommend exact feasible changes where useful and trace the downstream effects
+of each proposed cascade. Do not modify the schedule or imply approval.
+
+Use Tuesday's priorities and planning state. Do not infer qualification or
+priority from rank/title alone. This is build support, not the deliberate
+Thursday full-schedule QC unless I explicitly request the full review now.
 ```
 
-**You should get:** ranked changes with evidence, feasibility checks, tradeoffs and decisions needed. Humans edit the source schedule. If you upload a revised draft, identify it as the new active version. **Move on when the humans choose the version to present at the sell.**
+**You should get:** actionable help that lets the schedulers continue building without turning every draft iteration into a complete QC cycle.
 
-**Save:** keep updated source schedule versions in **Schedules** and the report, current run control and cumulative decision record in **Working Record**. Ask the assistant for a Word file if supported, or paste its output into Word and save it yourself.
+By the end of Wednesday, the goal is a substantially complete working schedule ready for deliberate Thursday review. It does not need to be formally ready for sell yet.
+
+**Next:** follow **04B Thursday — Full QC.docx** for the full schedule review.
+
+**Save:** keep each meaningful draft version in **Schedules** and useful analysis/decisions in **Working Record**.
