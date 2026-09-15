@@ -4,6 +4,19 @@ The execution week is the week you will fly. The prior week is the week immediat
 
 For Pantons, **all scheduling inputs are due NLT COB Monday of the prior week. Tuesday is the normal GenAI.mil startup and planning day.** The named weekdays describe the normal battle rhythm; they do not invent approval or automatically advance the internal phase if the work is not actually complete.
 
+## Weekly sequence
+
+| When | What to do | Word guide |
+| --- | --- | --- |
+| Monday | All scheduling inputs due NLT COB | Human input deadline |
+| Tuesday | Upload, reconcile, ask questions, identify checkrides/DVs, plan upgrades | **03 Gather products.docx — Tuesday: Ingest and plan** |
+| Wednesday | Build the bulk of the schedule | **04 Review the draft.docx — Wednesday: Build the schedule** |
+| Thursday | Scheduler QC plus fresh full Gemini review | **04 Review the draft.docx — Thursday: Full QC** |
+| Thursday, optional | DO runs independent Terra/Grok challenge | **04 Review the draft.docx — Optional DO adversarial review** |
+| Thursday | Schedule sell and capture DO directions | **05 Schedule sell.docx** |
+| Thu–Fri | Apply directions, QC, formal buy and publication | **06 Correct QC buy and publish.docx** |
+| Execution week | Reflow from published/current daily baselines | **07 Execution reflows.docx** |
+
 ## Current model assignment
 
 For the normal scheduler workflow, select **Gemini 3.7 Flash** in GenAI.mil when available. Keep the main weekly scheduling conversation in Gemini through planning, build support, Thursday QC, sell support, corrections and execution reflows.
