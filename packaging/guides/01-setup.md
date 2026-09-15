@@ -10,7 +10,7 @@ Do this once. A scheduler or designated setup owner maintains the folder; the DO
 
 ## Start the setup conversation
 
-Open a new ChatGPT Mil chat. Upload **System → UPLOAD THIS TO START.docx**, **Local Guidance → Local Profile.docx**, **Stable References.docx**, and **Playbook.docx**, plus available governing source documents. Blank files are prompts for setup, not issued guidance.
+Open a new GenAI.mil chat. Upload **System → UPLOAD THIS TO START.docx**, **Local Guidance → Local Profile.docx**, **Stable References.docx**, and **Playbook.docx**, plus available governing source documents. Blank files are prompts for setup, not issued guidance.
 
 Paste this:
 
@@ -40,6 +40,8 @@ Ask for each completed product as a Word document if the chat supports file crea
 
 Only record approval after a human actually gives it. Missing local rules limit affected checks; they are not filled from general military knowledge. Temporary priorities and personnel restrictions belong in weekly inputs.
 
-## Try it, then start a week
+## Try it, then start the weekly rhythm
 
-Use **10 Check the setup.docx** for a short synthetic trial, including reading the startup upload. ChatGPT Mil DOCX ingestion and instruction-following have not yet been tested for this package. Record what works and any unreadable content. Then follow **02 Start a week.docx**.
+Use **14 Check the Setup.docx** for a short synthetic trial, including reading the startup upload. GenAI.mil DOCX ingestion and instruction-following require separate validation from package structure checks. Record what works and any unreadable content.
+
+For an actual scheduling week, follow **02 Monday - Inputs Due.docx** at the Monday input deadline. On Tuesday, use **03 Tuesday - Start the Week.docx** and then **04 Tuesday - Plan the Week.docx**.
