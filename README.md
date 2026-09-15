@@ -1,55 +1,58 @@
 # Fighter Squadron Scheduling Assistant
 
-Download a ZIP, extract it into your scheduling location, and open **START HERE.docx**. Everything a scheduler needs is in Word. You do not need to understand GitHub or code.
+Download a ZIP, extract it into your scheduling location, and open **START HERE.docx**. The operator workflow is Word-first; schedulers do not need GitHub access inside GenAI.mil.
 
 ## Download the latest release
 
 - **[Pantons setup ZIP](https://github.com/joe-cole1/fs-scheduling-assistant/releases/latest/download/Pantons_Setup.zip)** — approved Pantons local profile plus the complete kit.
 - **[First-time squadron setup ZIP](https://github.com/joe-cole1/fs-scheduling-assistant/releases/latest/download/First_Time_Squadron_Setup.zip)** — complete kit with a blank local profile and guided setup questions.
-- **[Update an existing setup](https://github.com/joe-cole1/fs-scheduling-assistant/releases/latest/download/Update_Existing_Setup.zip)** — use next week; follow UPDATE INSTRUCTIONS.docx. Keeps local guidance and weekly work in place.
+- **[Update an existing setup](https://github.com/joe-cole1/fs-scheduling-assistant/releases/latest/download/Update_Existing_Setup.zip)** — use at the next-week boundary; follow UPDATE INSTRUCTIONS.docx. It preserves Local Guidance and weekly work.
 
-You can also open the [latest release](https://github.com/joe-cole1/fs-scheduling-assistant/releases/latest) and choose a named ZIP under **Assets**. Use the named setup ZIPs; GitHub’s automatic **Source code** downloads do not contain the built Word kit.
+You can also open the [latest release](https://github.com/joe-cole1/fs-scheduling-assistant/releases/latest) and choose a named ZIP under **Assets**. GitHub's automatic Source code downloads do not contain the built Word kit.
 
-Right-click the downloaded ZIP and select **Extract All**. Open the extracted folder, then START HERE.docx. The repository is currently private; someone with access must download the ZIP and place it in your approved shared location. GenAI.mil itself needs no GitHub access.
+Right-click the downloaded ZIP, select **Extract All**, open the extracted folder, and open **START HERE.docx**. GenAI.mil itself needs no GitHub access. Immediately after a release is published, the ZIP assets may still be building; the maintainer should check **Actions → Build release downloads** before distributing it.
 
-Immediately after a release is published, its ZIPs may still be building. If downloads are missing, the maintainer should check **Actions → Build release downloads** before distributing it.
-
-Moving from the earlier Markdown kit? Use a full setup ZIP once and carry over your approved local guidance and weekly work. Subsequent updates replace only System and START HERE. Do not extract a full setup over your existing files.
+Moving from the earlier Markdown kit? Use a full setup ZIP once and carry over approved Local Guidance and weekly work. Subsequent updates replace only **System** and **START HERE.docx** unless an explicit persistent migration requires human review.
 
 ## Pantons weekly battle rhythm
 
-The operator guides are written around the actual weekly flow:
+The operator manual follows the actual workday instead of making schedulers navigate by internal phase name:
 
-1. **Monday — Inputs due.** All scheduling inputs are due NLT COB. Monday is a human deadline; the assistant does not assume the packet is complete just because the deadline passed.
-2. **Tuesday — Ingest and plan.** Schedulers upload the available products to the main GenAI.mil conversation using **Gemini 3.7 Flash** when available. First reconcile gaps/conflicts, identify checkrides/evaluations and directed DV/senior-leader flyers, and plan upgrade events/windows/resources.
-3. **Wednesday — Build.** Schedulers build the bulk of the weekly schedule. Gemini supports targeted planning questions, conflict checks and cascade analysis while humans construct the lineup.
-4. **Thursday — Full QC.** Schedulers perform QC and Gemini independently reviews the complete near-final schedule. The DO may then run a **separate optional adversarial review** using GPT-5.6 Terra or Grok Expert 4.5 before the sell.
-5. **Thursday — Sell.** Schedulers present the chosen version; the DO directs. Any accepted adversarial finding enters the main workflow only as human DO direction.
-6. **Post-sell — Correct, QC, buy and publish.** Schedulers implement directions, Gemini checks second/third-order effects, the DO formally buys the exact corrected version, and humans publish it.
-7. **Execution week — Reflow.** Gemini supports reflows from the published weekly baseline and current signed daily schedules while human approval boundaries remain in force.
+1. **Monday — Inputs due.** All scheduling inputs are due NLT COB. Use **02 Monday - Inputs Due.docx**.
+2. **Tuesday — Start the week.** Create the weekly folder/chat, upload startup/local/current products, and establish run controls with **03 Tuesday - Start the Week.docx**.
+3. **Tuesday — Plan the week.** Reconcile gaps/conflicts, identify checkrides/evaluations and directed DV/senior-leader flyers, and plan upgrades/resources with **04 Tuesday - Plan the Week.docx**.
+4. **Wednesday — Build.** Schedulers build the bulk of the weekly schedule while Gemini provides bounded support using **05 Wednesday - Build the Schedule.docx**.
+5. **Thursday — Full QC.** Human scheduler QC is followed by a fresh whole-schedule Gemini review using **06 Thursday - Full Schedule QC.docx**.
+6. **Thursday — Optional DO adversarial review.** The DO may independently challenge the schedule in a separate Terra or Grok conversation using **07 Thursday - DO Adversarial Review.docx**.
+7. **Thursday — Schedule buy/sell.** Schedulers present the selected version and the DO makes the scheduling decision using **08 Thursday - Schedule Buy-Sell.docx**. **This is the formal DO buy event when the DO explicitly approves the schedule.**
+8. **Thursday–Friday — Implement buy/sell directions.** Schedulers make the directed changes and Gemini verifies implementation/cascades using **09 Thursday-Friday - Apply Buy-Sell Changes.docx**. There is no routine second DO buy. A materially different solution outside the recorded direction returns to the DO.
+9. **Friday — Final QC and publish.** Verify faithful implementation, resolve any required supplemental DO decision, and publish using **10 Friday - Final QC and Publish.docx**. Publication is a separate human action.
+10. **Execution week — Reflows.** Analyze changes from the published weekly baseline and current signed daily schedules using **11 Execution Week - Reflows.docx**.
 
-The named weekdays are the normal Pantons rhythm. They do not automatically create phase advancement, approval, buy or publication.
+The five internal phases still follow actual work status. A calendar day does not automatically create phase advancement, approval or publication.
 
-## What you do
+## What the Thursday buy/sell approves
 
-1. **Set up once.** Follow Instructions → 01 First time setup.docx. Keep local guidance outside the replaceable System folder.
-2. **Start each week.** Copy COPY THIS FOLDER FOR EACH NEW WEEK and rename the copy. Follow 02 Start a week.docx.
-3. **Upload and chat Tuesday.** Upload UPLOAD THIS TO START.docx, current local guidance and the available squadron products into GenAI.mil. Paste the short prompt in the guide.
-4. **Follow the day-labeled steps in Guides 03–07.** Tuesday planning, Wednesday build, Thursday full QC, optional DO adversarial review, sell, post-sell correction/buy/publication and execution reflows are separated explicitly.
+The approved buy/sell baseline is the **exact presented schedule plus the explicit DO directions recorded during the Thursday meeting**. Post-buy/sell corrections are implementation of that decision, not a second approval cycle. Gemini checks whether the corrected file faithfully implements the directions and whether the changes create downstream conflicts.
 
-Use the trackers, calendars and schedules your squadron already maintains. Blank forms collect missing guidance and changes; they do not require retyping existing products. The assistant helps consolidate, answer questions and QC. **Schedulers build and edit the schedule; humans approve and publish it.**
+If implementing a direction is infeasible or requires a materially different solution, that specific issue goes back to the DO for a supplemental decision. Every waiver still goes through the DO and the applicable waiver authority. Publication is recorded separately from approval.
 
-Prefer one main Gemini conversation per execution week. The optional DO adversarial review is intentionally a separate conversation and never becomes an automatic second scheduler. A Word handoff plus the actual source files lets another user continue in a new chat. Shared-chat features, APIs, connectors and custom software are not required.
+## Other operator guides
 
-DOCX opening and package structure are checked separately from model behavior. **This package has not yet been operationally validated in GenAI.mil.** Guide 10 provides the first-use checks. Use only systems and locations authorized for your material; actual operational data stays outside this repository.
+- **12 Hand Off an Active Week.docx** — use only when an already-started week moves to another chat/user.
+- **13 Update for Next Week.docx** — replace the reusable System safely at a week boundary.
+- **14 Check the Setup.docx** — synthetic first-use checks and troubleshooting.
+
+Use the trackers, calendars and schedules the squadron already maintains. Blank forms capture missing guidance and changes; they do not require retyping supplied products. Schedulers build and edit the schedule; humans approve and publish it.
+
+Prefer one main Gemini conversation per execution week. The optional DO adversarial review is intentionally separate and never becomes an automatic second scheduler. A Word handoff plus the actual source files lets another user continue in a new chat. Shared-chat features, APIs, connectors and custom software are not required.
+
+DOCX/package structure checks are separate from model behavior. **Operational GenAI.mil behavior still requires the documented rehearsal/pilot validation.** Use only systems and locations authorized for the material; actual operational data stays outside this repository.
 
 ## For maintainers
 
-Read [AGENTS.md](AGENTS.md), [architecture](ARCHITECTURE.md) and [packaging instructions](packaging/README.md). Markdown is maintained source; the ZIPs are the operator product. Number deliberate package updates. Publishing a release builds and checks the ZIPs from its tagged source and attaches them to that release. Generated ZIPs are not stored in the repository file tree. See [how to publish](packaging/README.md#publish-a-release). Earlier versions remain in Git history and Releases, not archive folders.
+Read [AGENTS.md](AGENTS.md), [architecture](ARCHITECTURE.md), [approved design decisions](docs/v0.4/design-decisions.md), [the primer](docs/v0.4/system-primer.md), [validation plan](docs/v0.4/validation-plan.md), and [packaging instructions](packaging/README.md). Markdown is maintained source; release ZIPs are the operator product. Generated ZIPs are not stored in the repository tree.
 
-- [Approved decisions](docs/v0.4/design-decisions.md) and [policy preservation](docs/v0.4/policy-crosswalk.md)
-- [Primer source](docs/v0.4/system-primer.md) and [Pantons local rules](local-profiles/pantons-v0.4.md)
-- [Validation plan](docs/v0.4/validation-plan.md), [QC record](docs/v0.4/repository-qc.md) and [change log](CHANGELOG.md)
-- [Data handling](docs/data-handling.md): only releasable content and synthetic examples may be publicly distributed. Human release review is required; private visibility is not approval to store operational data.
+Publishing a release builds and checks the Word packages from its tagged source and attaches them to the release. Package updates are manual and normally adopted for the next scheduling week. Historical versions remain in Git history and Releases rather than archive folders.
 
 No open-source license has been selected. The owner decides licensing and public distribution.

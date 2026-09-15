@@ -3,12 +3,12 @@
   "artifacts": {
     "pantons_local_profile": {
       "source": "local-profiles/pantons-v0.4.md",
-      "git_blob_sha": "41ab1012ac8041dbde84e97984ea81ee443e0007",
+      "git_blob_sha": "56fce789f9238724ed8dbe4f3ea588db8fabfb0a",
       "migration_filename": "Pantons Local Profile - REFERENCE ONLY.docx"
     },
     "generic_local_profile": {
       "source": "templates/setup/local_profile_template.md",
-      "git_blob_sha": "b74d0b197842f216b61265ec303d942d2cf1ea16",
+      "git_blob_sha": "84a8902a5add2cf0e5dec91d54858391c4dda884",
       "migration_filename": "Blank Local Profile - REFERENCE ONLY.docx"
     },
     "stable_references_template": {
@@ -51,6 +51,23 @@
         "Merge the approved weekly battle rhythm and model-role section: Monday inputs due, Tuesday ingest/planning, Wednesday build, Thursday full Gemini QC, optional separate DO Terra/Grok review, then sell/post-sell/execution reflows.",
         "Preserve all locally approved scheduling rules and later human edits. Do not replace the entire current Local Profile automatically.",
         "Have the appropriate human authority confirm the merged Local Profile before using the new System package for a new scheduling week."
+      ]
+    },
+    {
+      "id": "PERSIST-002",
+      "introduced_in": "0.5.2",
+      "artifacts": [
+        "pantons_local_profile",
+        "generic_local_profile"
+      ],
+      "action": "review-and-merge",
+      "summary": "Workflow authority is corrected so the Thursday schedule buy/sell is the formal DO buy event, post-buy/sell work implements and QC's the recorded directions without a routine second buy, and publication remains a separate human action. The operator manual is also organized by day/step.",
+      "instructions": [
+        "Review the supplied reference-only Local Profile copy against the squadron's current Local Guidance/Local Profile.docx.",
+        "Merge the workflow-authority change: Thursday buy/sell is the formal DO buy when explicitly approved; the presented schedule plus recorded DO directions is the approved baseline; faithful implementation does not require a routine second buy; material deviations return to the DO; publication is separate.",
+        "For Pantons, also align the weekly battle-rhythm wording to the day-based manual: Monday inputs, Tuesday start and planning, Wednesday build, Thursday QC/optional adversarial review/buy-sell, Friday publication, then execution reflows.",
+        "Preserve all squadron-specific scheduling rules, later human edits, approvals and local references. Do not replace the entire current Local Profile automatically.",
+        "Have the appropriate human authority confirm the merged Local Profile before using package 0.5.2 for a new scheduling week."
       ]
     }
   ]

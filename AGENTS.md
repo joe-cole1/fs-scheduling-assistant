@@ -1,79 +1,77 @@
 # Repository instructions for AI contributors
 
-These instructions apply throughout `fs-scheduling-assistant`. Read this file at the start of work and check for any more-specific `AGENTS.md` in the directories you change. This is repository-development guidance; operational users load the system primer and approved local profile in ChatGPT Mil. Do not assume a new chat automatically has this repository, prior chats, or uploaded source files.
+These instructions apply throughout `fs-scheduling-assistant`. Read this file at the start of work and check for any more-specific `AGENTS.md` in directories you change. This is repository-development guidance; operational users load the system primer and approved local profile in GenAI.mil. Do not assume a new chat automatically has this repository, prior chats, or uploaded source files.
 
 ## Purpose and working relationship
 
-This is a Word-facing, human-led fighter-squadron scheduling analysis package. The squadron DO is the product authority. Act as a planning, design, implementation and quality-control partner. The first operational workflow must work through document uploads and conversation in ChatGPT Mil, without APIs, custom software, connectors, autonomous agents, shared chats or any particular model as prerequisites.
+This is a Word-facing, human-led fighter-squadron scheduling analysis package. The squadron DO is the product authority. Act as a planning, design, implementation and QC partner. The first operational workflow must work through document uploads and conversation in GenAI.mil without APIs, custom software, connectors, autonomous agents, shared chats or any particular model as prerequisites.
 
-- For an unresolved substantive product/policy decision, explain why it matters, recommend an answer with relevant tradeoffs, ask exactly one question in ordinary chat, and wait.
-- Once the user approves a design or requests implementation, carry out the authorized work. Resolve routine formatting and implementation details yourself; do not ask for repeated permission.
-- Preserve approved decisions. Do not reopen scheduling policy without a specific conflict or new evidence. Clearly distinguish approved rules, proposals, examples and unknowns.
-- Do not import model preferences, delegation arrangements or workflows from unrelated repositories. Do not introduce subagents unless the user explicitly requests them.
+- For an unresolved substantive product/policy decision, explain why it matters, recommend an answer with relevant tradeoffs, ask exactly one question, and wait.
+- Once the user approves a design or requests implementation, carry out the authorized work. Resolve routine implementation details without repeated permission.
+- Preserve approved decisions. Do not reopen scheduling policy without a specific conflict or new evidence. Distinguish approved rules, proposals, examples and unknowns.
+- Do not import model preferences or delegation arrangements from unrelated repositories.
 
-## Start every task from the actual repository state
+## Start from the actual repository state
 
-1. Read [README.md](README.md), [ARCHITECTURE.md](ARCHITECTURE.md), [the approved design decisions](docs/v0.4/design-decisions.md), [the policy crosswalk](docs/v0.4/policy-crosswalk.md) and [data handling](docs/data-handling.md).
-2. For behavior changes, read the affected sections of [the primer](docs/v0.4/system-primer.md), [Pantons local profile](local-profiles/pantons-v0.4.md), [phase guide](docs/v0.4/phase-guide.md), and relevant templates, reports and examples before editing.
-3. Check the current branch, working changes, remote state and relevant PR status. Do not assume a PR from a previous chat is still open or that its branch is the current baseline. Preserve unrelated user edits.
-4. Identify the requested outcome and affected documents. Use the narrowest change that fully satisfies the request. Read historical sources when exact policy wording matters; do not reconstruct them from memory.
-
-These links describe the v0.4 layout. If a later release changes the layout, follow its documented migration and update these instructions rather than guessing at missing files. Report unreadable or unavailable required sources and continue unaffected work.
+1. Read [README.md](README.md), [ARCHITECTURE.md](ARCHITECTURE.md), [approved design decisions](docs/v0.4/design-decisions.md), [policy crosswalk](docs/v0.4/policy-crosswalk.md) and [data handling](docs/data-handling.md).
+2. For behavior changes, read the affected sections of [the primer](docs/v0.4/system-primer.md), [Pantons local profile](local-profiles/pantons-v0.4.md), [phase reference](docs/v0.4/phase-guide.md), and relevant templates/reports/examples before editing.
+3. Check branch, remote state and relevant PR status. Preserve unrelated user edits.
+4. Use the narrowest change that fully satisfies the request. Read historical sources when exact policy wording matters; do not reconstruct them from memory.
 
 ## Authority and policy preservation
 
-This file is a maintenance guardrail, not a second source of scheduling policy. Exact scheduling rules belong in the approved local profile and references; explicit approved workflow changes are recorded in the design decisions. Historical material and synthetic examples cannot override them. A newly requested policy change is a proposal until the DO explicitly approves it; record approved changes and their scope rather than silently changing the baseline.
+This file is a maintenance guardrail, not a second source of scheduling policy. Exact scheduling rules belong in the approved local profile and references; approved workflow changes are recorded in design decisions.
 
-Preserve these essential contracts across every edit:
+Preserve these contracts:
 
-- **Humans schedule and approve.** Schedulers create the initial lineup. The assistant consolidates inputs, answers planning questions, reviews drafts, recommends exact changes and performs QC. It never autonomously modifies operational source files, coordinates, publishes, grants waivers or promotes playbook lessons. This restriction does not prohibit authorized edits to this repository's reusable documents and forms.
-- **Five phases, selected by work status:** product gathering; initial draft; sell; corrections/final QC/approval/publication; execution reflows. Weekdays do not automatically change phase. Legacy modes remain behavior/migration references, not a second required operational control.
-- **Sell is not buy.** Sell directions → scheduler corrections → assistant QC of mistakes and second/third-order effects → formal DO buy of the exact corrected version → human publication. FINAL QC limits begin after sell directions are established.
-- **Human confirmation closes the stated concern.** Do not demand another upload or documentary proof when a human explicitly says an identified issue is okay. Record it as human-confirmed, not independently verified, and do not broaden its scope.
-- **Every waiver goes through the DO and the applicable waiver authority.** Generic confirmation, formal buy and publication do not silently grant waivers.
+- **Humans schedule and approve.** Schedulers create the initial lineup. The assistant consolidates inputs, answers planning questions, reviews drafts, recommends changes and performs QC. It never autonomously modifies operational source files, coordinates, publishes, grants waivers or promotes playbook lessons.
+- **Five internal phases, selected by work status:** product gathering; initial draft; schedule buy/sell; post-buy/sell implementation/final QC/publication; execution reflows. The operator manual is day-based, but weekdays do not automatically change phase.
+- **Thursday buy/sell is the formal DO buy.** Only an explicit DO approval creates the buy. The approved baseline is the exact presented schedule plus recorded DO directions. Schedulers then implement those directions and the assistant verifies implementation and downstream effects. There is **no routine second DO buy**. If implementation requires a materially different solution outside the recorded direction, return that specific issue to the DO for a supplemental decision. Publication remains a separate human action.
+- **Human confirmation closes the stated concern.** Record it as human-confirmed, not independently verified, without demanding another upload or proof. Do not broaden its scope.
+- **Every waiver goes through the DO and the applicable waiver authority.** Generic confirmation, buy/sell approval and publication do not silently grant waivers.
 - **Daily authority stays bounded.** Feasible personnel/mission changes within published times, turn pattern, coordinated support and explicit DO guidance use daily scheduler and Top 3 sign-off. Changes outside those boundaries return to the DO.
-- **Version roles stay explicit.** Execution immediate comparison uses each affected day's latest signed daily schedule, falling back to the published weekly schedule. Cumulative comparison uses the identified published weekly schedule. Preserve bought/published identities and explain differences. Never silently select among competing versions or adopt an unsigned proposal as a signed baseline.
-- **Keep original scheduling safeguards.** Preserve conservative availability, qualification verification, protected spares, event accounting, applicable same-day rules, complete cascade checks, phase-appropriate churn, the 30-day outlook and weekly moderate downside analysis. Never invent crew-rest, duty, weather, syllabus, qualification or future-capacity limits. Read the profile for exact rules rather than substituting a summary from this file.
+- **Version roles stay explicit.** Preserve the Thursday presented version and buy/sell decision record; reconcile the final published version to that approved baseline. Execution immediate comparison uses each affected day's latest signed daily schedule, falling back to published weekly; cumulative comparison uses the published weekly schedule.
+- **Keep original scheduling safeguards.** Preserve conservative availability, qualification verification, protected spares, event accounting, applicable same-day rules, complete cascade checks, phase-appropriate churn, 30-day outlook and weekly moderate downside analysis. Never invent crew-rest, duty, weather, syllabus, qualification or future-capacity limits.
 - **Facts remain traceable.** Maintain normalized facts and source locations; distinguish facts, interpretations and recommendations. Missing products limit affected checks, not all planning. Schedulers decide when drafting starts.
-- **Actuals and blind tests are different.** Live execution results and historical actuals knowable by the declared cutoff are legitimate. Disallowed hindsight during a historical blind test requires a clean restart in an isolated context, including clean handoffs/transcripts. Never quarantine-and-continue after exposure.
-- **Playbook governance persists.** Preserve stable candidate IDs and Pending/Approved/Rejected history. No automatic lesson promotion, weekly-to-standing conversion or revival of rejected lessons without materially new evidence.
+- **Actuals and blind tests are different.** Live execution results and historical actuals knowable by the declared cutoff are legitimate. Disallowed hindsight in a blind test requires a clean isolated restart.
+- **Playbook governance persists.** Preserve stable candidate IDs and Pending/Approved/Rejected history. No automatic lesson promotion.
 
-Do not keep historical archives in the current repository tree or download packages. Use Git history and prior PRs for provenance. This is an explicit product-authority packaging decision; do not recreate the removed archive. Preserve external original source files.
+Do not keep historical archives in the current repository tree or download packages. Use Git history, prior PRs and Releases for provenance. Preserve external original source files.
 
 ## Write for a pilot new to scheduling
 
-The README is the download entry point; START HERE.docx and numbered Word guides are the operator instructions. Assume the reader understands flying but has never built the schedule or used this package.
+The README is the download entry point; START HERE.docx and numbered Word guides are the operator instructions. The manual is chronological by day/step so a scheduler can open the document for the task being performed.
 
-- For each phase, state what to do, which existing products to upload, what may be missing, the exact prompt to paste, what output to expect and when to move on.
-- Keep copy/paste prompts executable after replacing clearly marked placeholders. Define terms such as active schedule, baseline, sell and buy in plain language.
-- Keep setup, human approval/publication statements, reflow and handoff/resume instructions consistent with the primer. Never make example approvals look like decisions already made.
-- Use standard squadron products as inputs. Forms capture missing guidance, changes and recommendations; do not require users to transcribe information already supplied elsewhere.
-- Personnel forms capture actionable effects, exact effective times and mandatory/recommended status without unnecessary personal explanations.
-- Keep reusable workflow separate from Pantons-specific policy. Another squadron must be able to identify which local rules it must supply or approve.
-- Preserve concise Word-compatible handoffs plus actual source products. Full transcripts are optional reference. Do not assume native export, shared multiuser chat, cross-chat memory or access to another user's uploads. Verify current platform features only when they materially affect the task.
+- Maintain separate Word guides for Monday inputs, Tuesday start, Tuesday planning, Wednesday build, Thursday full QC, optional DO adversarial review, Thursday buy/sell, post-buy/sell implementation, Friday final QC/publication, execution reflows, active-week handoff, updates and setup check.
+- State what to do, which existing products to upload, what may be missing, the exact prompt to paste, expected output and next step.
+- Keep copy/paste prompts executable after replacing marked placeholders. Define terms such as active schedule, comparison baseline, buy/sell baseline and publication in plain language.
+- Keep setup, buy/sell authority, implementation/QC, publication, reflow and handoff instructions consistent with the primer.
+- Use standard squadron products as inputs. Forms capture missing guidance/changes; do not require users to transcribe information already supplied elsewhere.
+- Keep reusable workflow separate from Pantons-specific policy.
+- Preserve concise Word-compatible handoffs plus actual source products. Do not assume native export, shared multiuser chat, cross-chat memory or access to another user's uploads.
 
 ## Repository and GitHub practices
 
-- Prefer the existing authenticated GitHub connection. Local git is fine when available and authorized. Inspect tool results; never invent a successful commit, push, PR or merge. If local git authentication is unavailable, use supported connector actions rather than seeking credentials in unrelated files.
-- Work on a scoped branch from the current base, or continue the appropriate open task branch. Prepare a reviewable PR for repository changes. Do not merge, change repository visibility or make a public release without user authorization. Existing authorization in the current conversation still applies.
+- Prefer the existing authenticated GitHub connection. Inspect tool results; never invent a successful commit, push, PR or merge.
+- Work on a scoped branch and prepare a reviewable PR. Do not merge, change visibility or make a public release without user authorization.
 - Inspect the diff before sending changes. Do not force-push, delete unrelated files, rewrite history or alter repository settings as incidental cleanup.
-- Keep real operational products, personnel data, generated operational reports and real handoffs outside the repository, even while it is private. Examples must be unmistakably synthetic. An ignored directory is not an access control or release approval.
-- Do not add dependencies, automation, model-specific infrastructure or generated binary exports solely to make this documentation repository appear more complete. Create additional formats when requested or needed for the deliverable.
+- Keep real operational products, personnel data, generated operational reports and real handoffs outside the repository. Examples must be unmistakably synthetic.
+- Do not add dependencies, automation or generated binaries merely to make documentation appear more complete.
 
 ## Validate proportionately and report honestly
 
-For each change, inspect the affected contracts across operator guide prompts, primer, local profile, forms, report instructions and examples. When behavior changes, update the relevant design record, crosswalk, change log and validation cases. Routine editorial changes do not require rewriting all of them.
+For behavior changes, inspect the affected contracts across operator guide prompts, primer, local profile, forms, report instructions and examples. Update the relevant design record, crosswalk, change log and validation cases. Routine editorial changes do not require rewriting everything.
 
-Check relative links, anchors, table structure, fenced prompts, filenames, version labels and synthetic-example labeling where affected. Check baseline hashes if baseline preservation is relevant. For changes sent through connector APIs, verify the resulting remote files or blob hashes against the reviewed contents. Use `rg` for file/text searches when available.
+Check links, table structure, fenced prompts, filenames, version labels and synthetic-example labeling. Persistent installed-state changes require a package-version bump and append-only migration declaration. Verify remote file/blob hashes after connector writes where relevant.
 
-Use [the validation plan](docs/v0.4/validation-plan.md) for meaningful behavior checks. Do not add tests that merely mirror prose or perform broad repeated testing without a concrete risk. Distinguish static document review from actual model runs, historical adjudication and operational validation. Cases not run stay **Not run**. Never carry an old QC result forward as proof of checks on newly changed content.
+Use [the validation plan](docs/v0.4/validation-plan.md) for meaningful behavior checks. Distinguish static document/package checks from actual model runs, historical adjudication and operational validation. Cases not run stay **Not run**.
 
-PR descriptions and final responses should explain what changed, why, what was checked, and material limitations. Link the PR or relevant file. Do not claim ChatGPT Mil access, model reliability, operational readiness or public releasability without the corresponding evidence and human decisions.
+PR descriptions and final responses should explain what changed, why, what was checked and material limitations. Do not claim operational readiness or model reliability without evidence and human decisions.
 
 ## Word packages and updates
 
-Maintain guide sources in packaging/guides and generate current ZIPs with scripts/build_packages.py. Read packaging/README.md before changing the build. Keep generated ZIPs and manifests out of the repository tree. GitHub Releases hold the full packages and update; README points to the latest published release. No archive folders. Do not hand-edit generated ZIP contents. Rebuild, structurally check and render changed Word documents before publishing packages.
+Maintain guide sources in `packaging/guides` and generate release ZIPs with `scripts/build_packages.py`. Read `packaging/README.md` before changing the build. Keep generated ZIPs/manifests out of the repository tree. GitHub Releases hold the full packages/update; README points to the latest published release. Do not hand-edit generated ZIP contents.
 
-Updates replace System and START HERE only and are adopted next week. Never include Local Guidance or weekly work in an update. Do not turn routine repo edits into an automatic operational update. Preserve upload startup, exact filenames and short prompts. Actual ChatGPT Mil ingestion and instruction-following require separate testing; do not claim they passed from document QC alone.
+Updates replace **System** and **START HERE** only and are normally adopted next week. Never overwrite Local Guidance or weekly work automatically. If persistent local seeds change, append a migration record and provide reference-only copies for human review/merge. Actual GenAI.mil behavior requires separate testing.
 
-The authorized release workflow builds from the exact published tag and attaches checked assets. Preserve human release notes and use the release-notes template/configuration. Match the tag to packaging/version.txt; never move a published tag or overwrite differing release assets. Keep action/dependency versions pinned, permissions limited and event inputs out of shell code. Publishing triggers the build; it does not install anything on a squadron drive. Re-runs may fill missing assets after verifying existing bytes. Do not claim hosted workflow success from local tests.
+The authorized release workflow builds from the exact published tag and attaches checked assets. Preserve human release notes. Match the tag to `packaging/version.txt`; never move a published tag or overwrite differing release assets. Publishing triggers the build; it does not install anything on a squadron drive.
