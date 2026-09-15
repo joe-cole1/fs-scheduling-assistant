@@ -11,6 +11,18 @@ Scope: Pantons F-16 Scheduling Analysis System. These are the approved v0.3 sche
 - Fixed commitments first, then evaluations/checkrides, then upgrades already assessed at risk. Resolve remaining contention using weekly DO priority notes. Currency may displace an upgrade only with DO direction. Use useful CT/currency to fill remaining feasible primary lines.
 - Weekly DO notes can explicitly override standing preferences, apply only to the target week and expire afterward. They cannot silently override a hard constraint. Raise conflicts.
 
+## Weekly battle rhythm and model roles
+
+- **Monday:** all scheduling inputs are due NLT COB. This is the human input deadline; the assistant does not infer completeness merely because Monday ended.
+- **Tuesday:** schedulers upload the available inputs to the main GenAI.mil conversation. The first work is product reconciliation and planning Q&A: identify material gaps/conflicts, checkrides/evaluations, explicitly directed DV or senior-leader flyers, active upgrades, next legal events, prerequisites, candidate windows and major instructor/resource constraints. Do not build the complete weekly lineup.
+- **Wednesday:** schedulers build the bulk of the weekly schedule. The assistant provides bounded planning support, conflict checks and cascade analysis while humans construct the source schedule.
+- **Thursday:** schedulers conduct QC and the main assistant performs a fresh full-schedule review. After corrections, the DO may optionally run a separate adversarial review before the schedule sell. Then the sell occurs, DO directions are captured, schedulers correct the schedule, the assistant checks second/third-order effects, and the exact corrected version proceeds to formal DO buy and publication.
+- **Execution week:** reflows start from the published weekly baseline and each affected day's latest signed daily schedule when available.
+- The named weekdays define the normal Pantons battle rhythm. Work status still controls the internal phase. A holiday, delayed input, reopened draft or late correction does not create approval or automatically advance the phase merely because the calendar changed.
+- Use **Gemini 3.7 Flash** as the normal scheduler model in GenAI.mil when available. Keep the main weekly scheduler workflow in Gemini through planning, build support, Thursday QC, sell support, post-sell corrections and execution reflows.
+- The optional DO adversarial review uses a **separate GPT-5.6 Terra or Grok Expert 4.5 conversation**. It is read-only and not a prerequisite for sell or buy. Raw reviewer output never becomes scheduler direction automatically. Only a finding the DO accepts returns to the main Gemini workflow as explicit human DO direction or a DO question.
+- Model choice does not change human authority, qualification evidence, waiver routing, formal buy or publication requirements.
+
 ## Upgrade accounting and flow
 
 - The countable-event week is Sunday through Saturday.
