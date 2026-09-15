@@ -10,24 +10,38 @@ Download a ZIP, extract it into your scheduling location, and open **START HERE.
 
 You can also open the [latest release](https://github.com/joe-cole1/fs-scheduling-assistant/releases/latest) and choose a named ZIP under **Assets**. Use the named setup ZIPs; GitHub’s automatic **Source code** downloads do not contain the built Word kit.
 
-Right-click the downloaded ZIP and select **Extract All**. Open the extracted folder, then START HERE.docx. The repository is currently private; someone with access must download the ZIP and place it in your approved shared location. ChatGPT Mil itself needs no GitHub access.
+Right-click the downloaded ZIP and select **Extract All**. Open the extracted folder, then START HERE.docx. The repository is currently private; someone with access must download the ZIP and place it in your approved shared location. GenAI.mil itself needs no GitHub access.
 
 Immediately after a release is published, its ZIPs may still be building. If downloads are missing, the maintainer should check **Actions → Build release downloads** before distributing it.
 
-Moving from the earlier Markdown kit? Use a full setup ZIP once and carry over your approved local guidance and weekly work. Subsequent updates replace only the System folder and START HERE. Do not extract a full setup over your existing files.
+Moving from the earlier Markdown kit? Use a full setup ZIP once and carry over your approved local guidance and weekly work. Subsequent updates replace only System and START HERE. Do not extract a full setup over your existing files.
+
+## Pantons weekly battle rhythm
+
+The operator guides are written around the actual weekly flow:
+
+1. **Monday — Inputs due.** All scheduling inputs are due NLT COB. Monday is a human deadline; the assistant does not assume the packet is complete just because the deadline passed.
+2. **Tuesday — Ingest and plan.** Schedulers upload the available products to the main GenAI.mil conversation using **Gemini 3.7 Flash** when available. First reconcile gaps/conflicts, identify checkrides/evaluations and directed DV/senior-leader flyers, and plan upgrade events/windows/resources.
+3. **Wednesday — Build.** Schedulers build the bulk of the weekly schedule. Gemini supports targeted planning questions, conflict checks and cascade analysis while humans construct the lineup.
+4. **Thursday — Full QC.** Schedulers perform QC and Gemini independently reviews the complete near-final schedule. The DO may then run a **separate optional adversarial review** using GPT-5.6 Terra or Grok Expert 4.5 before the sell.
+5. **Thursday — Sell.** Schedulers present the chosen version; the DO directs. Any accepted adversarial finding enters the main workflow only as human DO direction.
+6. **Post-sell — Correct, QC, buy and publish.** Schedulers implement directions, Gemini checks second/third-order effects, the DO formally buys the exact corrected version, and humans publish it.
+7. **Execution week — Reflow.** Gemini supports reflows from the published weekly baseline and current signed daily schedules while human approval boundaries remain in force.
+
+The named weekdays are the normal Pantons rhythm. They do not automatically create phase advancement, approval, buy or publication.
 
 ## What you do
 
 1. **Set up once.** Follow Instructions → 01 First time setup.docx. Keep local guidance outside the replaceable System folder.
 2. **Start each week.** Copy COPY THIS FOLDER FOR EACH NEW WEEK and rename the copy. Follow 02 Start a week.docx.
-3. **Upload and chat.** Upload UPLOAD THIS TO START.docx, current local guidance and the available squadron products into ChatGPT Mil. Paste the short prompt in the guide.
-4. **Follow your phase.** Separate Word guides walk through gathering products, reviewing your draft, selling the schedule, corrections/QC/buy/publication, and execution reflows. Each includes expected inputs and copy/paste prompts.
+3. **Upload and chat Tuesday.** Upload UPLOAD THIS TO START.docx, current local guidance and the available squadron products into GenAI.mil. Paste the short prompt in the guide.
+4. **Follow the day-labeled steps in Guide 04 and the remaining phase guides.** Tuesday planning, Wednesday build, Thursday full QC, optional DO adversarial review, sell, post-sell correction/buy/publication and execution reflows are separated explicitly.
 
 Use the trackers, calendars and schedules your squadron already maintains. Blank forms collect missing guidance and changes; they do not require retyping existing products. The assistant helps consolidate, answer questions and QC. **Schedulers build and edit the schedule; humans approve and publish it.**
 
-One chat per execution week is convenient. A Word handoff plus the actual source files lets another user continue in a new chat. Shared-chat features, APIs, connectors and custom software are not required.
+Prefer one main Gemini conversation per execution week. The optional DO adversarial review is intentionally a separate conversation and never becomes an automatic second scheduler. A Word handoff plus the actual source files lets another user continue in a new chat. Shared-chat features, APIs, connectors and custom software are not required.
 
-DOCX opening and package structure are checked separately from model behavior. **This package has not yet been tested in ChatGPT Mil.** Guide 10 provides the first-use checks. Use only systems and locations authorized for your material; actual operational data stays outside this repository.
+DOCX opening and package structure are checked separately from model behavior. **This package has not yet been operationally validated in GenAI.mil.** Guide 10 provides the first-use checks. Use only systems and locations authorized for your material; actual operational data stays outside this repository.
 
 ## For maintainers
 
