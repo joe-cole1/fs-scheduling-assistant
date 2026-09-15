@@ -41,6 +41,13 @@ The reusable [primer](system-primer.md) and [Pantons profile](../../local-profil
 | Annex B draft weather | Form 04/profile | Not promoted to approved limits |
 | v0.3 validation criteria | Validation plan | Retained critical regressions and historical measures; new phase/authority/handoff scenarios added |
 
+## v0.4 workflow overlays that do not change v0.3 scheduling policy
+
+- **Pantons battle rhythm:** inputs due NLT COB Monday; Tuesday ingest/planning; Wednesday bulk build; Thursday full QC; optional DO adversarial review; Thursday sell; post-sell correction/QC/buy/publication; execution reflows. These are operating labels around the preserved five-phase state model, not new scheduling constraints or automatic phase transitions.
+- **Tuesday planning focus:** checkrides/evaluations, directed DV or senior-leader flyers and upgrade windows/resources are made explicit before the human schedule build. This clarifies workflow sequencing without changing priority or qualification rules.
+- **Model roles:** Gemini 3.7 Flash is the normal GenAI.mil scheduler model when available. A separate Terra or Grok Expert 4.5 conversation may be used by the DO for optional adversarial review. Model choice does not add authority, alter waiver routing or change any preserved scheduling rule.
+- **Adversarial-review boundary:** the separate reviewer is read-only. Its raw output does not modify the main scheduling state. Only explicit DO-accepted human direction returns to Gemini for normal downstream analysis.
+
 ## Conflicts resolved explicitly
 
 1. **Sell versus buy:** the latest DO decision puts formal buy after correction and assistant QC. Earlier planning shorthand and v0.3's lack of a sell state do not override it.
