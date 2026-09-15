@@ -1,1 +1,5 @@
-This release adds Word guides, upload startup and simple ZIP installation. Scheduling rules are unchanged. ChatGPT Mil behavior has not been tested.
+This release aligns the Pantons operator workflow to the approved weekly battle rhythm: inputs due NLT COB Monday; Tuesday ingest/planning; Wednesday bulk schedule build; Thursday full scheduler/Gemini QC; optional separate DO adversarial review; Thursday sell; post-sell correction/QC/buy/publication; and execution-week reflows.
+
+The normal GenAI.mil scheduler workflow uses Gemini 3.7 Flash when available. The optional DO adversarial review is a separate, read-only GPT-5.6 Terra or Grok Expert 4.5 conversation. Raw reviewer output does not become scheduler direction; only explicit DO-accepted human direction returns to the main Gemini workflow.
+
+This release changes the persistent Pantons Local Profile. Existing Pantons installs must review the supplied reference-only profile and merge the approved battle-rhythm/model-role section into their current human-maintained Local Profile. Do not overwrite local guidance automatically. Operational GenAI.mil behavior remains to be validated through the documented rehearsal/pilot process.
