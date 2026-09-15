@@ -1,5 +1,14 @@
 # Change log
 
+## Unreleased — Pantons battle rhythm and model roles
+
+- Make the operator flow match the actual battle rhythm: inputs due NLT COB Monday; Tuesday ingest/planning; Wednesday bulk schedule build; Thursday full scheduler/Gemini QC; Thursday sell; post-sell corrections/buy/publication; execution-week reflows.
+- Make Tuesday's first planning pass explicitly identify questions/gaps, checkrides/evaluations, directed DV or senior-leader flyers and each active upgrade's legal next events, windows and resource demand before the schedulers build the lineup.
+- Split Wednesday build support from Thursday's deliberate full-schedule QC so intermediate drafting does not substitute for the final pre-sell review.
+- Use Gemini 3.7 Flash as the main GenAI.mil scheduler model when available while preserving human authority and workflow portability if the displayed model changes.
+- Add an optional DO-only adversarial review using a separate GPT-5.6 Terra or Grok Expert 4.5 conversation. It is read-only, never an automatic scheduler dependency, and returns to the main Gemini workflow only through explicit DO-accepted human direction.
+- Preserve status-based phase control underneath the day labels so holidays, delayed inputs, reopened drafts and late corrections do not automatically create approval, buy or publication.
+
 ## Unreleased — adversarial-review hardening
 
 - Add a read-only hosted operator-package CI gate that validates persistent-state declarations, builds/checks all three ZIPs and runs package/release regression tests before package-affecting changes merge.

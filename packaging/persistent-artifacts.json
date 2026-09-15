@@ -3,7 +3,7 @@
   "artifacts": {
     "pantons_local_profile": {
       "source": "local-profiles/pantons-v0.4.md",
-      "git_blob_sha": "9f8d2d8b38a17bd9f83761d89bb966d8d33ee61c",
+      "git_blob_sha": "41ab1012ac8041dbde84e97984ea81ee443e0007",
       "migration_filename": "Pantons Local Profile - REFERENCE ONLY.docx"
     },
     "generic_local_profile": {
@@ -37,6 +37,21 @@
       "action": "none",
       "summary": "Baseline registration of persistent installed state. No migration is required for v0.4.1.",
       "instructions": []
+    },
+    {
+      "id": "PERSIST-001",
+      "introduced_in": "0.5.1",
+      "artifacts": [
+        "pantons_local_profile"
+      ],
+      "action": "review-and-merge",
+      "summary": "Pantons local guidance adds the approved Monday-through-Thursday battle rhythm and model-role separation. Existing Pantons installs must review and merge these workflow changes rather than overwrite their human-maintained Local Profile.",
+      "instructions": [
+        "Review the supplied Pantons Local Profile - REFERENCE ONLY.docx against the squadron's current Local Guidance/Local Profile.docx.",
+        "Merge the approved weekly battle rhythm and model-role section: Monday inputs due, Tuesday ingest/planning, Wednesday build, Thursday full Gemini QC, optional separate DO Terra/Grok review, then sell/post-sell/execution reflows.",
+        "Preserve all locally approved scheduling rules and later human edits. Do not replace the entire current Local Profile automatically.",
+        "Have the appropriate human authority confirm the merged Local Profile before using the new System package for a new scheduling week."
+      ]
     }
   ]
 }

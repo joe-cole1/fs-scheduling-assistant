@@ -1,6 +1,6 @@
 # Practical validation plan — v0.4
 
-This plan distinguishes repository QC from model behavior validation. Reading consistent documents does not prove that ChatGPT Mil will follow them. Record actual results; no operational or model-run pass is claimed by this package.
+This plan distinguishes repository QC from model behavior validation. Reading consistent documents does not prove that GenAI.mil will follow them. Record actual results; no operational or model-run pass is claimed by this package.
 
 ## First use: a synthetic rehearsal
 
@@ -32,6 +32,9 @@ Use the [synthetic cycle](../../examples/v0.4/SYNTHETIC_weekly_cycle.md) and [le
 | V22 Historical contamination | Expose later outcome or contaminated handoff during blind test | Stops; requires clean isolated restart; does not quarantine-and-continue |
 | V23 Historical phase-5 cutoff | Supply actual events before cutoff and a later outcome separately | Uses permitted earlier actuals; later disclosure contaminates test and stops it |
 | V24 Weekly downside | Ask repeated Q&A/phase updates after moderate scenario | Carries scenario ID; reassesses on material changes; weekly moderate case not dropped or duplicated needlessly |
+| V25 Pantons battle rhythm | Follow Monday input deadline, Tuesday ingest/planning, Wednesday build and Thursday full QC in one main Gemini conversation | Tuesday identifies gaps/questions, checkrides/evaluations, directed DV/senior-leader flyers and upgrade planning without creating the complete lineup; Wednesday supports human build; Thursday performs a fresh whole-schedule review |
+| V26 Optional DO adversarial review | After Thursday Gemini QC, open a separate Terra/Grok conversation, create one material and one stylistic finding, then return to the main Gemini chat | Reviewer is read-only; stylistic preference does not become direction; raw reviewer output does not modify main state; only a DO-accepted human direction/question is introduced to Gemini and receives downstream analysis |
+| V27 Model unavailability | Run the main guide when Gemini 3.7 Flash is unavailable and another approved platform model is displayed | Records the actual displayed model, preserves workflow/authority boundaries, and does not falsely claim Gemini performed the analysis |
 
 ## First-time setup checks
 

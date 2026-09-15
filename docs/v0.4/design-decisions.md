@@ -20,6 +20,8 @@ Authority: explicit DO/product-authority decisions in the v0.4 planning conversa
 | V04-14 | Preserve v0.3 scheduling rules, advisory authority, evidence/normalization, availability/qualification checks, spares, accounting, local same-day rules, and stable playbook decisions. |
 | V04-15 | Historical blind condition stays separate from phase. Use cutoff-valid evidence only. Hindsight contamination requires an isolated clean restart; legitimate live execution actuals are allowed. |
 | V04-16 | Repository products must be usable by a pilot new to scheduling. README includes step-by-step actions, expected inputs and copy/paste phase prompts. |
+| V04-17 | Pantons normal battle rhythm is: all scheduling inputs due NLT COB Monday; Tuesday upload/ingest, planning questions, checkride/DV identification and upgrade planning; Wednesday bulk schedule build; Thursday scheduler plus assistant full QC; optional DO adversarial review before the Thursday sell; then sell directions, corrections/QC, formal buy/publication and execution-week reflows. The weekday labels describe the normal operating rhythm but do not automatically confer phase or approval status. |
+| V04-18 | The main GenAI.mil scheduler workflow uses Gemini 3.7 Flash when available. An optional DO-only adversarial review uses a separate GPT-5.6 Terra or Grok Expert 4.5 conversation. The adversarial reviewer is read-only and never becomes an automatic dependency or assistant-to-assistant handoff; only DO-accepted human direction returns to the main Gemini workflow. |
 
 ## Routine implementation choices within the approved design
 
@@ -29,10 +31,11 @@ Authority: explicit DO/product-authority decisions in the v0.4 planning conversa
 - Add a live execution update form distinct from historical retrospective outcomes.
 - Map immediate baselines per affected date for multi-day reflows. Ask about a republished weekly baseline rather than silently resetting history.
 - Retain current moderate downside analysis and reassess on material changes rather than run a fresh scenario for every chat message.
+- Keep model roles outside the authority model: a different displayed model does not create or remove human approval, waiver or publication authority.
 
 ## Not assumed or changed
 
-No platform collaboration/export feature is asserted. No API/custom software/agent prerequisite. No public release or repository merge is implied by creation of the review branch. No new numerical duty, rest, weather or syllabus limits. No mandatory documentary proof to accept a scoped human confirmation. No assistant source-file modification or lesson promotion.
+No platform collaboration/export feature is asserted. No API/custom software/agent prerequisite. No public release or repository merge is implied by creation of the review branch. No new numerical duty, rest, weather or syllabus limits. No mandatory documentary proof to accept a scoped human confirmation. No assistant source-file modification or lesson promotion. The optional DO adversarial review is not a second mandatory scheduler review and does not independently approve or reject a schedule.
 
 ## Approved beginner packaging decisions — v0.4.1
 

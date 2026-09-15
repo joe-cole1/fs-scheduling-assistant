@@ -1,18 +1,23 @@
-# Schedule sell
+# Thursday — Schedule sell
 
-Use this after **02 Start a week.docx**. In a continuing chat, upload only new or revised inputs. If this execution week already has recorded state and you are moving it to a replacement chat or another user, follow **08 Hand off to another user.docx** first. A normal fresh chat for a brand-new execution week does not need a handoff.
+Use this after the **Thursday — Full QC** section of **04 Review the draft.docx**. The DO may optionally run the **Thursday — Optional DO adversarial review** section of that guide before the sell. That review is separate from the scheduler workflow and is not required.
 
-**Usually Thursday.** Upload:
+Stay in the main Gemini scheduling conversation for the sell package and decision capture.
+
+Upload or identify:
 
 - The exact draft that will be presented.
 - The latest guidance, unresolved findings and any revised resource/personnel products.
+- Any DO direction resulting from the optional adversarial review. Enter the DO's human direction, not raw reviewer output presented as authority.
 
 ```text
-Phase 3 — Schedule sell.
+Thursday — schedule sell. Phase 3 SCHEDULE SELL.
+Primary scheduler workflow: Gemini.
 Presented schedule: [exact filename/version].
 Prepare a BRIEF decision package for the DO: feasibility and limits, priority
-checkrides/upgrades, progress and 30-day risk, primary-line use, resource and IP
-constraints, tradeoffs, unresolved issues and exact decisions needed.
+checkrides/evaluations, directed DV or senior-leader flyers, upgrade progress and
+30-day risk, primary-line use, resource and IP constraints, tradeoffs, unresolved
+issues and exact decisions needed.
 For each decision, give the recommendation, alternatives and consequences.
 This meeting records DO direction; it is not yet formal DO buy.
 ```
@@ -26,6 +31,8 @@ Begin phase 4. Switch to FINAL QC behavior, and keep any new proposals separate
 from directed corrections. Schedulers will incorporate the changes.
 ```
 
-**You should get:** a decision brief and a list of DO-directed corrections. **Next:** schedulers apply those directions to the schedule. Do not describe the meeting as formal approval of an uncorrected version.
+**You should get:** a concise decision brief and a list of DO-directed corrections. The optional adversarial review has no authority by itself; only the DO's accepted direction enters the main workflow.
 
-**Save:** keep updated source schedule versions in **Schedules** and the report, current run control and cumulative decision record in **Working Record**. Ask the assistant for a Word file if supported, or paste its output into Word and save it yourself.
+**Next:** schedulers apply the sell directions using **06 Correct QC buy and publish.docx**. Do not describe the sell meeting as formal approval of an uncorrected version.
+
+**Save:** keep updated source schedule versions in **Schedules** and the sell package, current run control and cumulative decision record in **Working Record**.
