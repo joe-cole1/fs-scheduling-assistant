@@ -1,20 +1,30 @@
 # Start a week
 
-The execution week is the week you will fly. The prior week is the week immediately before it. Phases follow work status; Thursday does not automatically advance the chat.
+The execution week is the week you will fly. The prior week is the week immediately before it.
+
+For Pantons, **all scheduling inputs are due NLT COB Monday of the prior week. Tuesday is the normal GenAI.mil startup and planning day.** The named weekdays describe the normal battle rhythm; they do not invent approval or automatically advance the internal phase if the work is not actually complete.
+
+## Current model assignment
+
+For the normal scheduler workflow, select **Gemini 3.7 Flash** in GenAI.mil when available. Keep the main weekly scheduling conversation in Gemini through planning, build support, Thursday QC, sell support, corrections and execution reflows.
+
+The optional DO adversarial review uses a separate conversation and is covered in **04C Thursday — Optional DO adversarial review.docx**. It is not part of the main scheduler flow.
+
+If the named model is temporarily unavailable, the workflow and human authority boundaries still apply; record the displayed model/version rather than pretending Gemini was used.
 
 ## Create the weekly workspace
 
 1. Copy **COPY THIS FOLDER FOR EACH NEW WEEK** beside itself. Rename the copy **Week of YYYY-MM-DD**, using the first date of the execution week. Use your approved local counting week.
 2. Put existing source products in **Inputs**, schedule versions in **Schedules**, and reports, decisions and handoffs in **Working Record**. Keep filenames that identify the version. Preserve the presented, bought, published and signed daily schedules when they exist.
-3. Open a new ChatGPT Mil conversation for this week. Upload **System → UPLOAD THIS TO START.docx** and the current **Local Profile.docx**, **Stable References.docx**, **Playbook.docx** and needed source references from **Local Guidance**.
+3. Open a new GenAI.mil conversation for this week using Gemini 3.7 Flash when available. Upload **System → UPLOAD THIS TO START.docx** and the current **Local Profile.docx**, **Stable References.docx**, **Playbook.docx** and needed source references from **Local Guidance**.
 
 A normal fresh chat for a brand-new execution week does **not** need a handoff. Use **08 Hand off to another user.docx** only when the execution week already has recorded state and you are moving that ongoing week to another chat or user.
 
 Do not copy the whole System folder into each week. These folders organize human work; the chat cannot see them unless you upload the files.
 
-## Activate the assistant
+## Tuesday — activate the assistant
 
-Paste this, replacing the brackets:
+After uploading the available Monday inputs, paste this, replacing the brackets:
 
 ```text
 Read UPLOAD THIS TO START.docx and follow it as the scheduling primer.
@@ -23,6 +33,7 @@ Execution week: [start date] through [end date]. Timezone: [timezone].
 As of: [date/time]. Test condition: OPERATIONAL.
 Current phase: 1 PRODUCT GATHERING. Ingest gate: CONFLICTS ONLY.
 Report depth: BRIEF. Active schedule and comparison baseline: NONE yet.
+Primary scheduler workflow: Gemini.
 Confirm which startup/local files you can read and identify missing ones.
 Draft the weekly run control and product manifest from uploads and my answers.
 Do not make me transcribe existing products. Flag gaps and their effects.
@@ -30,7 +41,7 @@ Wait for my analysis request; answer planning questions when I ask them.
 Schedulers will create the initial lineup. Do not create it for us.
 ```
 
-Then follow **03 Gather products.docx**. If this execution week is already underway and you are resuming its existing recorded state in a replacement chat, follow **08 Hand off to another user.docx** instead of declaring a fresh phase 1.
+Then follow **03 Tuesday — Ingest and plan.docx**. If this execution week is already underway and you are resuming its existing recorded state in a replacement chat, follow **08 Hand off to another user.docx** instead of declaring a fresh phase 1.
 
 ## Two terms you will use
 
