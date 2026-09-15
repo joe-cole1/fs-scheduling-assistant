@@ -1,15 +1,18 @@
-# Correct QC buy and publish
+# Post-sell — Correct, QC, buy and publish
 
-Use this after **02 Start a week.docx**. In a continuing chat, upload only new or revised inputs. If this execution week already has recorded state and you are moving it to a replacement chat or another user, follow **08 Hand off to another user.docx** first. A normal fresh chat for a brand-new execution week does not need a handoff.
+Use this after **05 Thursday — Schedule sell.docx**. This work normally begins Thursday after the sell and continues through publication, normally Friday.
 
-**Usually Thursday–Friday.** Upload:
+Stay in the main Gemini scheduling conversation. The schedulers apply DO-directed changes to the source schedule; Gemini checks implementation and downstream effects.
+
+Upload:
 
 - The corrected schedule, with its new version.
 - The sell-presented schedule and DO directions/decision record.
 - Updated products or human confirmations relevant to the corrections.
 
 ```text
-Phase 4 — Corrections and final QC.
+Phase 4 — Post-sell corrections and final QC.
+Primary scheduler workflow: Gemini.
 Corrected active schedule: [exact filename/version].
 Sell-presented baseline: [exact filename/version].
 Previous corrected version, if any: [filename/version or NONE].
@@ -48,4 +51,4 @@ and its recorded human disposition; do not silently assume they match.
 
 **You should get:** a correction/QC record and separate entries for formal buy and publication. The assistant does not send the schedule to Wing, OG, Maintenance or anyone else.
 
-**Save:** keep updated source schedule versions in **Schedules** and the report, current run control and cumulative decision record in **Working Record**. Ask the assistant for a Word file if supported, or paste its output into Word and save it yourself.
+**Save:** keep updated source schedule versions in **Schedules** and the report, current run control and cumulative decision record in **Working Record**.
