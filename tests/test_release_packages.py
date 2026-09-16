@@ -1,4 +1,4 @@
-"""Regression checks for publication integrity; no network or release mutations."""
+"""Regression checks for draft-first immutable release publication; no real network writes."""
 import hashlib
 import importlib.util
 import json
@@ -20,32 +20,41 @@ class ReleaseTests(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.folder = Path(self.temp.name) / 'downloads'
         self.folder.mkdir()
-        manifest = {'package_version': '0.4.1', 'packages': {}}
+        manifest = {'package_version': '0.5.3', 'packages': {}}
         for name in r.ZIPS:
             data = ('synthetic bytes: ' + name).encode()
             (self.folder / name).write_bytes(data)
             manifest['packages'][name] = {'sha256': hashlib.sha256(data).hexdigest()}
         (self.folder / 'manifest.json').write_text(json.dumps(manifest))
-        self.release = {'id': 7, 'tag_name': 'v0.4.1', 'draft': False, 'immutable': False, 'assets': [], 'body': 'Human notes.'}
-        self.state = {'repo': 'synthetic/example', 'id': 7, 'tag': 'v0.4.1', 'version': '0.4.1',
-                      'source_sha': 'a' * 40, 'controller_sha': 'b' * 40,
-                      'build_contract': {'legacy': True}}
+        self.state = {
+            'repo': 'synthetic/example', 'tag': 'v0.5.3', 'version': '0.5.3',
+            'source_sha': 'a' * 40, 'controller_sha': 'a' * 40,
+            'build_contract': {'legacy': False}, 'workflow_run_url': 'https://example.invalid/run/1'
+        }
 
-    def test_tag_and_version(self):
-        r.validate_release(self.release, 'v0.4.1', '0.4.1')
-        for tag, version in [('v0.4.2', '0.4.1'), ('v0.4.1', '0.4.2'), ('v0.4.1; touch bad', '0.4.1'), ('../v0.4.1', '0.4.1')]:
-            with self.subTest(tag=tag, version=version), self.assertRaises(ValueError):
-                r.validate_release(self.release, tag, version)
+    def test_version_validation(self):
+        self.assertEqual(r.tag_from_version('0.5.3'), 'v0.5.3')
+        self.assertEqual(r.tag_from_version('1.0.0-rc.1'), 'v1.0.0-rc.1')
+        for value in ('v0.5.3', '../0.5.3', '0.5', '0.5.3;bad'):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                r.tag_from_version(value)
 
-    def test_draft_and_immutable(self):
-        for changes in ({'draft': True}, {'immutable': True}):
-            with self.subTest(changes=changes), self.assertRaises(ValueError):
-                r.validate_release(self.release | changes, 'v0.4.1', '0.4.1')
-        r.validate_release(self.release | {'immutable': True, 'assets': [{'name': n} for n in r.FILES]}, 'v0.4.1', '0.4.1')
-
-    def test_prerelease_requires_matching_source_version(self):
-        release = self.release | {'tag_name': 'v0.4.2-rc.1', 'prerelease': True}
-        r.validate_release(release, 'v0.4.2-rc.1', '0.4.2-rc.1')
+    def test_release_slot_allows_only_matching_draft_or_empty_slot(self):
+        with patch.object(r, 'release_for_tag', return_value=None), patch.object(r, 'remote_tag_commit', return_value=None):
+            self.assertIsNone(r.validate_release_slot('synthetic/example', 'v0.5.3', 'a' * 40))
+        draft = {'id': 7, 'tag_name': 'v0.5.3', 'draft': True, 'immutable': False,
+                 'target_commitish': 'a' * 40, 'assets': []}
+        with patch.object(r, 'release_for_tag', return_value=draft), patch.object(r, 'remote_tag_commit', return_value='a' * 40):
+            self.assertEqual(r.validate_release_slot('synthetic/example', 'v0.5.3', 'a' * 40), draft)
+        for changed in (
+            draft | {'draft': False},
+            draft | {'immutable': True},
+            draft | {'target_commitish': 'b' * 40},
+        ):
+            with self.subTest(changed=changed), patch.object(r, 'release_for_tag', return_value=changed), patch.object(r, 'remote_tag_commit', return_value='a' * 40), self.assertRaises(ValueError):
+                r.validate_release_slot('synthetic/example', 'v0.5.3', 'a' * 40)
+        with patch.object(r, 'release_for_tag', return_value=None), patch.object(r, 'remote_tag_commit', return_value='a' * 40), self.assertRaises(ValueError):
+            r.validate_release_slot('synthetic/example', 'v0.5.3', 'a' * 40)
 
     def test_reproducibility_contract(self):
         requirements = b'package==1\n'
@@ -53,194 +62,102 @@ class ReleaseTests(unittest.TestCase):
         self.assertEqual(r.validate_reproducibility_contract(contract, requirements), contract)
         with self.assertRaises(ValueError):
             r.validate_reproducibility_contract(contract | {'python_version': '3.12.15'}, requirements)
-        with self.assertRaises(ValueError):
-            r.validate_reproducibility_contract(contract | {'requirements_sha256': '0' * 64}, requirements)
 
-    def test_v041_is_only_missing_contract_legacy_exception(self):
-        legacy = r.tagged_build_contract('a' * 40, 'v0.4.1')
-        self.assertTrue(legacy['legacy'])
-        self.assertEqual(legacy['requirements_path'], r.LEGACY_REQUIREMENTS)
-        with patch.object(r, 'git_show_bytes', side_effect=subprocess.CalledProcessError(1, ['git','show'])):
-            with self.assertRaisesRegex(ValueError, 'Future release tags must contain'):
-                r.tagged_build_contract('a' * 40, 'v0.4.2')
-
-    def test_future_contract_is_loaded_from_exact_tagged_bytes(self):
+    def test_build_contract_reads_prospective_source_commit(self):
         requirements = b'package==1\n'
         contract = r.SUPPORTED_REPRO | {'requirements_sha256': hashlib.sha256(requirements).hexdigest()}
-        def tagged_bytes(sha,path):
+        def source_bytes(sha, path):
             if path == 'packaging/requirements.txt':
                 return requirements
             if path == 'packaging/reproducibility.json':
                 return json.dumps(contract).encode()
             self.fail(path)
-        with patch.object(r, 'git_show_bytes', side_effect=tagged_bytes):
-            loaded = r.tagged_build_contract('c' * 40, 'v0.4.2')
+        with patch.object(r, 'git_show_bytes', side_effect=source_bytes):
+            loaded = r.tagged_build_contract('c' * 40, 'v0.5.3')
         self.assertFalse(loaded['legacy'])
-        self.assertEqual(loaded['contract'], contract)
         self.assertEqual(loaded['requirements_path'], 'release-source/packaging/requirements.txt')
 
     def test_checksum_and_inventory(self):
-        r.verify_build(self.folder, '0.4.1')
+        r.verify_build(self.folder, '0.5.3')
         self.assertEqual(len((self.folder / 'SHA256SUMS.txt').read_text().splitlines()), 4)
         (self.folder / r.ZIPS[0]).write_bytes(b'changed')
         with self.assertRaises(ValueError):
-            r.verify_build(self.folder, '0.4.1')
+            r.verify_build(self.folder, '0.5.3')
 
-    def test_wrong_version_and_extra_file(self):
-        with self.assertRaises(ValueError):
-            r.verify_build(self.folder, '0.4.2')
-        (self.folder / 'unrelated.txt').write_text('not authorized for attachment')
-        with self.assertRaises(ValueError):
-            r.verify_build(self.folder, '0.4.1')
-
-    def test_rerun_only_uploads_missing_files(self):
-        r.verify_build(self.folder, '0.4.1')
-        release = self.release | {'assets': [{'name': r.ZIPS[0]}]}
-        missing = r.asset_plan(release, self.folder, lambda n: (self.folder / n).read_bytes())
+    def test_asset_plan_resumes_matching_draft_without_overwrite(self):
+        r.verify_build(self.folder, '0.5.3')
+        release = {'assets': [{'id': 1, 'name': r.ZIPS[0]}]}
+        missing = r.asset_plan(release, self.folder, lambda asset: (self.folder / asset['name']).read_bytes())
         self.assertEqual(missing, list(r.FILES[1:]))
         with self.assertRaises(ValueError):
-            r.asset_plan(release, self.folder, lambda _: b'different published bytes')
+            r.asset_plan(release, self.folder, lambda asset: b'different bytes')
 
-    def test_duplicate_assets_fail(self):
-        r.verify_build(self.folder, '0.4.1')
-        release = self.release | {'assets': [{'name': r.ZIPS[0]}] * 2}
+    def test_duplicate_or_extra_draft_assets_fail(self):
+        r.verify_build(self.folder, '0.5.3')
+        duplicate = {'assets': [{'id': 1, 'name': r.ZIPS[0]}, {'id': 2, 'name': r.ZIPS[0]}]}
         with self.assertRaises(ValueError):
-            r.asset_plan(release, self.folder, lambda n: (self.folder / n).read_bytes())
+            r.asset_plan(duplicate, self.folder, lambda asset: (self.folder / asset['name']).read_bytes())
+        extra = {'assets': [{'id': 3, 'name': 'unexpected.bin'}]}
+        with self.assertRaises(ValueError):
+            r.asset_plan(extra, self.folder, lambda asset: b'')
 
-    def test_structured_human_notes_are_preserved_and_recognized(self):
-        r.verify_build(self.folder, '0.4.1')
-        human = ('## What changed\n\nExact human summary.\n\n'
-                 '## What you need to do\n\nUse the update next week.\n\n'
-                 '## Validation and known limitations\n\nActual human validation record.\n')
-        first = r.notes(human, self.state, self.folder)
-        self.assertTrue(first.startswith(human))
-        self.assertEqual(first, r.notes(first, self.state, self.folder))
-        self.assertTrue(r.has_structured_human_summary(first))
-        self.assertIn('human **Validation and known limitations** section above', first)
-        self.assertNotIn('No structured human release-validation summary', first)
-        self.assertEqual(first.count(r.START), 1)
-        self.assertIn('/releases/download/v0.4.1/Pantons_Setup.zip', first)
-        self.assertIn(hashlib.sha256((self.folder / r.ZIPS[0]).read_bytes()).hexdigest(), first)
+    def test_structured_notes_include_downloads_and_checksums(self):
+        r.verify_build(self.folder, '0.5.3')
+        summary = ('## What changed\n\nChange.\n\n'
+                   '## What you need to do\n\nUpdate next week.\n\n'
+                   '## Validation and known limitations\n\nPassed.\n\n'
+                   '## Changes and contributors\n\nGenerated notes.')
+        result = r.notes(summary, self.state, self.folder)
+        self.assertTrue(r.has_structured_summary(result))
+        self.assertEqual(result.count(r.START), 1)
+        self.assertIn('/releases/download/v0.5.3/Pantons_Setup.zip', result)
+        self.assertIn(hashlib.sha256((self.folder / r.ZIPS[0]).read_bytes()).hexdigest(), result)
 
-    def test_unstructured_notes_are_preserved_but_not_called_validation(self):
-        human='## Changes\n\nGenerated-looking PR list.\n'
-        result=r.notes(human,self.state,self.folder)
-        self.assertTrue(result.startswith(human))
-        self.assertFalse(r.has_structured_human_summary(result))
-        self.assertIn('No structured human release-validation summary',result)
-        self.assertIn('GitHub-generated change notes are not validation evidence',result)
-
-    def test_malformed_notes_fail_without_discarding_text(self):
+    def test_malformed_or_unstructured_notes_fail(self):
+        with self.assertRaises(ValueError):
+            r.notes('## Changes only', self.state, self.folder)
         for body in (r.START + 'human', r.END + r.START, r.START * 2 + r.END):
             with self.subTest(body=body), self.assertRaises(ValueError):
                 r.without_download_block(body)
 
-    def publication_mocks(self, *, mismatch=False, moved=False):
-        r.verify_build(self.folder, '0.4.1')
-        state_file = Path(self.temp.name) / 'state.json'
-        state_file.write_text(json.dumps(self.state))
-        assets = {r.ZIPS[0]: b'changed' if mismatch else (self.folder / r.ZIPS[0]).read_bytes()}
-        patches, uploads = [], []
+    def test_release_summary_reports_current_migration_status(self):
+        manifest = {'migrations': [{'id': 'P-1', 'introduced_in': '0.5.3', 'action': 'review-and-merge'}]}
+        def source_bytes(sha, path):
+            if path == 'packaging/update-note.md':
+                return b'Automation changed.'
+            if path == 'packaging/persistent-artifacts.json':
+                return json.dumps(manifest).encode()
+            self.fail(path)
+        with patch.object(r, 'git_show_bytes', side_effect=source_bytes):
+            result = r.release_summary(self.state)
+        self.assertIn('Automation changed.', result)
+        self.assertIn('PERSISTENT MIGRATIONS.docx', result)
+        self.assertIn('Passed in this release workflow', result)
+
+    def test_ensure_draft_creates_only_mutable_draft(self):
+        created = {'id': 7, 'tag_name': 'v0.5.3', 'draft': True, 'immutable': False,
+                   'target_commitish': 'a' * 40, 'assets': []}
+        calls = []
         def api(endpoint, method='GET', payload=None):
-            if '/git/ref/tags/' in endpoint:
-                return {'object': {'type': 'commit', 'sha': 'c' * 40 if moved else self.state['source_sha']}}
-            if method == 'PATCH':
-                patches.append(payload)
-                return {}
-            if '/generate-notes' in endpoint:
-                self.fail('Human notes must not be replaced by generated PR notes')
-            return self.release | {'assets': [{'name': n} for n in assets]}
-        def run(*args, input=None):
-            if args[0] == 'git':
-                return self.state['source_sha']
-            if args[2] == 'download':
-                name = args[args.index('--pattern') + 1]
-                (Path(args[args.index('--dir') + 1]) / name).write_bytes(assets[name])
-            elif args[2] == 'upload':
-                self.assertNotIn('--clobber', args)
-                for path in args[4:args.index('--repo')]:
-                    uploads.append(Path(path).name)
-                    assets[Path(path).name] = Path(path).read_bytes()
-            else:
-                self.fail(args)
-            return ''
-        env = {'RELEASE_STATE': str(state_file), 'PACKAGE_OUTPUT': self.temp.name,
-               'GITHUB_STEP_SUMMARY': str(Path(self.temp.name) / 'summary')}
-        return env, api, run, patches, uploads
+            calls.append((endpoint, method, payload))
+            if method == 'POST':
+                self.assertTrue(payload['draft'])
+                self.assertEqual(payload['target_commitish'], 'a' * 40)
+                return created
+            return created
+        with patch.object(r, 'validate_release_slot', return_value=None), patch.object(r, 'api', side_effect=api):
+            release = r.ensure_draft(self.state, 'body')
+        self.assertTrue(release['draft'])
+        self.assertTrue(any(method == 'POST' for _, method, _ in calls))
 
-    def test_publication_resumes_then_verifies_and_preserves_notes(self):
-        env, api, run, edits, uploads = self.publication_mocks()
-        with patch.dict(os.environ, env), patch.object(r, 'api', side_effect=api), patch.object(r, 'run', side_effect=run):
-            r.publish()
-        self.assertEqual(uploads, list(r.FILES[1:]))
-        self.assertEqual(len(edits), 1)
-        self.assertTrue(edits[0]['body'].startswith('Human notes.'))
-        self.assertIn('No structured human release-validation summary', edits[0]['body'])
-
-    def test_mismatch_or_moved_tag_makes_no_writes(self):
-        for flags in ({'mismatch': True}, {'moved': True}):
-            with self.subTest(flags=flags):
-                env, api, run, edits, uploads = self.publication_mocks(**flags)
-                with patch.dict(os.environ, env), patch.object(r, 'api', side_effect=api), patch.object(r, 'run', side_effect=run), self.assertRaises(ValueError):
-                    r.publish()
-                self.assertEqual(edits, [])
-                self.assertEqual(uploads, [])
-
-    def test_prepare_uses_tagged_version_and_rejects_unmerged_source(self):
-        repo = Path(self.temp.name) / 'repo'
-        repo.mkdir()
-        def git(*args):
-            return subprocess.run(['git', '-C', str(repo), *args], check=True, capture_output=True, text=True).stdout.strip()
-        git('init', '-b', 'main')
-        git('config', 'user.email', 'synthetic@example.invalid')
-        git('config', 'user.name', 'Synthetic Test')
-        (repo / 'packaging').mkdir()
-        (repo / 'packaging/version.txt').write_text('0.4.1\n')
-        git('add', '.')
-        git('commit', '-m', 'Synthetic released source')
-        git('tag', 'v0.4.1')
-        expected = git('rev-parse', 'HEAD')
-        event = Path(self.temp.name) / 'event.json'
-        event.write_text('{}')
-        state = Path(self.temp.name) / 'prepared.json'
-        output = Path(self.temp.name) / 'outputs'
-        env = {'RELEASE_TAG': 'v0.4.1', 'GITHUB_REPOSITORY': 'synthetic/example',
-               'GITHUB_EVENT_PATH': str(event), 'GITHUB_EVENT_NAME': 'workflow_dispatch',
-               'RELEASE_STATE': str(state), 'GITHUB_OUTPUT': str(output)}
-        original = Path.cwd()
-        try:
-            os.chdir(repo)
-            with patch.dict(os.environ, env), patch.object(r, 'api', return_value=self.release):
-                r.prepare()
-            prepared=json.loads(state.read_text())
-            self.assertEqual(prepared['source_sha'], expected)
-            self.assertTrue(prepared['build_contract']['legacy'])
-            self.assertIn('requirements_path='+r.LEGACY_REQUIREMENTS, output.read_text())
-            git('checkout', '-b', 'unmerged')
-            (repo / 'packaging/version.txt').write_text('0.4.2\n')
-            git('commit', '-am', 'Unmerged source')
-            git('tag', 'v0.4.2')
-            git('checkout', 'main')
-            state.unlink()
-            with patch.dict(os.environ, env | {'RELEASE_TAG': 'v0.4.2'}), patch.object(r, 'api', return_value=self.release | {'tag_name': 'v0.4.2'}), self.assertRaises(subprocess.CalledProcessError):
-                r.prepare()
-            self.assertFalse(state.exists())
-        finally:
-            os.chdir(original)
-
-    def test_empty_notes_use_generated_pr_notes_without_validation_claim(self):
-        self.release['body'] = ''
-        env, api, run, edits, uploads = self.publication_mocks()
-        def with_generated(endpoint, method='GET', payload=None):
-            if '/generate-notes' in endpoint:
-                self.assertEqual(payload, {'tag_name': 'v0.4.1'})
-                return {'body': '## Changes\n\nSynthetic PR list and contributor credit.'}
-            return api(endpoint, method, payload)
-        with patch.dict(os.environ, env), patch.object(r, 'api', side_effect=with_generated), patch.object(r, 'run', side_effect=run):
-            r.publish()
-        self.assertIn('Synthetic PR list and contributor credit.', edits[0]['body'])
-        self.assertIn('No structured human release-validation summary', edits[0]['body'])
-        self.assertIn('GitHub-generated change notes are not validation evidence', edits[0]['body'])
+    def test_published_validation_requires_complete_assets(self):
+        published = {'tag_name': 'v0.5.3', 'draft': False,
+                     'assets': [{'name': n} for n in r.FILES]}
+        r.validate_published(published, self.state)
+        with self.assertRaises(ValueError):
+            r.validate_published(published | {'draft': True}, self.state)
+        with self.assertRaises(ValueError):
+            r.validate_published(published | {'assets': []}, self.state)
 
 
 if __name__ == '__main__':

@@ -1,4 +1,4 @@
-"""Regression tests for tag-authoritative release preparation."""
+"""Regression tests for manual draft-first release preparation."""
 import importlib.util
 import json
 import os
@@ -16,20 +16,11 @@ SPEC.loader.exec_module(p)
 
 
 class PrepareReleaseTests(unittest.TestCase):
-    def test_release_tag_is_package_version_authority(self):
+    def test_version_input_is_release_identity(self):
         with tempfile.TemporaryDirectory() as temp:
             temp = Path(temp)
-            event = temp / 'event.json'
-            event.write_text('{}')
             state = temp / 'state.json'
             output = temp / 'output.txt'
-            release = {
-                'id': 55,
-                'tag_name': 'v0.5.0',
-                'draft': False,
-                'immutable': False,
-                'assets': [],
-            }
             contract = {
                 'legacy': False,
                 'requirements_path': 'release-source/packaging/requirements.txt',
@@ -37,36 +28,52 @@ class PrepareReleaseTests(unittest.TestCase):
             }
 
             def run(*args, input=None):
-                if args[:3] == ('git', 'rev-parse', 'refs/tags/v0.5.0^{commit}'):
-                    return 'a' * 40
-                if args[:3] == ('git', 'merge-base', '--is-ancestor'):
-                    return ''
                 if args == ('git', 'rev-parse', 'HEAD'):
-                    return 'b' * 40
+                    return 'a' * 40
+                if args == ('git', 'rev-parse', 'origin/main'):
+                    return 'a' * 40
                 self.fail(args)
 
             env = {
-                'RELEASE_TAG': 'v0.5.0',
+                'RELEASE_VERSION': '0.5.3',
                 'GITHUB_REPOSITORY': 'synthetic/example',
-                'GITHUB_EVENT_PATH': str(event),
-                'GITHUB_EVENT_NAME': 'workflow_dispatch',
+                'DEFAULT_BRANCH': 'main',
+                'WORKFLOW_REF_NAME': 'main',
                 'RELEASE_STATE': str(state),
                 'GITHUB_OUTPUT': str(output),
+                'GITHUB_RUN_ID': '123',
+                'GITHUB_SERVER_URL': 'https://github.com',
             }
             with patch.dict(os.environ, env), \
-                 patch.object(p.r, 'api', return_value=release), \
                  patch.object(p.r, 'run', side_effect=run), \
+                 patch.object(p.r, 'validate_release_slot', return_value=None), \
                  patch.object(p.r, 'tagged_build_contract', return_value=contract):
                 p.prepare()
 
             prepared = json.loads(state.read_text())
-            self.assertEqual(prepared['version'], '0.5.0')
-            self.assertEqual(prepared['tag'], 'v0.5.0')
+            self.assertEqual(prepared['version'], '0.5.3')
+            self.assertEqual(prepared['tag'], 'v0.5.3')
             self.assertEqual(prepared['source_sha'], 'a' * 40)
-            self.assertIn('package_version=0.5.0', output.read_text())
+            self.assertIn('package_version=0.5.3', output.read_text())
+            self.assertIn('tag=v0.5.3', output.read_text())
 
-    def test_invalid_tag_still_fails(self):
-        with patch.dict(os.environ, {'RELEASE_TAG': '../bad'}, clear=False), self.assertRaises(ValueError):
+    def test_non_default_workflow_ref_fails(self):
+        env = {
+            'RELEASE_VERSION': '0.5.3',
+            'GITHUB_REPOSITORY': 'synthetic/example',
+            'DEFAULT_BRANCH': 'main',
+            'WORKFLOW_REF_NAME': 'feature',
+        }
+        with patch.dict(os.environ, env), self.assertRaisesRegex(ValueError, 'default branch'):
+            p.prepare()
+
+    def test_prerelease_version_is_rejected_explicitly(self):
+        with patch.dict(os.environ, {'RELEASE_VERSION': '0.5.3-rc.1'}, clear=False), \
+             self.assertRaisesRegex(ValueError, 'stable versions only'):
+            p.prepare()
+
+    def test_invalid_version_fails_before_network(self):
+        with patch.dict(os.environ, {'RELEASE_VERSION': '../bad'}, clear=False), self.assertRaises(ValueError):
             p.prepare()
 
 

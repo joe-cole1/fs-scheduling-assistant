@@ -1,5 +1,15 @@
 # Change log
 
+## Unreleased — draft-first immutable release publishing
+
+- Replace the publish-then-build release flow with one manual **Actions → Publish release** workflow. The maintainer enters a version number from the default branch; no manual tag or release publication is required.
+- Validate the current default-branch commit, persistent-state declarations, two independent package builds, package/source coverage, byte reproducibility and regression tests before release publication.
+- Generate structured release notes automatically from the maintained update note, standard install/update guidance, current-version migration declarations and GitHub-generated merged-PR/contributor notes.
+- Create or resume only a matching mutable draft, upload and byte-verify all five release assets, write final notes/download links, and publish the draft only after final preflight. This is compatible with GitHub immutable releases.
+- Make retries safe: failure before draft creation leaves no release; failure after draft creation leaves a resumable draft whose existing assets are verified before missing assets are added. Already-published releases and existing tags are never moved, repaired or overwritten.
+- Add the release workflow itself to package-validation path triggers and update maintainer documentation/guardrails to the new one-action process.
+- Bump the local/development package version to 0.5.3. This release-automation change does not alter scheduling policy, authority, operator guides, Local Guidance or weekly-folder behavior.
+
 ## Unreleased — day-based Word manual and Thursday buy/sell
 
 - Reorganize the operator instructions around the actual workday instead of the internal phase name. The package now generates separate Word guides for Monday inputs, Tuesday startup, Tuesday planning, Wednesday build, Thursday full QC, optional DO adversarial review, Thursday schedule buy/sell, post-buy/sell implementation, Friday final QC/publication, execution reflows, active-week handoff, updates and setup checks.

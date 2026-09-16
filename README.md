@@ -10,7 +10,7 @@ Download a ZIP, extract it into your scheduling location, and open **START HERE.
 
 You can also open the [latest release](https://github.com/joe-cole1/fs-scheduling-assistant/releases/latest) and choose a named ZIP under **Assets**. GitHub's automatic Source code downloads do not contain the built Word kit.
 
-Right-click the downloaded ZIP, select **Extract All**, open the extracted folder, and open **START HERE.docx**. GenAI.mil itself needs no GitHub access. Immediately after a release is published, the ZIP assets may still be building; the maintainer should check **Actions → Build release downloads** before distributing it.
+Right-click the downloaded ZIP, select **Extract All**, open the extracted folder, and open **START HERE.docx**. GenAI.mil itself needs no GitHub access. The release workflow publishes only after the operator ZIPs, manifest, checksums and release notes have been generated and verified, so a newly published release should already be complete.
 
 Moving from the earlier Markdown kit? Use a full setup ZIP once and carry over approved Local Guidance and weekly work. Subsequent updates replace only **System** and **START HERE.docx** unless an explicit persistent migration requires human review.
 
@@ -53,6 +53,6 @@ DOCX/package structure checks are separate from model behavior. **Operational Ge
 
 Read [AGENTS.md](AGENTS.md), [architecture](ARCHITECTURE.md), [approved design decisions](docs/v0.4/design-decisions.md), [the primer](docs/v0.4/system-primer.md), [validation plan](docs/v0.4/validation-plan.md), and [packaging instructions](packaging/README.md). Markdown is maintained source; release ZIPs are the operator product. Generated ZIPs are not stored in the repository tree.
 
-Publishing a release builds and checks the Word packages from its tagged source and attaches them to the release. Package updates are manual and normally adopted for the next scheduling week. Historical versions remain in Git history and Releases rather than archive folders.
+To publish after a reviewed PR is merged, open **Actions → Publish release**, run it from `main`, and enter the version number without a leading `v` (for example `0.5.3`). The workflow builds/tests first, generates release notes, creates or resumes a matching draft release, attaches and verifies all assets, then publishes the release as its final action. **Do not manually create/publish the normal release or move an existing tag.** Package updates are manual and normally adopted at the next scheduling-week boundary.
 
 No open-source license has been selected. The owner decides licensing and public distribution.

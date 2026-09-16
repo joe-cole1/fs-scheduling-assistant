@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - '.github/workflows/validate-packages.yml'
+      - '.github/workflows/release-packages.yml'
       - 'packaging/**'
       - 'scripts/**'
       - 'tests/**'
@@ -15,6 +16,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/validate-packages.yml'
+      - '.github/workflows/release-packages.yml'
       - 'packaging/**'
       - 'scripts/**'
       - 'tests/**'
