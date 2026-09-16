@@ -1,12 +1,15 @@
 """Build-time GitHub release orchestration for draft-first immutable releases."""
 import hashlib
 import json
+import mimetypes
 import os
 from pathlib import Path
 import re
 import subprocess
 import sys
-import tempfile
+from urllib.error import HTTPError
+from urllib.parse import urlencode
+from urllib.request import Request, urlopen
 
 ZIPS = ('Pantons_Setup.zip', 'First_Time_Squadron_Setup.zip', 'Update_Existing_Setup.zip')
 FILES = (*ZIPS, 'manifest.json', 'SHA256SUMS.txt')
@@ -18,6 +21,7 @@ REQUIRED_SUMMARY_HEADINGS = ('## What changed', '## What you need to do', '## Va
 SUPPORTED_REPRO = {'schema_version': 1, 'package_format': 1, 'python_version': '3.12.14', 'archive_mode': 'stored'}
 LEGACY_TAG = 'v0.4.1'
 LEGACY_REQUIREMENTS = 'packaging/legacy/v0.4.1-requirements.txt'
+API_VERSION = '2026-03-10'
 
 
 def run(*args, input=None):
@@ -46,9 +50,15 @@ def tag_from_version(version):
 
 
 def release_for_tag(repo, tag):
-    matches = [r for r in api(f'repos/{repo}/releases?per_page=100') if r.get('tag_name') == tag]
+    """Find either the published tag or GitHub's untagged draft representing it."""
+    releases = api(f'repos/{repo}/releases?per_page=100')
+    matches = [
+        release for release in releases
+        if release.get('tag_name') == tag
+        or (release.get('draft') and release.get('name') == tag)
+    ]
     if len(matches) > 1:
-        raise ValueError(f'Multiple releases unexpectedly use tag {tag}.')
+        raise ValueError(f'Multiple releases/drafts unexpectedly represent {tag}.')
     return matches[0] if matches else None
 
 
@@ -80,12 +90,13 @@ def validate_release_slot(repo, tag, source_sha):
             )
         if release.get('immutable'):
             raise ValueError(f'Draft {tag} is unexpectedly immutable; stop and inspect it manually.')
-        if release.get('target_commitish') != source_sha:
-            raise ValueError(
-                f'Existing draft {tag} targets {release.get("target_commitish")}, not {source_sha}.'
-            )
         if tag_sha and tag_sha != source_sha:
             raise ValueError(f'Existing tag {tag} points to {tag_sha}, not {source_sha}.')
+        if release.get('target_commitish') != source_sha and release.get('assets'):
+            raise ValueError(
+                f'Existing draft {tag} targets {release.get("target_commitish")} and already has assets. '
+                'Do not retarget a populated draft; inspect it or use a new version.'
+            )
         return release
     if tag_sha:
         raise ValueError(
@@ -244,8 +255,13 @@ Built from `{state["source_sha"]}` as **{state["tag"]}**. The draft was populate
 
 
 def validate_draft(release, state):
-    if release.get('tag_name') != state['tag'] or not release.get('draft'):
-        raise ValueError('Expected a matching draft release.')
+    if not release.get('draft'):
+        raise ValueError('Expected a draft release.')
+    if release.get('name') != state['tag']:
+        raise ValueError('Draft release name no longer matches the requested version.')
+    tag_name = release.get('tag_name', '')
+    if tag_name != state['tag'] and not tag_name.startswith('untagged-'):
+        raise ValueError(f'Unexpected draft tag identity: {tag_name!r}.')
     if release.get('target_commitish') != state['source_sha']:
         raise ValueError('Draft release source changed.')
     if release.get('immutable'):
@@ -255,24 +271,20 @@ def validate_draft(release, state):
 
 def ensure_draft(state, body):
     existing = validate_release_slot(state['repo'], state['tag'], state['source_sha'])
+    payload = {
+        'tag_name': state['tag'],
+        'target_commitish': state['source_sha'],
+        'name': state['tag'],
+        'body': body,
+        'draft': True,
+        'prerelease': False,
+    }
     if existing:
-        release = existing
+        release = api(f'repos/{state["repo"]}/releases/{existing["id"]}', 'PATCH', payload)
     else:
-        release = api(
-            f'repos/{state["repo"]}/releases',
-            'POST',
-            {
-                'tag_name': state['tag'],
-                'target_commitish': state['source_sha'],
-                'name': state['tag'],
-                'body': body,
-                'draft': True,
-                'prerelease': '-' in state['version'],
-            },
-        )
-    validate_draft(release, state)
-    api(f'repos/{state["repo"]}/releases/{release["id"]}', 'PATCH', {'body': body})
-    return api(f'repos/{state["repo"]}/releases/{release["id"]}')
+        release = api(f'repos/{state["repo"]}/releases', 'POST', payload)
+    release = api(f'repos/{state["repo"]}/releases/{release["id"]}')
+    return validate_draft(release, state)
 
 
 def asset_plan(release, folder, download_asset):
@@ -297,6 +309,39 @@ def asset_plan(release, folder, download_asset):
     return missing
 
 
+def upload_asset(release, path):
+    """Upload raw bytes directly to the draft release's REST upload URL."""
+    upload_url = (release.get('upload_url') or '').split('{', 1)[0]
+    if not upload_url.startswith('https://uploads.github.com/'):
+        raise ValueError('Draft release did not provide a trusted GitHub upload URL.')
+    token = os.environ.get('GH_TOKEN')
+    if not token:
+        raise ValueError('GH_TOKEN is required to upload release assets.')
+    content_type = mimetypes.guess_type(path.name)[0] or 'application/octet-stream'
+    url = upload_url + '?' + urlencode({'name': path.name})
+    request = Request(
+        url,
+        data=path.read_bytes(),
+        method='POST',
+        headers={
+            'Accept': 'application/vnd.github+json',
+            'Authorization': f'Bearer {token}',
+            'X-GitHub-Api-Version': API_VERSION,
+            'Content-Type': content_type,
+            'User-Agent': 'fs-scheduling-assistant-release-workflow',
+        },
+    )
+    try:
+        with urlopen(request, timeout=180) as response:
+            result = json.loads(response.read().decode())
+    except HTTPError as exc:
+        detail = exc.read().decode(errors='replace')
+        raise ValueError(f'Asset upload failed for {path.name}: HTTP {exc.code}: {detail}') from exc
+    if result.get('name') != path.name or result.get('state') != 'uploaded':
+        raise ValueError(f'GitHub did not confirm a completed upload for {path.name}.')
+    return result
+
+
 def validate_published(release, state):
     if release.get('tag_name') != state['tag'] or release.get('draft'):
         raise ValueError('Release did not publish as expected.')
@@ -318,40 +363,35 @@ def publish():
     body = notes(human + ('\n\n' + changes if changes else ''), state, folder)
     release = ensure_draft(state, body)
 
-    with tempfile.TemporaryDirectory() as temp:
-        def download_asset(asset):
-            return run_bytes(
-                'gh', 'api', f'repos/{repo}/releases/assets/{asset["id"]}',
-                '-H', 'Accept: application/octet-stream'
-            )
+    def download_asset(asset):
+        return run_bytes(
+            'gh', 'api', f'repos/{repo}/releases/assets/{asset["id"]}',
+            '-H', 'Accept: application/octet-stream'
+        )
 
-        missing = asset_plan(release, folder, download_asset)
-        if missing:
-            run(
-                'gh', 'release', 'upload', tag,
-                *(str(folder / name) for name in missing),
-                '--repo', repo,
-            )
-        refreshed = api(f'repos/{repo}/releases/{release["id"]}')
-        validate_draft(refreshed, state)
-        if asset_plan(refreshed, folder, download_asset):
-            raise ValueError('Draft release upload is incomplete.')
+    missing = asset_plan(release, folder, download_asset)
+    for name in missing:
+        upload_asset(release, folder / name)
+
+    refreshed = api(f'repos/{repo}/releases/{release["id"]}')
+    validate_draft(refreshed, state)
+    if asset_plan(refreshed, folder, download_asset):
+        raise ValueError('Draft release upload is incomplete.')
 
     tag_sha = remote_tag_commit(repo, tag)
     if tag_sha and tag_sha != state['source_sha']:
         raise ValueError('Release tag does not point to the validated source commit.')
 
-    api(f'repos/{repo}/releases/{release["id"]}', 'PATCH', {'body': body})
-    final_draft = api(f'repos/{repo}/releases/{release["id"]}')
-    validate_draft(final_draft, state)
-    if set(a['name'] for a in final_draft.get('assets', [])) != set(FILES):
-        raise ValueError('Refusing to publish a draft with missing or extra assets.')
-
-    published = api(
-        f'repos/{repo}/releases/{release["id"]}',
-        'PATCH',
-        {'draft': False, 'make_latest': 'true'},
-    )
+    final_payload = {
+        'tag_name': tag,
+        'target_commitish': state['source_sha'],
+        'name': tag,
+        'body': body,
+        'draft': False,
+        'prerelease': False,
+        'make_latest': 'true',
+    }
+    published = api(f'repos/{repo}/releases/{release["id"]}', 'PATCH', final_payload)
     validate_published(published, state)
     published_tag_sha = remote_tag_commit(repo, tag)
     if published_tag_sha != state['source_sha']:
