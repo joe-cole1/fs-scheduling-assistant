@@ -156,7 +156,7 @@ def check(out):
     assert 'DRAFT' in gp and 'three countable' not in gp and '8p8x4' not in gp
     source_coverage((ROOT/'local-profiles/pantons-v0.4.md').read_text(),text(pantons[a+'Local Guidance/Local Profile.docx']))
     primer=(ROOT/'docs/v0.4/system-primer.md').read_text().split('## START OF PRIMER',1)[1].split('## END OF PRIMER',1)[0]
-    intro='# Upload this to start\n\nThis is the assistant’s scheduling primer. Upload this document with current local guidance and sources, then paste the activation prompt in 02 Start a week.docx. These instructions are advisory and do not establish approval of a schedule.\n\n'
+    intro='# Upload this to start\n\nThis is the assistant’s scheduling primer. Upload this document with current local guidance and sources, then paste the activation prompt in 03 Tuesday - Start the Week.docx. These instructions are advisory and do not establish approval of a schedule.\n\n'
     source_coverage(intro+primer,text(update['System/UPLOAD THIS TO START.docx']))
     source_coverage(update_instructions_source(),text(update['UPDATE INSTRUCTIONS.docx']))
     if actionable_migrations():
@@ -190,7 +190,7 @@ def check(out):
             assert (install/'COPY THIS FOLDER FOR EACH NEW WEEK'/name).is_dir()
 
         # Represent a subsequently installed/broken System, then restore the prior
-        # release's captured System + START HERE exactly as Guide 09 instructs.
+        # release's captured System + START HERE exactly as Guide 13 instructs.
         (install/'System/newer-only.docx').write_bytes(b'BROKEN NEWER SYSTEM')
         (install/'START HERE.docx').write_bytes(b'BROKEN NEWER START')
         shutil.rmtree(install/'System')

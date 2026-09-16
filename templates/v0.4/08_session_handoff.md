@@ -17,10 +17,14 @@ Assistant-drafted; outgoing human reviews and saves. Upload this record PLUS app
 | Role | Filename/version | Human confirmation or decision ID |
 | --- | --- | --- |
 | Active analysis schedule | [value] | [value] |
-| Draft comparison / sell-presented / latest corrected | [values or N/A] | [values] |
-| Formally bought / published weekly | [values or Not yet] | [values] |
+| Draft comparison / Thursday buy-sell-presented version | [values or N/A] | [values] |
+| Thursday DO buy statement and buy-sell directions | [approval statement and D-IDs or Not bought] | [values] |
+| Latest post-buy-sell implementation version | [value or N/A] | [QC state / supplemental DO decision if any] |
+| Published weekly schedule | [value or Not yet] | [publication confirmation] |
 | Immediate baseline for each affected execution date | [date: signed daily, otherwise weekly] | [values] |
 | Cumulative weekly baseline | [value] | [value] |
+
+The approved buy/sell baseline is the exact presented schedule plus the recorded DO directions. Do not invent a routine second buy. If a material implementation deviation required another DO decision, carry that decision separately with its exact scope.
 
 ## Current sources to transfer
 
@@ -36,7 +40,7 @@ Actual source files must accompany the handoff. A citation in this summary is no
 | --- | --- | --- | --- | --- | --- |
 | [D/W/F-ID] | [preserve substance; distinguish confirmation from model verification] | [value] | [value] | [value] | [value/None] |
 
-Retain each sell decision's disposition and both DO routing and waiver-authority status. Rejected proposals remain rejected. A handoff cannot silently broaden a confirmation.
+Retain each buy/sell decision's disposition and both DO routing and waiver-authority status. Rejected proposals remain rejected. A handoff cannot silently broaden a confirmation.
 
 ## Execution state and outlook
 
@@ -50,7 +54,7 @@ Retain each sell decision's disposition and both DO routing and waiver-authority
 | --- | --- | --- | --- | --- |
 | [value] | [value] | [value] | [value] | [value] |
 
-- Latest full report and correction-QC versions: [values]
+- Latest full report and implementation-QC versions: [values]
 - Moderate downside scenario ID / assumptions / last assessed: [values]
 - Playbook candidate IDs and Pending/Approved/Rejected decisions: [values or reference]
 - Full transcript location, if retained: [human-controlled reference; optional]

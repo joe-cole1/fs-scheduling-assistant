@@ -1,41 +1,43 @@
 # Approved design decisions — v0.4
 
-Authority: explicit DO/product-authority decisions in the v0.4 planning conversation. This document records product design, not a weekly operational approval. No person or real schedule is approved by these entries.
+Authority: explicit DO/product-authority decisions in the v0.4 planning conversation. This document records product design, not a weekly operational approval.
 
 | ID | Approved decision |
 | --- | --- |
-| V04-01 | Use five phase-based operational controls; retain legacy modes only as behavior/migration references. Status, not weekday, controls transitions. |
+| V04-01 | Use five phase-based operational controls; status, not weekday, controls transitions. |
 | V04-02 | Schedulers create the initial lineup. Before that, the assistant consolidates inputs, flags missing/conflicting information and answers evidence-backed planning questions. |
-| V04-03 | Schedulers decide when drafting starts. Missing DO priorities, currencies or other products are flagged with consequences rather than imposing a complete-packet gate. |
-| V04-04 | The sell meeting records DO direction. Schedulers incorporate changes, assistant checks implementation and second/third-order effects, then DO formally buys the corrected schedule. Publication follows. This supersedes the earlier discussion's shorthand that equated the sell meeting with buy. |
-| V04-05 | Apply FINAL QC behavior immediately after sell directions are established. Preserve hard-conflict/major-risk correction and show substantial additional churn as a DO option. |
-| V04-06 | Formal buy approves the exact authoritative weekly schedule. Humans distribute it to Wing, OG, Maintenance and other recipients. Significant departures after publication are controlled. |
+| V04-03 | Schedulers decide when drafting starts. Missing products are flagged with consequences rather than imposing a complete-packet gate. |
+| V04-04 | Historical decision: sell directions were originally followed by corrections/QC and a later formal DO buy. **Superseded by V04-19.** |
+| V04-05 | Apply FINAL QC behavior after the DO establishes directions. Preserve hard-conflict/major-risk correction and show substantial additional churn as a DO option. |
+| V04-06 | Historical decision: formal buy approved the exact corrected schedule after QC. **Superseded by V04-19.** |
 | V04-07 | Daily scheduler and Top 3 sign off on feasible personnel/mission changes within published times, aircraft turn pattern, coordinated support and explicit DO guidance. Changes outside those boundaries return to the DO. |
-| V04-08 | Every waiver must go through the DO and the applicable waiver authority. Neither buy nor generic confirmation implicitly approves every waiver. |
-| V04-09 | Execution immediate comparison uses the latest signed daily schedule for the affected day, or published weekly schedule if no daily exists. Cumulative comparison uses the published weekly schedule. Preserve bought and published versions and explain any difference. |
-| V04-10 | Explicit human confirmation is sufficient to close the identified QC concern without mandatory supporting uploads or further proof. Record it as human-confirmed, not independently checked; retain waiver requirements. |
-| V04-11 | Prefer one conversation per execution week spanning all phases. Target ChatGPT Mil without relying on multiuser shared-chat support, native export or automatic memory. |
-| V04-12 | Use a concise current-state Markdown handoff plus actual applicable source products when changing users/conversations. Retain full transcripts separately when needed. |
-| V04-13 | Use existing standard products; placeholder forms capture missing guidance, changes and recommendations. Draft missing guidance for human confirmation without inventing facts or authority. |
-| V04-14 | Preserve v0.3 scheduling rules, advisory authority, evidence/normalization, availability/qualification checks, spares, accounting, local same-day rules, and stable playbook decisions. |
-| V04-15 | Historical blind condition stays separate from phase. Use cutoff-valid evidence only. Hindsight contamination requires an isolated clean restart; legitimate live execution actuals are allowed. |
-| V04-16 | Repository products must be usable by a pilot new to scheduling. README includes step-by-step actions, expected inputs and copy/paste phase prompts. |
-| V04-17 | Pantons normal battle rhythm is: all scheduling inputs due NLT COB Monday; Tuesday upload/ingest, planning questions, checkride/DV identification and upgrade planning; Wednesday bulk schedule build; Thursday scheduler plus assistant full QC; optional DO adversarial review before the Thursday sell; then sell directions, corrections/QC, formal buy/publication and execution-week reflows. The weekday labels describe the normal operating rhythm but do not automatically confer phase or approval status. |
-| V04-18 | The main GenAI.mil scheduler workflow uses Gemini 3.7 Flash when available. An optional DO-only adversarial review uses a separate GPT-5.6 Terra or Grok Expert 4.5 conversation. The adversarial reviewer is read-only and never becomes an automatic dependency or assistant-to-assistant handoff; only DO-accepted human direction returns to the main Gemini workflow. |
+| V04-08 | Every waiver must go through the DO and the applicable waiver authority. Buy/sell approval never implicitly approves every waiver. |
+| V04-09 | Execution immediate comparison uses the latest signed daily schedule for the affected day, or published weekly schedule if no daily exists. Cumulative comparison uses the published weekly schedule. |
+| V04-10 | Explicit human confirmation is sufficient to close the identified QC concern without mandatory supporting uploads. Record it as human-confirmed, not independently checked. |
+| V04-11 | Prefer one main conversation per execution week. Do not rely on shared-chat support, native export or automatic memory. |
+| V04-12 | Use a concise current-state Word handoff plus actual applicable source products when an active week changes users/conversations. |
+| V04-13 | Use existing standard products; placeholder forms capture missing guidance, changes and recommendations without duplicate transcription. |
+| V04-14 | Preserve v0.3 scheduling rules, advisory authority, evidence/normalization, availability/qualification checks, spares, accounting, local same-day rules and stable playbook decisions. |
+| V04-15 | Historical blind condition stays separate from phase. Hindsight contamination requires an isolated clean restart; legitimate live execution actuals are allowed. |
+| V04-16 | Repository products must be usable by a pilot new to scheduling. Operator instructions are Word-first and executable. |
+| V04-17 | Pantons normal battle rhythm: inputs due NLT COB Monday; Tuesday upload/ingest and planning; Wednesday bulk build; Thursday scheduler plus assistant full QC; optional DO adversarial review; Thursday buy/sell; post-buy/sell implementation/QC; Friday publication; execution-week reflows. |
+| V04-18 | Main GenAI.mil scheduler workflow uses Gemini 3.7 Flash when available. Optional DO adversarial review uses a separate GPT-5.6 Terra or Grok Expert 4.5 conversation and is read-only. |
+| V04-19 | **Current authority rule. The Thursday schedule buy/sell is the formal DO buy event.** The approved baseline is the exact presented schedule plus explicit DO directions recorded in that meeting. Schedulers implement those directions and Gemini verifies implementation/second-order effects. There is no routine second DO buy afterward. A material solution outside the recorded direction returns to the DO for a supplemental decision before publication. Publication remains a separate human action. V04-19 supersedes V04-04, V04-06 and any earlier wording that placed routine buy after correction/QC. |
+| V04-20 | Operator instructions are organized chronologically by Monday, Tuesday start, Tuesday planning, Wednesday build, Thursday QC, optional DO review, Thursday buy/sell, post-buy/sell implementation, Friday final QC/publication, execution reflows, handoff, update and setup check. Internal phases remain underneath this day-based navigation. |
 
 ## Routine implementation choices within the approved design
 
-- Separate reusable primer from the Pantons local profile; both are loaded for Pantons operations. Another squadron supplies its own approved profile.
-- Use one weekly decision/release record instead of recopying sell, waiver and approval entries across forms.
-- Use stable fact, event, recommendation, decision and candidate references; their numbering is document bookkeeping, not a new authority requirement.
+- Separate reusable primer from the Pantons local profile; another squadron supplies its own approved profile.
+- Use one weekly decision/release record instead of recopying decisions across forms.
+- Use stable fact, event, recommendation, decision and candidate references; numbering is bookkeeping, not new authority.
 - Add a live execution update form distinct from historical retrospective outcomes.
-- Map immediate baselines per affected date for multi-day reflows. Ask about a republished weekly baseline rather than silently resetting history.
-- Retain current moderate downside analysis and reassess on material changes rather than run a fresh scenario for every chat message.
-- Keep model roles outside the authority model: a different displayed model does not create or remove human approval, waiver or publication authority.
+- Map immediate baselines per affected date for multi-day reflows.
+- Retain current moderate downside analysis and reassess on material changes rather than every chat message.
+- Model roles never create or remove human authority.
 
 ## Not assumed or changed
 
-No platform collaboration/export feature is asserted. No API/custom software/agent prerequisite. No public release or repository merge is implied by creation of the review branch. No new numerical duty, rest, weather or syllabus limits. No mandatory documentary proof to accept a scoped human confirmation. No assistant source-file modification or lesson promotion. The optional DO adversarial review is not a second mandatory scheduler review and does not independently approve or reject a schedule.
+No platform collaboration/export feature is asserted. No API/custom software/agent prerequisite. No public release or repository merge is implied by creation of a review branch. No new numerical duty, rest, weather or syllabus limits. No mandatory documentary proof to accept a scoped human confirmation. No assistant source-file modification or lesson promotion. The optional DO adversarial review is not a second mandatory scheduler review and does not independently approve or reject a schedule.
 
 ## Approved beginner packaging decisions — v0.4.1
 
@@ -45,12 +47,10 @@ No platform collaboration/export feature is asserted. No API/custom software/age
 | V041-02 | Short START HERE plus separate numbered Word guides in Instructions; upload the startup primer and use short activation/phase prompts. |
 | V041-03 | Permanent extracted folder with a ready-made weekly folder to copy. Keep local guidance and weekly work outside replaceable System. |
 | V041-04 | Manual numbered updates adopted next week. No elaborate weekly system copies or automatic update mechanism. |
-| V041-05 | Remove repository archives, including v0.3. Use branches, prior PRs and Git history instead. This supersedes archive retention instructions; original uploaded files are unchanged. |
-
-V041-02 supersedes the Markdown-only presentation in V04-12 and V04-16; handoff content and actual-source transfer remain unchanged. v0.4.1 is a packaging release, not a scheduling-policy revision.
+| V041-05 | Remove repository archives. Use branches, prior PRs and Git history instead. |
 
 ## Approved release automation follow-up
 
-- Publishing a release triggers dynamic ZIP generation and attachment from the tagged source; a manual trigger supports existing releases and recovery.
-- Release assets are the download source. The later user decision supersedes storing ZIP copies in the repository; README clearly links to the latest release.
-- Release notes describe user impact, update actions, actual validation and limitations, with generated download links/checksums. Squadron updates remain manual and are adopted next week.
+- Publishing a release triggers dynamic ZIP generation and attachment from the tagged source; manual trigger supports recovery.
+- Release assets are the download source; ZIP copies are not kept in the repository tree.
+- Release notes describe user impact, update actions, validation and limitations. Squadron updates remain manual and are adopted next week.

@@ -1,18 +1,18 @@
 # Optional DO adversarial review
 
-This is a **separate DO-only review**, normally used after Thursday's full Gemini QC and before the schedule sell. It is optional. It is not a required scheduler step and it must not be silently inserted into the main Gemini workflow.
+This is a **separate DO-only review**, normally used after Thursday's full Gemini QC and before the schedule buy/sell. It is optional. It is not a required scheduler step and it must not be silently inserted into the main Gemini workflow.
 
 ## Model and conversation boundary
 
 Open a separate GenAI.mil conversation and select **GPT-5.6 Terra or Grok Expert 4.5**. Do not switch the main scheduler conversation away from Gemini just to run this review.
 
-The reviewer is read-only. It does not modify the official scheduling state, approve the schedule, issue a waiver, or send instructions directly to Gemini.
+The reviewer is read-only. It does not modify official scheduling state, approve the schedule, issue a waiver, or send instructions directly to Gemini.
 
 For the most independent review, give it the underlying schedule and authoritative inputs first. You may also provide the Gemini Thursday QC report, but the reviewer should not merely critique Gemini's wording.
 
 ## Inputs
 
-Provide the exact schedule version intended for the sell plus the authoritative material needed to challenge it, normally:
+Provide the exact schedule version intended for the buy/sell plus the authoritative material needed to challenge it, normally:
 
 - current DO guidance and Flt CC inputs;
 - upgrade/checkride/currency products;
@@ -86,9 +86,9 @@ If the DO accepts a finding, return the human decision to the normal Gemini conv
 DO direction from optional adversarial review:
 [exact direction or question the DO wants acted on].
 Treat this as human direction. Update the current analysis and identify all
-second- and third-order effects before the schedule sell.
+second- and third-order effects before the schedule buy/sell.
 ```
 
 If the DO rejects or does not act on a finding, nothing enters the normal scheduler workflow.
 
-The normal sequence remains **Gemini Thursday QC → optional DO adversarial review → schedule sell**.
+The normal sequence remains **Gemini Thursday QC → optional DO adversarial review → schedule buy/sell**. The adversarial review itself never creates the DO buy; that occurs only when the DO explicitly approves the schedule during the buy/sell.

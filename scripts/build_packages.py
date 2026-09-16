@@ -28,15 +28,19 @@ ZIP_TIMESTAMP = ((METADATA_TIMESTAMP.year, METADATA_TIMESTAMP.month, METADATA_TI
                  if METADATA_TIMESTAMP else None)
 GUIDES = [
     ('01-setup.md', '01 First time setup.docx'),
-    ('02-start-week.md', '02 Start a week.docx'),
-    ('03-phase-1.md', '03 Gather products.docx'),
-    ('04-phase-2.md', '04 Review the draft.docx'),
-    ('05-phase-3.md', '05 Schedule sell.docx'),
-    ('06-phase-4.md', '06 Correct QC buy and publish.docx'),
-    ('07-phase-5.md', '07 Execution reflows.docx'),
-    ('08-handoff.md', '08 Hand off to another user.docx'),
-    ('09-update.md', '09 Update next week.docx'),
-    ('10-check.md', '10 Check the setup.docx'),
+    ('02-monday-inputs.md', '02 Monday - Inputs Due.docx'),
+    ('03-tuesday-start.md', '03 Tuesday - Start the Week.docx'),
+    ('04-tuesday-plan.md', '04 Tuesday - Plan the Week.docx'),
+    ('05-wednesday-build.md', '05 Wednesday - Build the Schedule.docx'),
+    ('06-thursday-qc.md', '06 Thursday - Full Schedule QC.docx'),
+    ('07-thursday-do-review.md', '07 Thursday - DO Adversarial Review.docx'),
+    ('08-thursday-buy-sell.md', '08 Thursday - Schedule Buy-Sell.docx'),
+    ('09-apply-buy-sell-changes.md', '09 Thursday-Friday - Apply Buy-Sell Changes.docx'),
+    ('10-friday-final-qc-publish.md', '10 Friday - Final QC and Publish.docx'),
+    ('11-execution-reflows.md', '11 Execution Week - Reflows.docx'),
+    ('12-handoff.md', '12 Hand Off an Active Week.docx'),
+    ('13-update.md', '13 Update for Next Week.docx'),
+    ('14-check.md', '14 Check the Setup.docx'),
 ]
 FORMS = [
     ('01_run_control_and_manifest.md','01 Run Control and Product Manifest.docx'),
@@ -89,7 +93,7 @@ def update_instructions_source():
     change_note=(ROOT/'packaging/update-note.md').read_text().strip()
     if not change_note:
         raise ValueError('packaging/update-note.md must describe this release')
-    return '# Update to package '+VERSION+'\n\n'+change_note+'\n\n## Use next week\n\n1. Extract this update into a temporary folder, separate from your squadron scheduling folder.\n2. Before starting next week’s planning, replace the entire System folder in your permanent scheduling folder with the supplied System folder.\n3. Replace START HERE.docx with the supplied copy.\n4. Keep Local Guidance, COPY THIS FOLDER FOR EACH NEW WEEK, and every Week of date folder in place. Never save local guidance or completed work inside System.\n5. If **PERSISTENT MIGRATIONS.docx** is included, read it before deleting the temporary update folder. Review and merge only the explicitly listed persistent changes; reference-only files are never automatic replacements or approvals.\n6. Follow the new System → Instructions → 02 Start a week.docx when starting next week’s chat. Upload the new startup document.\n\nThe package number in generated document headers is the authoritative installed System version. File dates are deterministic packaging metadata, not release/install timestamps.\n\nThis update does not change an existing conversation or any operational approvals. Current-week work and decisions carry forward. Routine updates include no local guidance or weekly folders. A release that deliberately changes persistent local seeds or folder structure must declare that migration and may include clearly marked reference-only copies outside System for human review.\n\n## Rollback\n\nTo restore a prior System release, download that release’s Update_Existing_Setup.zip and follow System → Instructions → 09 Update next week.docx. Replace only System and START HERE. Do not roll back Local Guidance, weekly work or operational decisions automatically.\n\n## Coming from the earlier Markdown kit?\n\nUse the appropriate full setup ZIP once. Copy your existing approved local guidance and weekly work into the new layout; preserve their contents. Future updates use the System replacement above plus any explicitly declared persistent-migration review.\n\nSee System → Instructions → 09 Update next week.docx for details. Downloading an update or rollback grants no new scheduling approval or waiver.\n'
+    return '# Update to package '+VERSION+'\n\n'+change_note+'\n\n## Use next week\n\n1. Extract this update into a temporary folder, separate from your squadron scheduling folder.\n2. Before starting next week’s planning, replace the entire System folder in your permanent scheduling folder with the supplied System folder.\n3. Replace START HERE.docx with the supplied copy.\n4. Keep Local Guidance, COPY THIS FOLDER FOR EACH NEW WEEK, and every Week of date folder in place. Never save local guidance or completed work inside System.\n5. If **PERSISTENT MIGRATIONS.docx** is included, read it before deleting the temporary update folder. Review and merge only the explicitly listed persistent changes; reference-only files are never automatic replacements or approvals.\n6. Follow the new System → Instructions → 03 Tuesday - Start the Week.docx when starting next week’s chat. Upload the new startup document.\n\nThe package number in generated document headers is the authoritative installed System version. File dates are deterministic packaging metadata, not release/install timestamps.\n\nThis update does not change an existing conversation or any operational approvals. Current-week work and decisions carry forward. Routine updates include no local guidance or weekly folders. A release that deliberately changes persistent local seeds or folder structure must declare that migration and may include clearly marked reference-only copies outside System for human review.\n\n## Rollback\n\nTo restore a prior System release, download that release’s Update_Existing_Setup.zip and follow System → Instructions → 13 Update for Next Week.docx. Replace only System and START HERE. Do not roll back Local Guidance, weekly work or operational decisions automatically.\n\n## Coming from the earlier Markdown kit?\n\nUse the appropriate full setup ZIP once. Copy your existing approved local guidance and weekly work into the new layout; preserve their contents. Future updates use the System replacement above plus any explicitly declared persistent-migration review.\n\nSee System → Instructions → 13 Update for Next Week.docx for details. Downloading an update or rollback grants no new scheduling approval or waiver.\n'
 
 
 def persistent_migration_source():
@@ -253,7 +257,7 @@ def build(out):
     for source,name in GUIDES:
         write_doc((ROOT/'packaging/guides'/source).read_text(),system/'Instructions'/name)
     primer=(ROOT/'docs/v0.4/system-primer.md').read_text().split('## START OF PRIMER',1)[1].split('## END OF PRIMER',1)[0]
-    intro='# Upload this to start\n\nThis is the assistant’s scheduling primer. Upload this document with current local guidance and sources, then paste the activation prompt in 02 Start a week.docx. These instructions are advisory and do not establish approval of a schedule.\n\n'
+    intro='# Upload this to start\n\nThis is the assistant’s scheduling primer. Upload this document with current local guidance and sources, then paste the activation prompt in 03 Tuesday - Start the Week.docx. These instructions are advisory and do not establish approval of a schedule.\n\n'
     write_doc(intro+primer,system/'UPLOAD THIS TO START.docx')
     for source,name in FORMS:
         write_doc((ROOT/'templates/v0.4'/source).read_text(),system/'Blank Forms'/name)

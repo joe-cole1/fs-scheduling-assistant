@@ -1,13 +1,22 @@
 # Change log
 
+## Unreleased — day-based Word manual and Thursday buy/sell
+
+- Reorganize the operator instructions around the actual workday instead of the internal phase name. The package now generates separate Word guides for Monday inputs, Tuesday startup, Tuesday planning, Wednesday build, Thursday full QC, optional DO adversarial review, Thursday schedule buy/sell, post-buy/sell implementation, Friday final QC/publication, execution reflows, active-week handoff, updates and setup checks.
+- Correct the authority model: **the Thursday schedule buy/sell is the formal DO buy event when the DO explicitly approves the weekly schedule.** The exact presented version plus recorded DO directions forms the approved buy/sell baseline.
+- Remove the routine second-buy concept. Schedulers implement buy/sell directions and Gemini checks implementation and downstream effects. A materially different solution outside the recorded direction returns to the DO for a supplemental decision; publication remains a separate human action.
+- Keep the five internal phases underneath the chronological manual so holidays, delayed inputs and reopened work follow actual status rather than calendar date.
+- Update START HERE, package generation/checks, primer, Pantons and generic local-profile seeds, phase/report references, decision record, synthetic walkthrough, validation plan, README, contributor instructions and migration metadata to the same workflow.
+- Bump the local/development package version to 0.5.2 and append PERSIST-002 so existing Local Guidance is reviewed/merged rather than overwritten automatically.
+
 ## Unreleased — Pantons battle rhythm and model roles
 
-- Make the operator flow match the actual battle rhythm: inputs due NLT COB Monday; Tuesday ingest/planning; Wednesday bulk schedule build; Thursday full scheduler/Gemini QC; Thursday sell; post-sell corrections/buy/publication; execution-week reflows.
+- Make the operator flow match the actual battle rhythm: inputs due NLT COB Monday; Tuesday ingest/planning; Wednesday bulk schedule build; Thursday full scheduler/Gemini QC; optional DO adversarial review; Thursday buy/sell; post-buy/sell implementation/QC; Friday publication; execution-week reflows.
 - Make Tuesday's first planning pass explicitly identify questions/gaps, checkrides/evaluations, directed DV or senior-leader flyers and each active upgrade's legal next events, windows and resource demand before the schedulers build the lineup.
-- Split Wednesday build support from Thursday's deliberate full-schedule QC so intermediate drafting does not substitute for the final pre-sell review.
+- Split Wednesday build support from Thursday's deliberate full-schedule QC so intermediate drafting does not substitute for the final pre-buy/sell review.
 - Use Gemini 3.7 Flash as the main GenAI.mil scheduler model when available while preserving human authority and workflow portability if the displayed model changes.
 - Add an optional DO-only adversarial review using a separate GPT-5.6 Terra or Grok Expert 4.5 conversation. It is read-only, never an automatic scheduler dependency, and returns to the main Gemini workflow only through explicit DO-accepted human direction.
-- Preserve status-based phase control underneath the day labels so holidays, delayed inputs, reopened drafts and late corrections do not automatically create approval, buy or publication.
+- Preserve status-based phase control underneath the day labels so holidays, delayed inputs, reopened drafts and late corrections do not automatically create approval or publication.
 
 ## Unreleased — adversarial-review hardening
 
@@ -48,16 +57,16 @@
 
 - Reorganized the system around product gathering, initial draft, sell, corrections/QC/approval/publication and execution reflows. Phase transitions follow work status, not weekday.
 - Retained scheduler-built initial lineups; expanded explicit pre-draft consolidation and planning Q&A. Drafting starts at scheduler discretion despite documented gaps.
-- Defined sell direction → human correction → assistant QC → formal DO buy → human publication. Added exact sell-decision disposition and second/third-order checks; post-sell work uses FINAL QC limits.
+- Defined sell direction → human correction → assistant QC → formal DO buy → human publication. This historical v0.4 authority sequence is superseded by current design decision V04-19, which places formal DO buy in the Thursday buy/sell.
 - Defined daily scheduler/Top 3 scope and return-to-DO boundaries. Every waiver goes through the DO and applicable authority.
-- Defined immediate execution deltas against each day's signed daily schedule or weekly fallback, and cumulative deltas against published weekly. Retained bought/published identities separately.
+- Defined immediate execution deltas against each day's signed daily schedule or weekly fallback, and cumulative deltas against published weekly.
 - Accepted scoped human confirmation as concern closure without documentary proof demands, labeled distinctly from model verification.
-- Added live execution update, decision/release record and concise Markdown handoff. Source products accompany handoffs; shared chat/export/memory are not assumed.
+- Added live execution update, decision/release record and concise handoff. Source products accompany handoffs; shared chat/export/memory are not assumed.
 - Separated reusable workflow from the Pantons local rule profile. Preserved original event accounting, availability/qualification/spare/same-day/priority/forecast/backup rules.
 - Corrected v0.3's target-week-actuals restriction for legitimate live execution and cutoff-valid historical reflows; preserved isolated restart after hindsight contamination.
 - Updated input forms to reference existing products rather than require duplicate transcription. Preserved independent playbook governance and stable candidate IDs.
 - Added a novice operator README with paste-ready prompts, expected input lists and phase exit instructions, synthetic examples, crosswalk and practical validation cases.
-- Original v0.3 DOCX and starter ZIP remain unchanged outside the repository. Recorded their byte hashes and included a labeled text extraction for historical review. Main originally contained only a README.
+- Original v0.3 DOCX and starter ZIP remain unchanged outside the repository. Earlier Git history retains provenance.
 
 ## Source baselines
 

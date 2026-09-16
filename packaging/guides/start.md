@@ -1,17 +1,31 @@
 # START HERE
 
-Open this folder in Windows File Explorer. You will use Word documents and ChatGPT Mil. You do not need GitHub access inside the chat.
+Open this folder in Windows File Explorer. You will use Word documents and GenAI.mil. You do not need GitHub access inside the chat.
 
-1. Keep this extracted folder in your squadron's approved scheduling location. This is your permanent scheduling-assistant folder.
-2. Open **System → Instructions → 01 First time setup.docx**. Do this once for the squadron.
-3. For each new execution week, copy **COPY THIS FOLDER FOR EACH NEW WEEK**, rename the copy **Week of YYYY-MM-DD**, and open **02 Start a week.docx** in Instructions.
-4. Follow the guide for the work you are doing: **03 Gather products**, **04 Review the draft**, **05 Schedule sell**, **06 Correct QC buy and publish**, or **07 Execution reflows**.
-5. Changing users? Follow **08 Hand off to another user.docx**. Installing a newer package or restoring a prior System release? Follow **09 Update next week.docx**.
+1. Keep this extracted folder in your squadron's approved scheduling location.
+2. Open **System → Instructions → 01 First time setup.docx** once for the squadron.
+3. Then use the Word guide for the day or step you are on.
 
-The assistant helps; humans build, edit, approve and publish the schedule. A proposed change is not an approval.
+## Weekly guide
 
-Keep squadron guidance in **Local Guidance**. Keep each week's inputs, schedules and working record in that week's folder. **System** contains replaceable instructions and blank forms. Never save your completed work inside System.
+- **Monday:** 02 Monday - Inputs Due.docx
+- **Tuesday, first:** 03 Tuesday - Start the Week.docx
+- **Tuesday, then:** 04 Tuesday - Plan the Week.docx
+- **Wednesday:** 05 Wednesday - Build the Schedule.docx
+- **Thursday QC:** 06 Thursday - Full Schedule QC.docx
+- **Optional DO-only challenge:** 07 Thursday - DO Adversarial Review.docx
+- **Thursday approval meeting:** 08 Thursday - Schedule Buy-Sell.docx
+- **After the buy/sell:** 09 Thursday-Friday - Apply Buy-Sell Changes.docx
+- **Friday:** 10 Friday - Final QC and Publish.docx
+- **Execution week changes:** 11 Execution Week - Reflows.docx
+- **Changing users/chats during an active week:** 12 Hand Off an Active Week.docx
+- **Installing next week's update:** 13 Update for Next Week.docx
+- **Testing/troubleshooting:** 14 Check the Setup.docx
 
-The installed package number appears in each generated document header. Use that package number, not Windows file dates, to identify which System release you have. Generated file dates are deterministic packaging metadata and are not release/install timestamps.
+**The DO buys the schedule during Thursday's buy/sell.** Post-buy/sell corrections implement that approved direction and receive QC; there is no routine second DO buy. A material solution outside the recorded buy/sell direction returns to the DO.
 
-Replace [bracketed text] in prompts with your information. Write Unknown when needed. You do not have to fill every form before starting.
+The assistant helps; humans build, edit, approve and publish the schedule. A model recommendation is never an approval. Every waiver still goes through the DO and the applicable waiver authority.
+
+Keep squadron guidance in **Local Guidance**. Keep each week's inputs, schedules and working record in that week's folder. **System** contains replaceable instructions and blank forms. Never save completed work inside System.
+
+The package number in each generated document header identifies the installed System release. Replace [bracketed text] in prompts with your information. Write Unknown when needed.

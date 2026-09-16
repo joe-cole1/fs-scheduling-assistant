@@ -1,18 +1,18 @@
-# Hand off to another user
+# Hand off an active week
 
-Use this when changing users or chats. No shared-chat feature or export is required.
+Use this only when an already-started execution week is changing users or chats. A normal fresh chat for a new week does not need a handoff.
 
 ## Outgoing user
 
-Paste this:
+Paste:
 
 ```text
 Draft a concise current-state handoff using the Session Handoff fields.
 Include week, as-of, phase, next action, exact active and baseline versions,
-current source files to transfer, DO directions, sell/QC dispositions, scoped
-human confirmations, waiver authority AND DO status, buy/publication/daily
-sign-offs, completed results and earned credit, remaining firm and conditional
-events, open findings, scenario state and stable playbook candidate decisions.
+current source files to transfer, DO directions, buy/sell/QC dispositions, scoped
+human confirmations, waiver authority AND DO status, publication/daily sign-offs,
+completed results and earned credit, remaining firm and conditional events, open
+findings, scenario state and stable playbook candidate decisions.
 State the test condition and historical cutoff. Preserve attribution and scope.
 Do not carry superseded discussion forward as current direction.
 Provide a Word document if supported; otherwise provide text I can paste into
@@ -23,9 +23,9 @@ Review and save **Current Handoff.docx** in **Working Record**. If needed, paste
 
 ## Receiving user
 
-Open a new ChatGPT Mil chat. Upload **UPLOAD THIS TO START.docx**, current local guidance and references, **Current Handoff.docx**, the current decision record and the actual files listed in the handoff. Include schedule baselines with their roles clearly labeled.
+Open a new ChatGPT Mil chat. Upload **UPLOAD THIS TO START.docx**, current local guidance and references, **Current Handoff.docx**, the current decision record and the actual files listed in the handoff.
 
-Paste this:
+Paste:
 
 ```text
 Read the startup document and approved local guidance. Resume from the attached
