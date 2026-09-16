@@ -67,6 +67,11 @@ class PrepareReleaseTests(unittest.TestCase):
         with patch.dict(os.environ, env), self.assertRaisesRegex(ValueError, 'default branch'):
             p.prepare()
 
+    def test_prerelease_version_is_rejected_explicitly(self):
+        with patch.dict(os.environ, {'RELEASE_VERSION': '0.5.3-rc.1'}, clear=False), \
+             self.assertRaisesRegex(ValueError, 'stable versions only'):
+            p.prepare()
+
     def test_invalid_version_fails_before_network(self):
         with patch.dict(os.environ, {'RELEASE_VERSION': '../bad'}, clear=False), self.assertRaises(ValueError):
             p.prepare()
