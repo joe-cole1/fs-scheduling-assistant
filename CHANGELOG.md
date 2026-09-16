@@ -1,5 +1,13 @@
 # Change log
 
+## Unreleased — automatic patch release versioning
+
+- Make the **Actions → Publish release** Version input optional. A blank value reads GitHub's latest published stable `vMAJOR.MINOR.PATCH` release and increments only the patch component by `0.0.1`.
+- Keep explicit stable versions available for intentional major/minor/patch choices; malformed or prerelease values remain rejected by the normal workflow.
+- Serialize all publication runs under one concurrency group so a blank auto-version run cannot race an explicitly entered version.
+- Preserve safe retry behavior: a failed blank run resolves to the same next patch until that version successfully publishes; after publication the following blank run advances again.
+- Advance the local/development package marker to 0.5.4. This maintainer automation change does not alter scheduling policy, authority, operator guides, Local Guidance or weekly-folder behavior.
+
 ## Unreleased — draft-first immutable release publishing
 
 - Replace the publish-then-build release flow with one manual **Actions → Publish release** workflow. The maintainer enters a version number from the default branch; no manual tag or release publication is required.
