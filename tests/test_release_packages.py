@@ -14,6 +14,20 @@ r = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(r)
 
 
+class FakeResponse:
+    def __init__(self, payload):
+        self.payload = payload
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc, tb):
+        return False
+
+    def read(self):
+        return json.dumps(self.payload).encode()
+
+
 class ReleaseTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
@@ -32,6 +46,19 @@ class ReleaseTests(unittest.TestCase):
             'build_contract': {'legacy': False}, 'workflow_run_url': 'https://example.invalid/run/1'
         }
 
+    def draft(self, **changes):
+        base = {
+            'id': 7,
+            'tag_name': 'untagged-abc123',
+            'name': 'v0.5.3',
+            'draft': True,
+            'immutable': False,
+            'target_commitish': 'a' * 40,
+            'assets': [],
+            'upload_url': 'https://uploads.github.com/repos/synthetic/example/releases/7/assets{?name,label}',
+        }
+        return base | changes
+
     def test_version_validation(self):
         self.assertEqual(r.tag_from_version('0.5.3'), 'v0.5.3')
         self.assertEqual(r.tag_from_version('1.0.0-rc.1'), 'v1.0.0-rc.1')
@@ -39,20 +66,34 @@ class ReleaseTests(unittest.TestCase):
             with self.subTest(value=value), self.assertRaises(ValueError):
                 r.tag_from_version(value)
 
-    def test_release_slot_allows_only_matching_draft_or_empty_slot(self):
+    def test_release_lookup_recognizes_untagged_draft_by_release_name(self):
+        draft = self.draft()
+        with patch.object(r, 'api', return_value=[draft]):
+            self.assertEqual(r.release_for_tag('synthetic/example', 'v0.5.3'), draft)
+
+    def test_release_slot_allows_matching_or_empty_retargetable_draft(self):
         with patch.object(r, 'release_for_tag', return_value=None), patch.object(r, 'remote_tag_commit', return_value=None):
             self.assertIsNone(r.validate_release_slot('synthetic/example', 'v0.5.3', 'a' * 40))
-        draft = {'id': 7, 'tag_name': 'v0.5.3', 'draft': True, 'immutable': False,
-                 'target_commitish': 'a' * 40, 'assets': []}
-        with patch.object(r, 'release_for_tag', return_value=draft), patch.object(r, 'remote_tag_commit', return_value='a' * 40):
-            self.assertEqual(r.validate_release_slot('synthetic/example', 'v0.5.3', 'a' * 40), draft)
-        for changed in (
-            draft | {'draft': False},
-            draft | {'immutable': True},
-            draft | {'target_commitish': 'b' * 40},
-        ):
-            with self.subTest(changed=changed), patch.object(r, 'release_for_tag', return_value=changed), patch.object(r, 'remote_tag_commit', return_value='a' * 40), self.assertRaises(ValueError):
-                r.validate_release_slot('synthetic/example', 'v0.5.3', 'a' * 40)
+
+        matching = self.draft()
+        with patch.object(r, 'release_for_tag', return_value=matching), patch.object(r, 'remote_tag_commit', return_value=None):
+            self.assertEqual(r.validate_release_slot('synthetic/example', 'v0.5.3', 'a' * 40), matching)
+
+        empty_old_source = self.draft(target_commitish='b' * 40)
+        with patch.object(r, 'release_for_tag', return_value=empty_old_source), patch.object(r, 'remote_tag_commit', return_value=None):
+            self.assertEqual(r.validate_release_slot('synthetic/example', 'v0.5.3', 'a' * 40), empty_old_source)
+
+        populated_old_source = self.draft(
+            target_commitish='b' * 40,
+            assets=[{'id': 1, 'name': r.ZIPS[0]}],
+        )
+        with patch.object(r, 'release_for_tag', return_value=populated_old_source), patch.object(r, 'remote_tag_commit', return_value=None), self.assertRaises(ValueError):
+            r.validate_release_slot('synthetic/example', 'v0.5.3', 'a' * 40)
+
+        published = self.draft(draft=False, tag_name='v0.5.3')
+        with patch.object(r, 'release_for_tag', return_value=published), patch.object(r, 'remote_tag_commit', return_value='a' * 40), self.assertRaises(ValueError):
+            r.validate_release_slot('synthetic/example', 'v0.5.3', 'a' * 40)
+
         with patch.object(r, 'release_for_tag', return_value=None), patch.object(r, 'remote_tag_commit', return_value='a' * 40), self.assertRaises(ValueError):
             r.validate_release_slot('synthetic/example', 'v0.5.3', 'a' * 40)
 
@@ -66,12 +107,14 @@ class ReleaseTests(unittest.TestCase):
     def test_build_contract_reads_prospective_source_commit(self):
         requirements = b'package==1\n'
         contract = r.SUPPORTED_REPRO | {'requirements_sha256': hashlib.sha256(requirements).hexdigest()}
+
         def source_bytes(sha, path):
             if path == 'packaging/requirements.txt':
                 return requirements
             if path == 'packaging/reproducibility.json':
                 return json.dumps(contract).encode()
             self.fail(path)
+
         with patch.object(r, 'git_show_bytes', side_effect=source_bytes):
             loaded = r.tagged_build_contract('c' * 40, 'v0.5.3')
         self.assertFalse(loaded['legacy'])
@@ -101,6 +144,30 @@ class ReleaseTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             r.asset_plan(extra, self.folder, lambda asset: b'')
 
+    def test_direct_draft_asset_upload_uses_returned_upload_url_and_raw_bytes(self):
+        path = self.folder / r.ZIPS[0]
+        draft = self.draft()
+        seen = {}
+
+        def fake_urlopen(request, timeout):
+            seen['url'] = request.full_url
+            seen['data'] = request.data
+            seen['authorization'] = request.get_header('Authorization')
+            seen['content_type'] = request.get_header('Content-type')
+            seen['timeout'] = timeout
+            return FakeResponse({'name': path.name, 'state': 'uploaded', 'id': 99})
+
+        with patch.dict(os.environ, {'GH_TOKEN': 'synthetic-token'}), patch.object(r, 'urlopen', side_effect=fake_urlopen):
+            result = r.upload_asset(draft, path)
+
+        self.assertEqual(result['id'], 99)
+        self.assertTrue(seen['url'].startswith('https://uploads.github.com/repos/synthetic/example/releases/7/assets?'))
+        self.assertIn('name=Pantons_Setup.zip', seen['url'])
+        self.assertEqual(seen['data'], path.read_bytes())
+        self.assertEqual(seen['authorization'], 'Bearer synthetic-token')
+        self.assertEqual(seen['content_type'], 'application/zip')
+        self.assertEqual(seen['timeout'], 180)
+
     def test_structured_notes_include_downloads_and_checksums(self):
         r.verify_build(self.folder, '0.5.3')
         summary = ('## What changed\n\nChange.\n\n'
@@ -122,37 +189,53 @@ class ReleaseTests(unittest.TestCase):
 
     def test_release_summary_reports_current_migration_status(self):
         manifest = {'migrations': [{'id': 'P-1', 'introduced_in': '0.5.3', 'action': 'review-and-merge'}]}
+
         def source_bytes(sha, path):
             if path == 'packaging/update-note.md':
                 return b'Automation changed.'
             if path == 'packaging/persistent-artifacts.json':
                 return json.dumps(manifest).encode()
             self.fail(path)
+
         with patch.object(r, 'git_show_bytes', side_effect=source_bytes):
             result = r.release_summary(self.state)
         self.assertIn('Automation changed.', result)
         self.assertIn('PERSISTENT MIGRATIONS.docx', result)
         self.assertIn('Passed in this release workflow', result)
 
-    def test_ensure_draft_creates_only_mutable_draft(self):
-        created = {'id': 7, 'tag_name': 'v0.5.3', 'draft': True, 'immutable': False,
-                   'target_commitish': 'a' * 40, 'assets': []}
+    def test_ensure_draft_retargets_empty_untagged_draft(self):
+        old = self.draft(target_commitish='b' * 40)
+        retargeted = self.draft(target_commitish='a' * 40)
         calls = []
+
         def api(endpoint, method='GET', payload=None):
             calls.append((endpoint, method, payload))
-            if method == 'POST':
-                self.assertTrue(payload['draft'])
+            if method == 'PATCH':
+                self.assertEqual(payload['tag_name'], 'v0.5.3')
                 self.assertEqual(payload['target_commitish'], 'a' * 40)
-                return created
-            return created
-        with patch.object(r, 'validate_release_slot', return_value=None), patch.object(r, 'api', side_effect=api):
+                return retargeted
+            return retargeted
+
+        with patch.object(r, 'validate_release_slot', return_value=old), patch.object(r, 'api', side_effect=api):
             release = r.ensure_draft(self.state, 'body')
         self.assertTrue(release['draft'])
-        self.assertTrue(any(method == 'POST' for _, method, _ in calls))
+        self.assertEqual(release['target_commitish'], 'a' * 40)
+        self.assertTrue(any(method == 'PATCH' for _, method, _ in calls))
+
+    def test_validate_draft_accepts_github_untagged_identity(self):
+        r.validate_draft(self.draft(), self.state)
+        with self.assertRaises(ValueError):
+            r.validate_draft(self.draft(name='v0.5.4'), self.state)
+        with self.assertRaises(ValueError):
+            r.validate_draft(self.draft(tag_name='other'), self.state)
 
     def test_published_validation_requires_complete_assets(self):
-        published = {'tag_name': 'v0.5.3', 'draft': False,
-                     'assets': [{'name': n} for n in r.FILES]}
+        published = {
+            'tag_name': 'v0.5.3',
+            'name': 'v0.5.3',
+            'draft': False,
+            'assets': [{'name': n} for n in r.FILES],
+        }
         r.validate_published(published, self.state)
         with self.assertRaises(ValueError):
             r.validate_published(published | {'draft': True}, self.state)
