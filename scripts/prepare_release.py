@@ -1,4 +1,4 @@
-"""Prepare a prospective release from the current default-branch commit."""
+"""Prepare a prospective stable release from the current default-branch commit."""
 import json
 import os
 from pathlib import Path
@@ -9,6 +9,10 @@ import release_packages as r
 def prepare():
     version = os.environ['RELEASE_VERSION'].strip()
     tag = r.tag_from_version(version)
+    if '-' in version:
+        raise ValueError(
+            'Publish release currently supports stable versions only. Use a version such as 0.5.3, not a prerelease suffix.'
+        )
     repo = os.environ['GITHUB_REPOSITORY']
     default_branch = os.environ['DEFAULT_BRANCH']
     selected_ref = os.environ.get('WORKFLOW_REF_NAME', default_branch)
