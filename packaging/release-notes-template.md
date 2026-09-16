@@ -1,29 +1,27 @@
-# Release notes template
+# Release notes structure
 
-Copy the sections below into the release description and replace the brackets. Write for schedulers: describe what changed and what they need to do. Delete irrelevant detail inside a section, but keep the three required section headings exactly as written. Click **Generate release notes** for the merged-PR/contributor list, then retain that list below your summary.
+The **Publish release** workflow now composes and publishes release notes automatically while the release is still a draft. Maintainers do not manually create or publish a GitHub Release for the normal path.
 
-The release workflow recognizes **What changed**, **What you need to do**, and **Validation and known limitations** as the structured human summary. If those headings are absent, the generated download block will explicitly say that no structured human validation summary was present; GitHub-generated PR notes are not treated as validation evidence. The workflow preserves all text outside its marked generated block.
-
-Do not call a release tested in ChatGPT Mil unless actual results support that statement. A successful build only verifies package checks. Do not use real operational examples in release notes.
-
----
+The workflow preserves this structure:
 
 ## What changed
 
-[Two or three concrete changes and why they matter to schedulers. State any approved workflow or local-policy changes explicitly; say unchanged only after review.]
+Taken from `packaging/update-note.md` in the exact source commit being released. Keep that file short, user-facing and specific to the release.
 
 ## What you need to do
 
-Existing setups: download Update_Existing_Setup.zip and apply it when starting next week's planning. Replace System and START HERE; preserve Local Guidance and weekly work. If the update contains PERSISTENT MIGRATIONS.docx, follow its human review/merge instructions rather than overwriting persistent local files.
-
-First installation: choose the Pantons or first-time squadron setup ZIP, extract it and open START HERE.docx.
-
-[Describe any additional migration or compatibility requirement. Use None if there is none.]
+Generated from the standard update/install procedure plus any persistent migration declared for the requested version. Existing setups are never told to overwrite Local Guidance automatically.
 
 ## Validation and known limitations
 
-[Identify actual document review and tests performed. Separate Passed, Failed and Not run. Name relevant unresolved problems and who is affected. Do not turn GitHub-generated PR descriptions or automated package checks into a model/operational validation claim.]
+Generated only after the release workflow has passed persistent-state validation, two independent package builds, package/source-coverage checks, byte-reproducibility comparison and the regression test suite. The notes explicitly distinguish those checks from native Word visual review, GenAI.mil behavior and operational readiness.
 
 ## Changes and contributors
 
-[Keep GitHub's generated merged-PR list, contributor credits and full comparison link here. Review it before publishing.]
+GitHub-generated merged-PR/contributor notes are appended automatically using GitHub's release-notes generator for the requested tag/source commit.
+
+## Downloads and verification
+
+The workflow appends a generated block with the three operator ZIP links, manifest, SHA-256 file, source commit and per-ZIP checksums. It verifies the draft asset bytes before publishing.
+
+Do not manually edit an in-progress draft or click **Publish release** while the workflow is incomplete. If a run fails after draft creation, rerun the same version to resume the matching draft. An already-published immutable release is never repaired or replaced; use a new version instead.
