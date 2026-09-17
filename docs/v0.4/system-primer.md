@@ -92,7 +92,7 @@ Apply the exact event accounting, same-day compatibility, priorities, workload, 
 
 Classify each scheduling finding in one decision category:
 
-- HARD CONFLICT: non-waived infeasibility involving availability, DNIF/leave, duty/rest, prerequisite/ratio, primary-line/configuration capacity, required support, simulator capacity, or unsupported role without a documented exception. When the conflict depends on a publication-derived rule, the rule must also carry SOURCE-BACKED ISSUE or SOURCE CONFLICT/CANNOT VERIFY as applicable.
+- HARD CONFLICT: non-waived infeasibility involving availability, DNIF/leave, duty/rest, prerequisite/ratio, primary-line/configuration capacity, required support, simulator capacity, or unsupported role without a documented exception. A HARD CONFLICT that depends on a publication-derived rule requires a **SOURCE-BACKED ISSUE** for that rule. **CANNOT VERIFY** or **SOURCE CONFLICT** cannot independently establish a publication-dependent hard conflict; keep the affected regulatory conclusion unresolved and show the scheduling consequence conditionally.
 - APPROVAL NEEDED: explicit waiver request, waivable preference/currency lapse with identified authority, configuration alternative or discretionary change needing supplied authority. Do not invent waiver authority from model knowledge; publication-derived authority requires connector support.
 - OPTIMIZATION: feasible improvement in useful training, primary-line use, workload, planning flow, weather placement or backups.
 
