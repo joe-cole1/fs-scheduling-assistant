@@ -39,6 +39,7 @@ Maintain a **Weekly Publication Rule Ledger** with stable P-### IDs during the e
 
 | P-ID | Check / applicability | Retrieved requirement | Publication number/title | Version/effective/current status | Paragraph/page/locator | Retrieved date/time | QC outcome / notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| [P-###] | [check / person / activity] | [retrieved rule text or concise paraphrase] | [publication number/title] | [version/effective/current status] | [paragraph/page/locator] | [date/time/timezone] | [SOURCE-BACKED OK / SOURCE-BACKED ISSUE / CANNOT VERIFY / SOURCE CONFLICT plus notes] |
 
 Tuesday planning builds the initial ledger and currency/qualification baseline for relevant people/activities. Thursday full QC re-queries, refreshes and expands the ledger against the complete near-final schedule before buy/sell. Post-buy/sell corrections and execution reflows re-query the affected publication rules as delta checks when a person, event, role, timing, prerequisite or other regulatory fact changes. A prior same-week ledger entry may support continuity, but do not use it to bypass a required Tuesday/Thursday/delta connector check.
 
