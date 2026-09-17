@@ -1,5 +1,12 @@
 # Change log
 
+## Unreleased — release publication hardening
+
+- Make `packaging/version.txt` the authoritative stable release identity. A blank **Actions → Publish release** Version uses the reviewed source value; an entered Version is only a confirmation and must match exactly.
+- Remove hard-coded package numbering from `packaging/update-note.md` so release-note prose cannot disagree with the generated tag/package identity.
+- Retry transient GitHub asset-upload failures with bounded backoff. After an ambiguous failure, re-read the draft before another POST: continue if the expected asset was actually saved and byte-matches, or delete only an incomplete expected `starter` placeholder before retrying.
+- Preserve draft-first immutability: differing completed assets, unexpected assets, published releases and existing mismatched tags remain hard stops. No scheduling policy, operator authority or persistent installed state changes are introduced by this maintainer hardening.
+
 ## Unreleased — next-week inference and source integrity
 
 - Default normal pre-execution weekly conversations to the next execution week unless a human selects another period, while execution reflows stay on the current published week and active handoffs/historical work preserve their recorded or explicit periods; infer dates, task/state and schedule roles from supplied evidence instead of requiring a startup run-control field list.
@@ -26,6 +33,7 @@
 - Serialize all publication runs under one concurrency group so a blank auto-version run cannot race an explicitly entered version.
 - Preserve safe retry behavior: a failed blank run resolves to the same next patch until that version successfully publishes; after publication the following blank run advances again.
 - Advance the local/development package marker to 0.5.4. This maintainer automation change does not alter scheduling policy, authority, operator guides, Local Guidance or weekly-folder behavior.
+- This version-selection behavior is superseded for future releases by the source-authoritative release publication hardening above.
 
 ## Unreleased — draft-first immutable release publishing
 
