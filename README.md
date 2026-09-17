@@ -19,17 +19,25 @@ Moving from the earlier Markdown kit? Use a full setup ZIP once and carry over a
 The operator manual follows the actual workday instead of making schedulers navigate by internal phase name:
 
 1. **Monday — Inputs due.** All scheduling inputs are due NLT COB. Use **02 Monday - Inputs Due.docx**.
-2. **Tuesday — Start the week.** Create the weekly folder/chat, upload startup/local/current products, and establish run controls with **03 Tuesday - Start the Week.docx**.
-3. **Tuesday — Plan the week.** Reconcile gaps/conflicts, identify checkrides/evaluations and directed DV/senior-leader flyers, and plan upgrades/resources with **04 Tuesday - Plan the Week.docx**.
+2. **Tuesday — Start the week.** Create the weekly folder/chat, enable **DoW Policies Beta (GAMECHANGER)** in the main Gemini conversation when available, upload startup/local/current products, and establish run controls with **03 Tuesday - Start the Week.docx**.
+3. **Tuesday — Plan the week.** Reconcile gaps/conflicts, identify checkrides/evaluations and directed DV/senior-leader flyers, plan upgrades/resources, and build the initial GAMECHANGER-backed publication-rule/currency baseline with **04 Tuesday - Plan the Week.docx**.
 4. **Wednesday — Build.** Schedulers build the bulk of the weekly schedule while Gemini provides bounded support using **05 Wednesday - Build the Schedule.docx**.
-5. **Thursday — Full QC.** Human scheduler QC is followed by a fresh whole-schedule Gemini review using **06 Thursday - Full Schedule QC.docx**.
+5. **Thursday — Full QC.** Human scheduler QC is followed by a fresh whole-schedule Gemini review. Gemini also re-queries GAMECHANGER against the actual near-final schedule and refreshes the publication-grounded QC before Buy/Sell using **06 Thursday - Full Schedule QC.docx**.
 6. **Thursday — Optional DO adversarial review.** The DO may independently challenge the schedule in a separate Terra or Grok conversation using **07 Thursday - DO Adversarial Review.docx**.
-7. **Thursday — Schedule buy/sell.** Schedulers present the selected version and the DO makes the scheduling decision using **08 Thursday - Schedule Buy-Sell.docx**. **This is the formal DO buy event when the DO explicitly approves the schedule.**
-8. **Thursday–Friday — Implement buy/sell directions.** Schedulers make the directed changes and Gemini verifies implementation/cascades using **09 Thursday-Friday - Apply Buy-Sell Changes.docx**. There is no routine second DO buy. A materially different solution outside the recorded direction returns to the DO.
-9. **Friday — Final QC and publish.** Verify faithful implementation, resolve any required supplemental DO decision, and publish using **10 Friday - Final QC and Publish.docx**. Publication is a separate human action.
-10. **Execution week — Reflows.** Analyze changes from the published weekly baseline and current signed daily schedules using **11 Execution Week - Reflows.docx**.
+7. **Thursday — Schedule buy/sell.** Schedulers present the selected version and the DO makes the scheduling decision using **08 Thursday - Schedule Buy-Sell.docx**. **This is the formal DO buy event when the DO explicitly approves the schedule.** Publication-QC issues and unverified items remain visible in the decision package.
+8. **Thursday–Friday — Implement buy/sell directions.** Schedulers make the directed changes and Gemini verifies implementation/cascades. Changes that affect publication-driven requirements receive GAMECHANGER delta checks using **09 Thursday-Friday - Apply Buy-Sell Changes.docx**. There is no routine second DO buy. A materially different solution outside the recorded direction returns to the DO.
+9. **Friday — Final QC and publish.** Verify faithful implementation, preserve publication-QC exceptions/limits, resolve any required supplemental DO decision, and publish using **10 Friday - Final QC and Publish.docx**. Publication is a separate human action.
+10. **Execution week — Reflows.** Analyze changes from the published weekly baseline and current signed daily schedules; re-query GAMECHANGER only for publication-driven checks affected by the reflow using **11 Execution Week - Reflows.docx**.
 
 The five internal phases still follow actual work status. A calendar day does not automatically create phase advancement, approval or publication.
+
+## Publication-grounded regulatory QC
+
+For publication-derived currency, qualification, crew-rest/duty, evaluation, syllabus/prerequisite, event-credit, recurring-training and similar regulatory requirements, the main Gemini workflow uses **DoW Policies Beta (GAMECHANGER)** as the required AI-side publication source. A regulatory finding must identify a connector-retrieved applicable publication plus a usable paragraph/page/locator. Gemini may calculate and reason from that retrieved rule using the squadron's actual tracker/schedule data.
+
+The system does **not** allow model memory, generic military knowledge or ordinary web search to fill a missing regulatory rule. Results are reported as **SOURCE-BACKED OK**, **SOURCE-BACKED ISSUE**, **CANNOT VERIFY**, or **SOURCE CONFLICT**. If GAMECHANGER is unavailable, normal scheduling analysis continues but publication-based regulatory checks remain CANNOT VERIFY. A source-backed result is evidence only; it does not grant approval or a waiver.
+
+Tuesday creates the initial **Weekly Publication Rule Ledger** with stable P-### IDs. Thursday refreshes it against the complete near-final schedule before Buy/Sell. Post-Buy/Sell changes and execution reflows re-query only affected publication rules when applicability changes. The system never summarizes this as “fully compliant”; the strongest clean result is “No source-backed conflicts found in the checks performed,” with any CANNOT VERIFY/SOURCE CONFLICT items still listed.
 
 ## What the Thursday buy/sell approves
 
@@ -45,14 +53,14 @@ If implementing a direction is infeasible or requires a materially different sol
 
 Use the trackers, calendars and schedules the squadron already maintains. Blank forms capture missing guidance and changes; they do not require retyping supplied products. Schedulers build and edit the schedule; humans approve and publish it.
 
-Prefer one main Gemini conversation per execution week. The optional DO adversarial review is intentionally separate and never becomes an automatic second scheduler. A Word handoff plus the actual source files lets another user continue in a new chat. Shared-chat features, APIs, connectors and custom software are not required.
+Prefer one main Gemini conversation per execution week. The optional DO adversarial review is intentionally separate and never becomes an automatic second scheduler. The core scheduling workflow does not depend on GAMECHANGER, but **publication-grounded regulatory QC does**; no connector means those checks stay CANNOT VERIFY rather than falling back to memory or web search. A Word handoff plus the actual source files lets another user continue in a new chat. Shared-chat features, APIs and custom software are not required.
 
-DOCX/package structure checks are separate from model behavior. **Operational GenAI.mil behavior still requires the documented rehearsal/pilot validation.** Use only systems and locations authorized for the material; actual operational data stays outside this repository.
+DOCX/package structure checks are separate from model or connector behavior. **Operational GenAI.mil/GAMECHANGER behavior still requires the documented rehearsal/pilot validation.** Use only systems and locations authorized for the material; actual operational data stays outside this repository.
 
 ## For maintainers
 
 Read [AGENTS.md](AGENTS.md), [architecture](ARCHITECTURE.md), [approved design decisions](docs/v0.4/design-decisions.md), [the primer](docs/v0.4/system-primer.md), [validation plan](docs/v0.4/validation-plan.md), and [packaging instructions](packaging/README.md). Markdown is maintained source; release ZIPs are the operator product. Generated ZIPs are not stored in the repository tree.
 
-To publish after a reviewed PR is merged, open **Actions → Publish release** and run it from `main`. Normally leave **Version** blank; the workflow increments the latest published stable release by `0.0.1` (for example, `0.5.3` becomes `0.5.4`). Enter a stable version without a leading `v` only when you deliberately want a different version. The workflow builds/tests first, generates release notes, creates or resumes a matching draft release, attaches and verifies all assets, then publishes the release as its final action. **Do not manually create/publish the normal release or move an existing tag.** Package updates are manual and normally adopted at the next scheduling-week boundary.
+To publish after a reviewed PR is merged, open **Actions → Publish release** and run it from `main`. Normally leave **Version** blank; the workflow increments the latest published stable release by `0.0.1` (for example, `0.5.4` becomes `0.5.5`). Enter a stable version without a leading `v` only when you deliberately want a different version. The workflow builds/tests first, generates release notes, creates or resumes a matching draft release, attaches and verifies all assets, then publishes the release as its final action. **Do not manually create/publish the normal release or move an existing tag.** Package updates are manual and normally adopted at the next scheduling-week boundary.
 
 No open-source license has been selected. The owner decides licensing and public distribution.
