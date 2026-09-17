@@ -7,7 +7,8 @@ from pathlib import Path
 import re
 import subprocess
 import sys
-from urllib.error import HTTPError
+import time
+from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
@@ -22,6 +23,18 @@ SUPPORTED_REPRO = {'schema_version': 1, 'package_format': 1, 'python_version': '
 LEGACY_TAG = 'v0.4.1'
 LEGACY_REQUIREMENTS = 'packaging/legacy/v0.4.1-requirements.txt'
 API_VERSION = '2026-03-10'
+TRANSIENT_UPLOAD_STATUS = {429, 500, 502, 503, 504}
+UPLOAD_ATTEMPTS = 4
+
+
+class AssetUploadError(ValueError):
+    """Release-asset upload failure with enough detail to decide whether retry is safe."""
+
+    def __init__(self, name, message, status=None, detail=''):
+        super().__init__(f'Asset upload failed for {name}: {message}')
+        self.name = name
+        self.status = status
+        self.detail = detail
 
 
 def run(*args, input=None):
@@ -40,7 +53,8 @@ def api(endpoint, method='GET', payload=None):
     args = ['gh', 'api', endpoint, '--method', method]
     if payload is not None:
         args += ['--input', '-']
-    return json.loads(run(*args, input=json.dumps(payload) if payload is not None else None))
+    output = run(*args, input=json.dumps(payload) if payload is not None else None)
+    return json.loads(output) if output else None
 
 
 def tag_from_version(version):
@@ -287,6 +301,16 @@ def ensure_draft(state, body):
     return validate_draft(release, state)
 
 
+def remove_incomplete_expected_assets(repo, release):
+    """Remove only failed expected draft assets so a safe rerun can resume."""
+    removed = False
+    for asset in release.get('assets', []):
+        if asset.get('name') in FILES and asset.get('state', 'uploaded') != 'uploaded':
+            api(f'repos/{repo}/releases/assets/{asset["id"]}', 'DELETE')
+            removed = True
+    return api(f'repos/{repo}/releases/{release["id"]}') if removed else release
+
+
 def asset_plan(release, folder, download_asset):
     by_name = {}
     for asset in release.get('assets', []):
@@ -297,7 +321,10 @@ def asset_plan(release, folder, download_asset):
         if len(matches) > 1:
             raise ValueError(f'Duplicate draft release asset: {name}')
         if matches:
-            if download_asset(matches[0]) != (folder / name).read_bytes():
+            asset = matches[0]
+            if asset.get('state', 'uploaded') != 'uploaded':
+                raise ValueError(f'Draft release asset is incomplete: {name}')
+            if download_asset(asset) != (folder / name).read_bytes():
                 raise ValueError(
                     f'Existing draft asset differs: {name}. Do not overwrite it; inspect the draft or use a new version.'
                 )
@@ -336,10 +363,58 @@ def upload_asset(release, path):
             result = json.loads(response.read().decode())
     except HTTPError as exc:
         detail = exc.read().decode(errors='replace')
-        raise ValueError(f'Asset upload failed for {path.name}: HTTP {exc.code}: {detail}') from exc
+        raise AssetUploadError(path.name, f'HTTP {exc.code}: {detail}', status=exc.code, detail=detail) from exc
+    except (URLError, TimeoutError) as exc:
+        raise AssetUploadError(path.name, f'network error: {exc}', detail=str(exc)) from exc
     if result.get('name') != path.name or result.get('state') != 'uploaded':
-        raise ValueError(f'GitHub did not confirm a completed upload for {path.name}.')
+        raise AssetUploadError(path.name, 'GitHub did not confirm a completed upload.')
     return result
+
+
+def reconcile_failed_upload(repo, release, path, download_asset):
+    """Resolve an ambiguous upload response before deciding whether another POST is safe."""
+    refreshed = api(f'repos/{repo}/releases/{release["id"]}')
+    matches = [asset for asset in refreshed.get('assets', []) if asset.get('name') == path.name]
+    if len(matches) > 1:
+        raise ValueError(f'Duplicate draft release asset after upload failure: {path.name}')
+    if not matches:
+        return None, False
+
+    asset = matches[0]
+    if asset.get('state', 'uploaded') != 'uploaded':
+        api(f'repos/{repo}/releases/assets/{asset["id"]}', 'DELETE')
+        return None, True
+
+    if download_asset(asset) != path.read_bytes():
+        raise ValueError(
+            f'GitHub saved {path.name} after an ambiguous upload response, but its bytes differ. '
+            'Do not overwrite it; inspect the draft.'
+        )
+    return asset, False
+
+
+def upload_error_is_retryable(exc, removed_incomplete):
+    if removed_incomplete or exc.status is None or exc.status in TRANSIENT_UPLOAD_STATUS:
+        return True
+    return exc.status == 422 and 'already_exists' in exc.detail
+
+
+def upload_asset_with_retry(repo, release, path, download_asset, attempts=UPLOAD_ATTEMPTS, sleep=time.sleep):
+    """Retry transient uploads without risking duplicate or differing draft assets."""
+    for attempt in range(1, attempts + 1):
+        try:
+            return upload_asset(release, path)
+        except AssetUploadError as exc:
+            recovered, removed_incomplete = reconcile_failed_upload(repo, release, path, download_asset)
+            if recovered:
+                print(f'GitHub saved and verified {path.name} despite the failed upload response; continuing.')
+                return recovered
+            if not upload_error_is_retryable(exc, removed_incomplete) or attempt == attempts:
+                raise
+            delay = 2 ** (attempt - 1)
+            print(f'{exc} Retrying in {delay}s ({attempt}/{attempts}).')
+            sleep(delay)
+    raise AssertionError('unreachable')
 
 
 def validate_published(release, state):
@@ -362,6 +437,7 @@ def publish():
     changes = generated_changes(state)
     body = notes(human + ('\n\n' + changes if changes else ''), state, folder)
     release = ensure_draft(state, body)
+    release = remove_incomplete_expected_assets(repo, release)
 
     def download_asset(asset):
         return run_bytes(
@@ -371,7 +447,7 @@ def publish():
 
     missing = asset_plan(release, folder, download_asset)
     for name in missing:
-        upload_asset(release, folder / name)
+        upload_asset_with_retry(repo, release, folder / name, download_asset)
 
     refreshed = api(f'repos/{repo}/releases/{release["id"]}')
     validate_draft(refreshed, state)
@@ -412,7 +488,7 @@ if __name__ == '__main__':
         raise SystemExit('Usage: release_packages.py publish')
     try:
         publish()
-    except (ValueError, KeyError, subprocess.CalledProcessError) as exc:
+    except (ValueError, KeyError, OSError, subprocess.CalledProcessError) as exc:
         if isinstance(exc, subprocess.CalledProcessError) and exc.stderr:
             print(exc.stderr, file=sys.stderr)
         raise SystemExit(str(exc)) from exc
