@@ -4,13 +4,13 @@ Reports are advisory. Provide readable chat output and a Word document when supp
 
 ## Common header
 
-Week; phase/task; as-of/timezone; operational or historical test condition/cutoff; active schedule; comparison baseline(s); local profile/playbook versions; DoW Policies Beta (GAMECHANGER) availability; material input limitations. Explicitly distinguish schedule approval/publication state from analysis phase.
+The assistant generates the header from supplied evidence; operators do not complete a startup field list. For normal pre-execution weekly work, default to the next execution week unless explicitly told otherwise; execution reflows use the current published execution week, active-week handoffs keep their recorded week, and historical work keeps its explicit period/cutoff. Infer phase/task, as-of/timezone, active schedule, comparison baseline(s), local profile/playbook versions, GAMECHANGER availability and material input limitations from the current date, selected guide, folder/file names, schedule headers, uploads and conversation. State only consequential assumptions and ask one focused question if a controlling version or period remains materially ambiguous. Explicitly distinguish schedule approval/publication state from analysis phase.
 
 ## Phase-specific outputs
 
 | Phase | Required output |
 | --- | --- |
-| Product gathering | Existing products/gaps and affected checks; confirmed guidance versus proposed forms; planning answer, priority evidence and windows/resources/prerequisites; initial P-### Weekly Publication Rule Ledger and currency/regulatory exceptions |
+| Product gathering | Assistant-inferred run state; product manifest using CURRENT / STALE / PARTIAL / CONFLICTED / INTEGRITY FAILED / UNREADABLE / SUPERSEDED; affected checks; confirmed guidance versus proposed forms; planning answer, priority evidence and windows/resources/prerequisites; initial P-### Weekly Publication Rule Ledger and currency/regulatory exceptions |
 | Initial draft | Leadership summary; hard conflicts; approval needs; ranked exact changes; lines/spares/configurations/formations/backups; upgrade flow/outlook; comparable IP workload; weekly moderate downside; draft change log; questions and playbook candidates; Thursday refreshed publication-grounded QC |
 | Buy/sell | Feasibility and uncertainty; intended outcomes and progress; checkrides/at-risk upgrades; primary-line use and resource/IP capacity; tradeoffs; unresolved items; numbered DO decision requests; publication-QC SOURCE-BACKED ISSUE/SOURCE CONFLICT/CANNOT VERIFY items; exact DO buy statement when given |
 | Post-buy/sell implementation/QC | Every buy/sell decision's disposition; exact corrections versus new proposals; downstream and complete-schedule QC; affected P-### delta checks; human-confirmed closures; remaining issues/waivers; whether any material deviation requires a supplemental DO decision |

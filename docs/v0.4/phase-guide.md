@@ -9,7 +9,7 @@ For Pantons, the normal battle rhythm is:
 | Monday | All scheduling inputs due NLT COB | No automatic action or assumption of completeness |
 | Tuesday — start | Create weekly workspace/chat, enable GAMECHANGER when available and upload startup/local/current products | Gemini confirms readable sources, connector availability, run controls and gaps |
 | Tuesday — plan | Ask planning questions; identify checkrides/evaluations, directed DV/senior-leader flyers and plan upgrades | Gemini reconciles products, builds the planning picture, queries GAMECHANGER for relevant publication rules and creates the initial P-### rule/currency baseline |
-| Wednesday | Schedulers build the bulk of the schedule | Gemini supports bounded planning questions, conflict checks and cascade analysis |
+| Wednesday — build and integration review | Schedulers build the bulk of the schedule; Flight Commanders and functional owners verify their inputs and assign unresolved issues | Gemini supports bounded planning questions, conflict/cascade checks and an exception-based integration-review summary; Wednesday is not approval |
 | Thursday — QC | Schedulers conduct QC on the near-final draft | Gemini performs a fresh full-schedule review and refreshes/expands publication-grounded QC through GAMECHANGER |
 | Thursday — optional DO review | DO may independently challenge the schedule | Separate Terra or Grok adversarial review; read-only, optional, not part of scheduler flow |
 | Thursday — buy/sell | Schedulers present the chosen version; DO decides and buys the weekly schedule if satisfied | Gemini prepares decision support, surfaces publication-QC exceptions/limits and records the explicit DO buy plus directions |
@@ -18,6 +18,8 @@ For Pantons, the normal battle rhythm is:
 | Execution week | Daily scheduler/Top 3 manage bounded changes; DO handles changes beyond delegation | Gemini analyzes reflows against current baselines and runs GAMECHANGER delta checks for affected regulatory facts |
 
 The weekday labels describe the normal Pantons rhythm. Work status still controls the internal phase. A weekday, filename or meeting title does not create approval when the required human action did not occur.
+
+Unless a human explicitly selects another period, normal pre-execution weekly work defaults to the next execution week. Execution reflows use the current published execution week; handoffs/historical work keep their recorded or explicit periods. Gemini infers the exact dates, current task, as-of state, manifest and version roles from the current date, approved counting week, guide, folder/file names, schedule headers, uploads and conversation. It drafts run control itself and asks only when a material ambiguity remains.
 
 The normal scheduler conversation uses Gemini 3.7 Flash when available. The optional DO adversarial review uses a separate GPT-5.6 Terra or Grok Expert 4.5 conversation. Raw reviewer output does not become scheduler direction. Only DO-accepted human direction returns to the main Gemini workflow.
 
@@ -48,6 +50,10 @@ Then use the currency tracker, Letter of Xs, upgrade/evaluation status and plann
 Schedulers build the bulk of the schedule. Gemini provides bounded analysis during construction: check specific placements, identify hard blockers, examine checkride/DV/upgrade placement, test a cascade and identify major resource constraints. The purpose is to help humans construct the schedule without turning every intermediate draft into a complete weekly QC cycle. If a bounded answer depends on a publication-derived rule, the same GAMECHANGER source gate applies.
 
 **Inputs:** a named scheduler-built draft and exact times, known products supporting affected assignments, and a human-selected draft baseline or explicit None for the first draft. Do not call assignments feasible where prerequisites, resources, duty checks or required publication evidence are unresolved.
+
+### Wednesday — Cross-Functional Schedule Integration Review
+
+Before Thursday QC, Flight Commanders and material functional owners verify that their products are represented in the exact integrated draft, resolve or assign source/personnel/resource conflicts, and identify specific DO decisions needed Thursday. Record the version proceeding to QC. This is not the Buy, Buy/Sell or an approval event.
 
 ### Thursday — full QC
 

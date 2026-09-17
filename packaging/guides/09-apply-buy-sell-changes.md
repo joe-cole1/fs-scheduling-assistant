@@ -1,49 +1,40 @@
-# Thursday–Friday — Apply buy/sell changes
+# Thursday–Friday — Apply Buy/Sell changes
 
-Use this after the Thursday buy/sell. The DO has already bought the schedule as part of that meeting. Schedulers now implement the recorded buy/sell directions; Gemini verifies implementation and downstream effects. **This is not a second approval event.**
+Schedulers apply the DO directions recorded at Thursday's Buy/Sell. Gemini verifies faithful implementation, complete downstream effects and affected publication-rule deltas. This is implementation QC, not a routine second buy.
 
-Upload or identify:
-
-- The corrected active schedule with a new filename/version.
-- The buy/sell-presented schedule.
-- The DO buy statement and decision record.
-- The current Weekly Publication Rule Ledger.
-- Updated products or human confirmations relevant to the corrections.
+Upload or identify the current decision record and corrected schedule. The assistant should infer the Buy/Sell-presented version and latest corrected version from the record, filenames and conversation. If either role is ambiguous, it should ask one focused version question.
 
 Paste:
 
 ```text
-Phase 4 — Post-buy/sell implementation and QC.
-Primary scheduler workflow: Gemini.
-Corrected active schedule: [exact filename/version].
-Buy/sell-presented baseline: [exact filename/version].
-Previous corrected version, if any: [filename/version or NONE].
-DO buy/sell directions: [decision-record filename or recorded directions].
+Perform post-Buy/Sell implementation QC using the current decision record and
+latest clearly identified corrected schedule. Infer the execution week,
+Buy/Sell-presented version, approved directions, and prior corrected version from
+the supplied record and conversation. Ask only if a version role is materially
+ambiguous.
 
-Verify the disposition of EVERY buy/sell decision. Confirm the corrected schedule
-faithfully implements the DO's recorded directions. Find implementation mistakes
-and unintended second- and third-order effects, then check the complete corrected
-schedule for conflicts. Keep new proposed changes separate from directed
-corrections. Flag hard infeasibility and major upgrade risk.
+For every D-### direction show: exact scope; Open / Implemented-QC pending /
+Verified / Human-confirmed / Blocked / Superseded; where it appears in the
+corrected schedule; and the associated QC finding.
 
-For every correction that changes a person, role, event, timing, prerequisite,
-currency/qualification state or other publication-relevant fact, run a delta
-publication QC through DoW Policies Beta (GAMECHANGER). Update the affected P-###
-entries or add new ones. Do not re-search unaffected rules merely for churn, but
-do not rely on the prior ledger when the correction changes applicability.
-Publication-based regulatory conclusions must still identify a connector-retrieved
-publication number/title and paragraph/page/usable locator. No model-memory or web
-fallback is allowed. Use SOURCE-BACKED OK, SOURCE-BACKED ISSUE, CANNOT VERIFY or
-SOURCE CONFLICT.
+Distinguish DIRECTED CORRECTION from NEW PROPOSAL. Check all affected pilots,
+availability, duty boundaries, qualifications, prerequisites, IP/evaluator roles,
+formations, aircraft/configuration, primary lines, protected spares, simulator,
+support, backups, displaced training, later events and complete resulting
+schedule.
 
-Do not request or imply a routine second DO buy. If a direction cannot be
-implemented as approved, or the necessary solution materially exceeds the scope
-of the recorded direction, identify the exact issue and return it to the DO for
-a supplemental decision. Do not silently expand the Thursday buy.
+For any changed person, role, event, timing, prerequisite, currency/qualification
+state or other publication-relevant fact, query DoW Policies Beta (GAMECHANGER)
+for the affected rule and update/add the P-### entry. Preserve unaffected ledger
+continuity. Do not use model memory or ordinary web search as fallback evidence.
+
+If implementation is faithful and feasible, state that no routine second DO buy
+is required and prepare the remaining publication-QC items. If a direction is
+infeasible or the necessary solution materially exceeds the recorded scope,
+return that specific issue to the DO with options for a supplemental decision.
+Do not silently expand the Thursday approval.
 ```
 
-**You should get:** a disposition for every buy/sell direction, implementation/QC findings, affected publication-rule delta results, remaining issues, and any specific item that must return to the DO.
+**You should get:** a disposition for every direction, exact implementation differences, complete cascade QC, affected P-ledger delta results and a clear determination whether a supplemental DO decision is required.
 
-A scoped human confirmation can close the stated QC concern. It does not convert missing GAMECHANGER evidence into SOURCE-BACKED OK. Waivers still require the DO and applicable waiver authority.
-
-**Next:** when the directed changes are implemented and QC'd, follow **10 Friday - Final QC and Publish.docx**.
+**Next:** **10 Friday - Final QC and Publish.docx**.
