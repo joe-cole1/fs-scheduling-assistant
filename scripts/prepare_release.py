@@ -2,45 +2,42 @@
 import json
 import os
 from pathlib import Path
-import re
 
 import release_packages as r
 
-STABLE_TAG_PATTERN = re.compile(r'^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$')
 
-
-def next_patch_version(repo):
-    """Increment the patch component of GitHub's latest published stable release."""
-    release = r.api(f'repos/{repo}/releases/latest')
-    if release.get('draft') or release.get('prerelease'):
-        raise ValueError('GitHub latest release is not a published stable release; enter the version explicitly.')
-    tag = release.get('tag_name', '')
-    match = STABLE_TAG_PATTERN.fullmatch(tag)
-    if not match:
+def source_version():
+    """Read and validate the stable release identity prepared in the source tree."""
+    version = Path('packaging/version.txt').read_text().strip()
+    r.tag_from_version(version)
+    if '-' in version:
         raise ValueError(
-            f'Latest published release tag {tag!r} is not stable semantic version vMAJOR.MINOR.PATCH; '
-            'enter the version explicitly.'
+            'packaging/version.txt must contain a stable version such as 0.5.6, not a prerelease suffix.'
         )
-    major, minor, patch = (int(value) for value in match.groups())
-    return f'{major}.{minor}.{patch + 1}', tag
+    return version
 
 
 def prepare():
     requested_version = os.environ.get('RELEASE_VERSION', '').strip()
     repo = os.environ['GITHUB_REPOSITORY']
+    version = source_version()
+
     if requested_version:
-        version = requested_version
-        previous_tag = None
-        version_source = 'manual'
+        r.tag_from_version(requested_version)
+        if '-' in requested_version:
+            raise ValueError(
+                'Publish release supports stable versions only. Use a version such as 0.5.6, not a prerelease suffix.'
+            )
+        if requested_version != version:
+            raise ValueError(
+                f'Entered version {requested_version} does not match packaging/version.txt ({version}). '
+                'The source tree is authoritative; update the source in a reviewed PR or leave Version blank.'
+            )
+        version_source = 'explicit-match'
     else:
-        version, previous_tag = next_patch_version(repo)
-        version_source = 'automatic-patch'
+        version_source = 'source'
 
     tag = r.tag_from_version(version)
-    if '-' in version:
-        raise ValueError(
-            'Publish release currently supports stable versions only. Use a version such as 0.5.4, not a prerelease suffix.'
-        )
 
     default_branch = os.environ['DEFAULT_BRANCH']
     selected_ref = os.environ.get('WORKFLOW_REF_NAME', default_branch)
@@ -61,7 +58,6 @@ def prepare():
         'tag': tag,
         'version': version,
         'version_source': version_source,
-        'previous_release_tag': previous_tag,
         'source_sha': source_sha,
         'controller_sha': source_sha,
         'default_branch': default_branch,
@@ -81,8 +77,10 @@ def prepare():
         output.write(f'requirements_path={build_contract["requirements_path"]}\n')
         output.write(f'python_version={build_contract["python_version"]}\n')
 
-    if version_source == 'automatic-patch':
-        print(f'Blank version input: increment {previous_tag} to {tag}.')
+    if version_source == 'source':
+        print(f'Blank version input: use source version {tag}.')
+    else:
+        print(f'Entered version matches source version {tag}.')
     action = 'Resume matching draft' if existing else 'Prepare new draft'
     print(f'{action} {tag} from {source_sha}; nothing is published by this step.')
 
@@ -90,5 +88,5 @@ def prepare():
 if __name__ == '__main__':
     try:
         prepare()
-    except (ValueError, KeyError) as exc:
+    except (ValueError, KeyError, OSError) as exc:
         raise SystemExit(str(exc)) from exc
