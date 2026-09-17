@@ -1,4 +1,4 @@
-Package 0.5.6 reduces startup friction and aligns the reusable system with the revised Pantons scheduling flow.
+This release reduces startup friction and aligns the reusable system with the revised Pantons scheduling flow.
 
 Normal **pre-execution** weekly conversations now default to the **next execution week** unless a human explicitly selects another period. Execution-week reflows stay on the current published execution week, active-week handoffs keep their recorded week, and historical work keeps its explicit period/cutoff. The assistant infers the exact dates, timezone, workflow step, active schedule, baselines, product status and connector availability from the current date, local counting week, folder/file names, schedule headers, uploads and conversation. Operators are no longer asked to complete a startup run-control field list. The assistant drafts that record, states only consequential assumptions and asks one focused question only when an ambiguity would materially change the work.
 
