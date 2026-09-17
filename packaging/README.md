@@ -6,36 +6,33 @@ Operators use the root README's **latest release** links, download a named ZIP a
 
 The normal release path is a single manual GitHub Actions workflow. **Do not manually create a tag or click Publish release first.**
 
-1. **Prepare the source change in a PR.** Update `packaging/update-note.md` and CHANGELOG.md. If a persistent installed artifact changes, also update `packaging/persistent-artifacts.json` and append the required migration record. `packaging/version.txt` is the local/development default and should normally be advanced with the source change, but the version resolved by the release workflow is the release/package identity.
+1. **Prepare the source change in a PR.** Update `packaging/update-note.md`, CHANGELOG.md and `packaging/version.txt`. The version file is the intended stable release identity. If a persistent installed artifact changes, also update `packaging/persistent-artifacts.json` and append the required migration record.
 2. **Review and merge.** The PR runs **Validate operator packages** and **Validate GitHub workflows** when applicable. Package validation checks persistent-state declarations, builds all three ZIPs twice, byte-compares them, checks package integrity/source coverage and runs regression tests. Visual Word review and GenAI.mil/operational validation remain separate when applicable.
-3. **Open Actions → Publish release → Run workflow.** Leave the workflow branch on the repository default branch (`main`). Normally leave **Version** blank: the workflow increments the latest published stable release by `0.0.1` (`0.5.3` → `0.5.4`). To select a different stable version deliberately, enter it without a leading `v`.
-4. **Let the workflow own the transaction.** It resolves/validates the version, validates the current default-branch commit and release slot, builds and checks the packages twice, runs regression tests, generates the release notes, creates or resumes a matching **draft** release, uploads every release asset, verifies existing/uploaded bytes, writes the final notes, and only then publishes the draft.
+3. **Open Actions → Publish release → Run workflow.** Leave the workflow branch on the repository default branch (`main`). Normally leave **Version** blank; the workflow uses the stable version already committed in `packaging/version.txt`. If you enter Version as an extra confirmation, it must exactly match the source version.
+4. **Let the workflow own the transaction.** It validates the source-controlled version, current default-branch commit and release slot, builds and checks the packages twice, runs regression tests, generates the release notes, creates or resumes a matching **draft** release, uploads every release asset with bounded transient-failure retries, verifies existing/uploaded bytes, writes the final notes, and only then publishes the draft.
 5. **Confirm the workflow is green before distribution.** The published release should already contain `Pantons_Setup.zip`, `First_Time_Squadron_Setup.zip`, `Update_Existing_Setup.zip`, `manifest.json`, `SHA256SUMS.txt`, generated release notes and download links. GitHub's automatic Source code archives are not the operator kit.
 
 With immutable releases enabled, publication is intentionally the **last** mutation. Users should never see a newly published release waiting for its operator ZIPs to appear.
 
-## Automatic version selection
+## Source-controlled version selection
 
-A blank Version field means **increment the patch component of GitHub's latest published stable release by one**. Examples:
+`packaging/version.txt` is the release identity prepared and reviewed with the source change. A blank Version field means **use that source version**. An entered Version is only an additional confirmation and must exactly match `packaging/version.txt`; it is not an override.
 
-- `v0.5.3` → `v0.5.4`
-- `v0.9.9` → `v0.9.10`
-- `v1.0.0` → `v1.0.1`
+This prevents a workflow run from silently assigning a package number that disagrees with the source, update note or change log. Intentional patch, minor or major changes are made by changing `packaging/version.txt` in the reviewed PR. Stable semantic versions are required; prerelease suffixes are rejected by the normal publish workflow.
 
-The automatic path does not infer a major/minor bump and does not use `packaging/version.txt` as release history. If GitHub's latest release is not a normal stable `vMAJOR.MINOR.PATCH` release, the workflow stops and requires an explicit version.
-
-All publish runs share one concurrency group. This prevents a blank auto-version run from racing a manually entered version. An explicit stable version remains available for intentional major/minor/patch choices.
+All publish runs share one concurrency group so release transactions cannot race each other.
 
 ## Failure and retry behavior
 
 The workflow is designed to fail safely:
 
-- **Before draft creation:** no release is published. Fix the cause and rerun. If the failed run used a blank Version field, blank resolves to the same next patch until that release successfully publishes.
-- **After draft creation but before publication:** the matching release remains a mutable draft. Rerun the same explicit version, or leave Version blank if the failed run was auto-selected. The workflow verifies any existing draft asset bytes and uploads only missing files.
+- **Before draft creation:** no release is published. Fix the cause and rerun. A blank Version field continues to resolve to the same source-controlled version until the source changes.
+- **Transient or ambiguous asset upload failure:** HTTP 429/5xx and network failures receive bounded retries. Before another upload POST, the workflow re-reads the draft. If GitHub actually saved the expected asset, its bytes are verified and the workflow continues without uploading a duplicate. If GitHub left an incomplete expected asset such as a `starter` placeholder, that incomplete asset is deleted before retry. Differing completed assets are never overwritten.
+- **After draft creation but before publication:** the matching release remains a mutable draft. Rerun from the same source version. The workflow removes only incomplete expected upload placeholders, verifies completed draft asset bytes and uploads only missing files.
 - **Different draft bytes, unexpected assets, changed source, or changed tag target:** the workflow stops rather than overwrite or reinterpret the draft.
-- **Already-published release:** the workflow refuses to repair, replace or mutate it. Published immutable releases and tags are never moved. Use a new version.
+- **Already-published release:** the workflow refuses to repair, replace or mutate it. Published immutable releases and tags are never moved. Use a new source version.
 
-Do not manually publish an in-progress draft while the workflow is incomplete. If a draft requires human cleanup because its source/version is wrong, inspect it before deciding whether to delete the draft and unused tag or choose a new version.
+Do not manually publish an in-progress draft while the workflow is incomplete. If a draft represents an abandoned source/version, inspect and delete that draft manually; a different source-controlled version does not reuse it.
 
 The failed `v0.5.2` publish-then-build run is the historical example of why this workflow is draft-first: GitHub made the release immutable immediately, while the assets had not yet been attached.
 
@@ -49,24 +46,24 @@ Release notes are generated before publication. The workflow composes:
 - **Changes and contributors** from GitHub's generated release notes; and
 - a generated **Downloads / Build verification** block with asset links, source commit and SHA-256 checksums.
 
-See `packaging/release-notes-template.md` for the maintained structure. No manual release-note drafting is required in the normal path, but `packaging/update-note.md` must be accurate and user-facing before merge.
+See `packaging/release-notes-template.md` for the maintained structure. No manual release-note drafting is required in the normal path. Keep `packaging/update-note.md` accurate and user-facing, and avoid hard-coding a package number into prose when the generated release metadata already provides it.
 
 ## Release version and source authority
 
-The maintainer may enter a stable version explicitly, or leave it blank for the automatic patch increment. The workflow derives the `vMAJOR.MINOR.PATCH` tag and injects the resolved version only into the disposable build workspace.
+The source tree is authoritative for both release contents and release identity. The workflow reads the stable version from `packaging/version.txt` on the exact default-branch commit being released. An explicit workflow Version must match that value or publication stops before release creation/modification.
 
-The exact default-branch commit validated at workflow start is the release source. The workflow refuses to run from another selected workflow ref. Before publication it creates/resumes only a draft tied to that exact source commit. It never moves an existing tag.
+The exact default-branch commit validated at workflow start is the release source. The workflow refuses to run from another selected workflow ref. Before publication it creates/resumes only a draft tied to that exact source commit and source version. It never moves an existing tag.
 
-This preserves source integrity with zero or one human version selections:
+This preserves source integrity with zero routine version entry:
 
-- an explicitly requested version must be valid;
-- blank input must resolve from a valid latest published stable release;
+- `packaging/version.txt` must contain a valid stable semantic version;
+- an explicitly entered Version must match it exactly;
 - the workflow must be run from the default branch;
 - the current source commit must satisfy its reproducibility/dependency contract;
 - a same-version published release is a hard stop;
 - a same-version draft is resumable only under the documented safe-retry rules;
 - an existing tag without the matching draft is a hard stop; and
-- all assets are verified before publication.
+- all assets are byte-verified before publication.
 
 ## Reproducible package format
 
@@ -103,7 +100,7 @@ Persistent installed-state changes require an explicit package-version change an
 | Folder or file | Contents | Update/rollback behavior |
 | --- | --- | --- |
 | START HERE.docx | Short day/step entry instructions | Replaced by an update or prior-release rollback |
-| System | Startup, day-based Instructions, Blank Forms, Reference | Replaced next week; same replaceable surface for rollback |
+| System | Startup, day-based numbered guides, blank forms and references | Replaced next week; same replaceable surface for rollback |
 | Local Guidance | Human-maintained profile, references and playbook | Preserved; never automatically rolled back |
 | COPY THIS FOLDER FOR EACH NEW WEEK | Empty Inputs, Schedules, Working Record | Preserved; layout changes require a declared migration |
 | Week of date | Weekly sources, schedules and records | Never included in update/rollback |
@@ -114,14 +111,14 @@ For rollback, operators use **System → Instructions → 13 Update for Next Wee
 ## Sources and local build
 
 - `guides/`: START HERE and day/step Word guide sources.
-- `version.txt`: local/development build version; the release workflow's resolved version is authoritative for a published package.
+- `version.txt`: reviewed stable release/package identity used by the publish workflow.
 - `update-note.md`: release/change summary embedded in update instructions and used for release notes.
 - `release-notes-template.md`: maintained explanation of automatically generated release-note structure.
 - `persistent-artifacts.json`: persistent-state fingerprints, weekly-folder layout and migration history.
 - `reproducibility.json` / `requirements.txt`: package runtime/dependency contract.
 - `../scripts/build_packages.py` and `check_packages.py`: deterministic generation and package checks.
-- `../scripts/prepare_release.py`: resolves a blank version or validates an explicit one, validates default-branch source and checks the resumable release slot without publishing anything.
-- `../scripts/release_packages.py`: generates release notes, creates/resumes the draft, verifies assets and performs the final publication.
+- `../scripts/prepare_release.py`: reads/validates the source version, validates any explicit confirmation, validates default-branch source and checks the resumable release slot without publishing anything.
+- `../scripts/release_packages.py`: generates release notes, creates/resumes the draft, safely retries/reconciles asset uploads, verifies assets and performs the final publication.
 
 From the repository root, use CPython 3.12.14:
 
