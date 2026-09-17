@@ -50,6 +50,8 @@ The README is the download entry point; START HERE.docx and numbered Word guides
 - Explain GAMECHANGER setup and the fail-closed source rule in the Tuesday/Thursday/reflow guides without making schedulers memorize policy values.
 - Keep setup, buy/sell authority, implementation/QC, publication, reflow and handoff instructions consistent with the primer.
 - Use standard squadron products as inputs. Forms capture missing guidance/changes; do not require users to transcribe information already supplied elsewhere.
+- Normal pre-execution weekly prompts default to the next execution week and infer dates, phase/task, as-of, version roles and manifest state from the guide, folder/file names, headers, uploads and conversation. Execution reflows stay on the current published execution week; active-week handoffs and historical tests keep their recorded/explicit periods. Do not make operators complete a startup run-control field list; ask one focused question only when a material ambiguity remains.
+- Treat calculated person-specific products fail-closed for identity/formula integrity. Use CURRENT, STALE, PARTIAL, CONFLICTED, INTEGRITY FAILED, UNREADABLE or SUPERSEDED; never rely on plausible cached values after a material identity or formula failure.
 - Keep reusable workflow separate from Pantons-specific policy.
 - Preserve concise Word-compatible handoffs plus actual source products. Do not assume native export, shared multiuser chat, cross-chat memory or access to another user's uploads.
 

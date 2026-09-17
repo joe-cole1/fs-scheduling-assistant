@@ -1,5 +1,14 @@
 # Change log
 
+## Unreleased — next-week inference and source integrity
+
+- Default normal pre-execution weekly conversations to the next execution week unless a human selects another period, while execution reflows stay on the current published week and active handoffs/historical work preserve their recorded or explicit periods; infer dates, task/state and schedule roles from supplied evidence instead of requiring a startup run-control field list.
+- Add assistant-drafted run control, consequential-assumption reporting and one-focused-question behavior for materially ambiguous weeks or versions.
+- Add product statuses CURRENT, STALE, PARTIAL, CONFLICTED, INTEGRITY FAILED, UNREADABLE and SUPERSEDED, including a fail-closed identity/formula gate for calculated person-specific products.
+- Standardize Wednesday's meeting as the Cross-Functional Schedule Integration Review and preserve Thursday as the formal Schedule Buy/Sell/DO buy.
+- Add the artifact-responsibility map, Terra/Grok regulatory-question boundary, stronger P-ledger handoff continuity and validation cases for startup inference, integrity failure, stale/partial exports and affected-rule queries.
+- Advance the local/development package marker to 0.5.6. This is a replaceable System update; Local Guidance and weekly work are unchanged and no persistent migration is required.
+
 ## Unreleased — GAMECHANGER publication-grounded QC
 
 - Add DoW Policies Beta (GAMECHANGER) as the fail-closed publication-authority layer for publication-derived currency, qualification, crew-rest/duty, evaluation, syllabus/prerequisite, event-credit, recurring-training and similar regulatory determinations in the main Gemini workflow.

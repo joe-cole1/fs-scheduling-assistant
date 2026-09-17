@@ -1,58 +1,37 @@
 # Friday — Final QC and publish
 
-Use this after the buy/sell directions have been implemented. The DO already bought the weekly schedule Thursday. Friday's purpose is to verify faithful implementation, expose any unresolved material issue, and publish the authoritative weekly schedule.
+Friday confirms that the publication candidate faithfully implements the Thursday Buy/Sell baseline and any later supplemental DO decisions. Publication is a separate human distribution action.
 
-## Final check
-
-Before publication, confirm:
-
-1. Every buy/sell direction has a recorded disposition.
-2. The published candidate faithfully implements the DO's recorded directions.
-3. Implementation QC and complete-schedule conflict checks are complete or their limits are visible.
-4. Publication-relevant post-buy/sell changes received the required GAMECHANGER delta checks; all SOURCE-BACKED ISSUE, SOURCE CONFLICT and CANNOT VERIFY items remain visible.
-5. Any waiver has gone through the DO and applicable waiver authority.
-6. Any material solution outside the scope of the buy/sell was returned to the DO and has an explicit supplemental decision.
-7. New optional optimization has not been smuggled into the file as if it were a directed correction.
+The assistant should infer the candidate, presented version, decision record and P-### ledger from the clearly labeled current files. If more than one candidate or baseline could control, it should ask one focused version question.
 
 Paste:
 
 ```text
-Friday — final QC before publication. Phase 4.
-Thursday buy/sell baseline: [presented filename/version plus decision record].
-Publication candidate: [exact filename/version].
-As of: [date/time/timezone].
+Perform final publication QC on the latest clearly identified publication
+candidate. Infer the execution week, Thursday Buy/Sell-presented version, D-###
+directions, any supplemental DO decisions, and current P-### ledger from the
+record and conversation. Ask only if a controlling version is ambiguous.
 
-Verify that the publication candidate faithfully implements every recorded
-buy/sell direction and any later explicit DO decision. Identify unauthorized or
-unexplained differences, open hard conflicts, waiver gaps and material downstream
-risk. Do not reopen routine optimization and do not ask for a routine second buy.
+Reconcile every Buy/Sell direction and supplemental decision. Identify any open
+hard conflict, implementation error, unexplained material difference, waiver gap,
+source limitation, SOURCE-BACKED ISSUE, SOURCE CONFLICT, or CANNOT VERIFY item.
+Check the complete resulting schedule and any publication-relevant changes not
+already covered by the post-Buy/Sell delta pass.
 
-Reconcile the publication candidate to the current Weekly Publication Rule Ledger.
-If any post-buy/sell change altered a person, role, event, timing, prerequisite or
-other publication-relevant fact and has not received a GAMECHANGER delta check,
-run that affected check now using only DoW Policies Beta (GAMECHANGER) publications.
-Do not use model memory or ordinary web search to fill gaps. Preserve SOURCE-BACKED
-ISSUE, SOURCE CONFLICT and CANNOT VERIFY items explicitly. Do not state that the
-schedule is fully compliant.
+Separate:
+- faithful directed corrections;
+- human-confirmed closures;
+- unresolved items accepted within authority;
+- new proposals; and
+- material departures requiring a supplemental DO decision.
 
-If a material difference exceeds the scope of the Thursday buy/sell, identify the
-specific DO decision required before publication.
+Do not require a routine second DO buy for faithful implementation. Do not call
+the schedule published or distributed until a human confirms that action.
+Provide the exact publication-candidate filename and a concise release record.
 ```
 
-After a human distributes the schedule, normally Friday, record publication:
+After the human distributes the schedule, state the exact published filename/version, date/time and distributor so the assistant can record publication separately. AI output never proves distribution.
 
-```text
-Publication confirmed: [exact filename/version] was distributed on [date/time]
-for the execution week [dates]. Record it as the published weekly schedule and
-the cumulative weekly baseline. Reconcile it to the Thursday buy/sell baseline
-and recorded directions. Preserve the final P-### publication-rule ledger and
-its unresolved SOURCE CONFLICT / CANNOT VERIFY items with the weekly record.
-List any later supplemental DO decision that explains a material difference;
-do not silently assume approval.
-```
+**Save:** the exact published artifact, decision/release record and final P-ledger in the weekly folder. Preserve the Thursday presented version rather than replacing it.
 
-**You should get:** a final implementation/QC record, final publication-rule exceptions/limits, and a separate publication record. The assistant does not send the schedule to Wing, OG, Maintenance or anyone else.
-
-**Save:** the published version in **Schedules** and the QC/decision record plus final Weekly Publication Rule Ledger in **Working Record**.
-
-**Next:** use **11 Execution Week - Reflows.docx** when execution changes occur.
+**Next:** during execution, use **11 Execution Week - Reflows.docx**.

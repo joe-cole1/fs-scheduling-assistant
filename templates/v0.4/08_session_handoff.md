@@ -1,6 +1,8 @@
 # Current-State Session Handoff — v0.4
 
-Assistant-drafted; outgoing human reviews and saves. Upload this record PLUS applicable source products in the receiving chat. The transcript remains a separate reference. No shared-chat, native-export, cross-chat memory or automatic synchronization capability is assumed.
+Assistant-drafted; outgoing human reviews and saves. Upload this record **plus** the applicable source products, decision record and current P-### ledger in the receiving GenAI.mil conversation. The transcript is optional. No shared-chat, native-export, cross-chat memory or automatic synchronization capability is assumed.
+
+The assistant should infer fields from the current weekly record rather than ask the operator to complete a list. The handoff's recorded active week overrides the normal next-week default.
 
 ## Identity and next task
 
@@ -17,30 +19,43 @@ Assistant-drafted; outgoing human reviews and saves. Upload this record PLUS app
 | Role | Filename/version | Human confirmation or decision ID |
 | --- | --- | --- |
 | Active analysis schedule | [value] | [value] |
-| Draft comparison / Thursday buy-sell-presented version | [values or N/A] | [values] |
-| Thursday DO buy statement and buy-sell directions | [approval statement and D-IDs or Not bought] | [values] |
-| Latest post-buy-sell implementation version | [value or N/A] | [QC state / supplemental DO decision if any] |
+| Draft comparison / Thursday Buy/Sell-presented version | [values or N/A] | [values] |
+| Thursday DO buy statement and Buy/Sell directions | [approval statement and D-IDs or Not bought] | [values] |
+| Latest post-Buy/Sell implementation version | [value or N/A] | [QC state / supplemental DO decision if any] |
 | Published weekly schedule | [value or Not yet] | [publication confirmation] |
 | Immediate baseline for each affected execution date | [date: signed daily, otherwise weekly] | [values] |
 | Cumulative weekly baseline | [value] | [value] |
 
-The approved buy/sell baseline is the exact presented schedule plus the recorded DO directions. Do not invent a routine second buy. If a material implementation deviation required another DO decision, carry that decision separately with its exact scope.
+The approved Buy/Sell baseline is the exact presented schedule plus recorded DO directions. Do not invent a routine second buy.
 
 ## Current sources to transfer
 
-| Product/file/version | Coverage / effective date | Needed for next task | Supersedes / missing / limitation |
-| --- | --- | --- | --- |
-| [value] | [value] | [reason] | [value] |
+| Product/file/version | Coverage / effective date | Source status | Needed for next task | Supersedes / missing / limitation |
+| --- | --- | --- | --- | --- |
+| [value] | [value] | [CURRENT / STALE / PARTIAL / CONFLICTED / INTEGRITY FAILED / UNREADABLE / SUPERSEDED] | [reason] | [value] |
 
-Actual source files must accompany the handoff. A citation in this summary is not proof that the receiving assistant has inspected that file. Do not transfer obsolete schedules without labeling their baseline/archive roles.
+Actual source files must accompany the handoff. A citation in this summary is not proof that the receiving assistant inspected the file. Do not transfer obsolete schedules without labeling their role.
+
+## Publication-rule continuity
+
+- Current P-### ledger filename/version: [value]
+- GAMECHANGER availability in outgoing conversation: [Available / Not available / Unknown]
+- Last required Tuesday/Thursday/delta query completed: [value]
+- Outstanding affected-rule delta queries: [values or None]
+
+| P-ID | Current outcome | Applicable person/activity | Source/locator | Why still open / next required action |
+| --- | --- | --- | --- | --- |
+| [P-###] | [SOURCE-BACKED ISSUE / SOURCE CONFLICT / CANNOT VERIFY] | [value] | [value] | [value] |
+
+A transferred ledger is continuity evidence, not permission to skip a required current query.
 
 ## Confirmed guidance, decisions and human confirmations
 
 | Stable ID | Exact current direction/confirmation | Speaker/role/time as provided | Scope/effective period | Status / source or statement | Superseded item |
 | --- | --- | --- | --- | --- | --- |
-| [D/W/F-ID] | [preserve substance; distinguish confirmation from model verification] | [value] | [value] | [value] | [value/None] |
+| [D/W/F-ID] | [preserve substance] | [value] | [value] | [value] | [value/None] |
 
-Retain each buy/sell decision's disposition and both DO routing and waiver-authority status. Rejected proposals remain rejected. A handoff cannot silently broaden a confirmation.
+Retain each Buy/Sell decision's disposition and both DO routing and waiver-authority status. A handoff cannot silently broaden a confirmation.
 
 ## Execution state and outlook
 
@@ -50,7 +65,7 @@ Retain each buy/sell decision's disposition and both DO routing and waiver-autho
 
 ## Open work
 
-| Finding/recommendation/decision ID | Open issue or proposal | Consequence / current conservative treatment | Resolver / needed by | Last QC state / evidence |
+| Finding/recommendation/decision ID | Open issue or proposal | Consequence / conservative treatment | Resolver / needed by | Last QC state / evidence |
 | --- | --- | --- | --- | --- |
 | [value] | [value] | [value] | [value] | [value] |
 
@@ -61,4 +76,4 @@ Retain each buy/sell decision's disposition and both DO routing and waiver-autho
 
 ## Receiving-chat instruction
 
-Read the v0.4 primer and approved local profile, then this handoff and the attached current products. Identify missing files and conflicting state. Preserve recorded human confirmations as human-confirmed. Do not infer approvals or independently verified facts from the summary. Confirm ambiguous active/baseline roles, apply the recorded historical cutoff, and continue the requested task. If this handoff includes disallowed hindsight, stop the blind review and require an isolated clean restart.
+Read the v0.4 primer, approved local profile, this handoff, current P-### ledger, decision record and attached current products. The handoff's week overrides the normal next-week default. Identify missing files and conflicting state. Preserve recorded human confirmations as human-confirmed. Do not infer approval or independently verified facts from the summary. Confirm ambiguous active/baseline roles, apply the recorded historical cutoff, perform any required current connector query and continue the requested task. If the handoff includes disallowed hindsight, stop the blind review and require an isolated clean restart.
