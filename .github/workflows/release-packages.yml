@@ -1,20 +1,22 @@
 name: Publish release
 
-run-name: Publish v${{ inputs.version }}
+run-name: Publish ${{ inputs.version || 'next patch release' }}
 
 on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version to publish, for example 0.5.3 (no leading v)'
-        required: true
+        description: 'Optional version, e.g. 0.5.4. Leave blank to increment the latest published stable release by 0.0.1.'
+        required: false
+        default: ''
         type: string
 
 permissions:
   contents: read
 
+# Serialize every publication so a blank auto-version run cannot race an explicit version run.
 concurrency:
-  group: publish-release-${{ inputs.version }}
+  group: publish-release
   cancel-in-progress: false
 
 jobs:
@@ -47,7 +49,7 @@ jobs:
         with:
           python-version: '3.12.14'
 
-      - name: Validate version and release slot
+      - name: Resolve version and validate release slot
         id: release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -60,7 +62,7 @@ jobs:
           path: release-source
           persist-credentials: false
 
-      - name: Apply the requested version to the disposable build workspace
+      - name: Apply the resolved version to the disposable build workspace
         env:
           PACKAGE_VERSION: ${{ steps.release.outputs.package_version }}
         shell: bash
@@ -106,5 +108,5 @@ jobs:
         run: |
           echo '### Release publication needs attention' >> "$GITHUB_STEP_SUMMARY"
           echo 'No published release is intentionally modified by this workflow.' >> "$GITHUB_STEP_SUMMARY"
-          echo 'If failure occurred before draft creation, rerun after fixing the cause. If a matching draft exists, rerunning the same version resumes that draft and verifies existing asset bytes before uploading anything missing.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'If failure occurred before draft creation, rerun after fixing the cause. If a matching draft exists, rerunning the same resolved version resumes that draft and verifies existing asset bytes before uploading anything missing.' >> "$GITHUB_STEP_SUMMARY"
           echo 'Do not publish the draft manually while this workflow is incomplete. See packaging/README.md.' >> "$GITHUB_STEP_SUMMARY"
