@@ -7,6 +7,7 @@ Upload or identify:
 - The corrected active schedule with a new filename/version.
 - The buy/sell-presented schedule.
 - The DO buy statement and decision record.
+- The current Weekly Publication Rule Ledger.
 - Updated products or human confirmations relevant to the corrections.
 
 Paste:
@@ -25,14 +26,24 @@ and unintended second- and third-order effects, then check the complete correcte
 schedule for conflicts. Keep new proposed changes separate from directed
 corrections. Flag hard infeasibility and major upgrade risk.
 
+For every correction that changes a person, role, event, timing, prerequisite,
+currency/qualification state or other publication-relevant fact, run a delta
+publication QC through DoW Policies Beta (GAMECHANGER). Update the affected P-###
+entries or add new ones. Do not re-search unaffected rules merely for churn, but
+do not rely on the prior ledger when the correction changes applicability.
+Publication-based regulatory conclusions must still identify a connector-retrieved
+publication number/title and paragraph/page/usable locator. No model-memory or web
+fallback is allowed. Use SOURCE-BACKED OK, SOURCE-BACKED ISSUE, CANNOT VERIFY or
+SOURCE CONFLICT.
+
 Do not request or imply a routine second DO buy. If a direction cannot be
 implemented as approved, or the necessary solution materially exceeds the scope
 of the recorded direction, identify the exact issue and return it to the DO for
 a supplemental decision. Do not silently expand the Thursday buy.
 ```
 
-**You should get:** a disposition for every buy/sell direction, implementation/QC findings, remaining issues, and any specific item that must return to the DO.
+**You should get:** a disposition for every buy/sell direction, implementation/QC findings, affected publication-rule delta results, remaining issues, and any specific item that must return to the DO.
 
-A scoped human confirmation can close the stated QC concern. Waivers still require the DO and applicable waiver authority.
+A scoped human confirmation can close the stated QC concern. It does not convert missing GAMECHANGER evidence into SOURCE-BACKED OK. Waivers still require the DO and applicable waiver authority.
 
 **Next:** when the directed changes are implemented and QC'd, follow **10 Friday - Final QC and Publish.docx**.
