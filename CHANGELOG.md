@@ -1,5 +1,15 @@
 # Change log
 
+## Unreleased — GAMECHANGER publication-grounded QC
+
+- Add DoW Policies Beta (GAMECHANGER) as the fail-closed publication-authority layer for publication-derived currency, qualification, crew-rest/duty, evaluation, syllabus/prerequisite, event-credit, recurring-training and similar regulatory determinations in the main Gemini workflow.
+- Prohibit model memory, generic military knowledge, ordinary web search and uncited AI synthesis as fallback regulatory evidence. If a sufficiently traceable applicable publication is not retrieved, the affected check is CANNOT VERIFY; unresolved retrieved-source conflicts are SOURCE CONFLICT.
+- Add a Weekly Publication Rule Ledger with stable P-### IDs. Tuesday planning creates the initial publication-rule/currency baseline; Thursday full QC re-queries GAMECHANGER against the complete near-final schedule; post-buy corrections and execution reflows perform delta checks for affected publication-driven facts.
+- Carry publication-QC SOURCE-BACKED ISSUE, SOURCE CONFLICT and CANNOT VERIFY items into the Thursday Buy/Sell and Friday publication records without changing human approval, waiver or publication authority.
+- Add operator prompts, architecture/report contracts, design decisions, crosswalk and validation cases for connector unavailability, insufficient citation, conflicting publications, Thursday refresh, execution delta checks and non-overclaiming of compliance.
+- Preserve the core document-based scheduling workflow when GAMECHANGER is unavailable; unrelated scheduling analysis continues while publication-derived checks remain unverified.
+- Advance the local/development package marker to 0.5.5. This is a replaceable System update; Local Guidance and weekly work are unchanged and no persistent migration is required.
+
 ## Unreleased — automatic patch release versioning
 
 - Make the **Actions → Publish release** Version input optional. A blank value reads GitHub's latest published stable `vMAJOR.MINOR.PATCH` release and increments only the patch component by `0.0.1`.
