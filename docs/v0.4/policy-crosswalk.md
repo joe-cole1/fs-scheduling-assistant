@@ -30,6 +30,9 @@ The reusable primer and Pantons profile together preserve the operational contra
 ## Current workflow overlays
 
 - **Pantons battle rhythm:** inputs due NLT COB Monday; Tuesday start/ingest/planning; Wednesday bulk build; Thursday full QC; optional DO adversarial review; **Thursday buy/sell and formal DO buy**; post-buy/sell implementation/QC; Friday publication; execution reflows.
+- **Default weekly context:** unless a human explicitly selects another period, pre-execution work targets the next execution week; execution reflows use the current published week, and active-week handoffs/historical work keep their recorded or explicit periods. The assistant infers run/version state from evidence and drafts run control without a startup questionnaire.
+- **Wednesday integration:** the Cross-Functional Schedule Integration Review verifies source-owner inputs and assigns unresolved issues; it is not a Buy/Buy-Sell/approval event.
+- **Calculated-source integrity:** products use CURRENT, STALE, PARTIAL, CONFLICTED, INTEGRITY FAILED, UNREADABLE or SUPERSEDED. Material identity/formula defects prevent affected person-specific conclusions even when cached values appear plausible.
 - **Day-based operator manual:** operator navigation follows actual workdays and steps. Internal five-phase state control remains status-based.
 - **Tuesday planning focus:** checkrides/evaluations, directed DV/senior-leader flyers and upgrade windows/resources are explicit before the human schedule build.
 - **Model roles:** Gemini 3.7 Flash is the normal scheduler model when available; a separate Terra or Grok Expert 4.5 conversation may be used by the DO for optional adversarial review.

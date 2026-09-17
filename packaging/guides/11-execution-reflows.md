@@ -1,54 +1,42 @@
 # Execution week — Reflows
 
-Use this after the weekly schedule has been bought in Thursday's buy/sell and published. Stay in the main Gemini scheduling conversation when practical; the published weekly schedule remains the cumulative baseline.
+Use this for maintenance, weather, personnel, support, result or other changes after publication. **Execution reflow stays on the current published execution week; do not apply the normal next-week planning default.** Protect completed history and use the smallest fully feasible change that preserves the highest priorities.
 
-Upload:
+The assistant should infer the published weekly schedule and each affected date's latest signed daily schedule from the supplied files and record. The latest signed daily is the immediate baseline for that date; the published weekly schedule remains the cumulative baseline. If more than one file could control a date, the assistant should ask one focused question.
 
-- The published weekly schedule.
-- The latest signed daily schedule for each affected day, if one exists.
-- Actual results so far and changed personnel, maintenance, support or weather facts.
-- Relevant updated trackers, commitments and approval records.
-- The current Weekly Publication Rule Ledger when resuming in a replacement conversation.
+Upload the changed fact or execution update plus any new schedule version. Do not fill out a general run-control list.
 
-Use **07 Execution Update.docx** from System → Blank Forms if useful, or upload existing logs and describe only what changed.
+Paste:
 
 ```text
-Execution week — reflow. Phase 5 EXECUTION REFLOWS.
-Primary scheduler workflow: Gemini.
-Test condition: OPERATIONAL.
-As of: [date/time/timezone].
-Published weekly baseline: [exact filename/version].
-Latest signed daily schedule(s): [date: filename/version; or NONE for that day].
-Changed facts and actual results: [describe or identify uploaded sources].
-Question: [what needs to be recovered or changed].
+Analyze the execution reflow from the current supplied change/update. Infer the
+execution week, as-of time, published weekly baseline, and each affected date's
+latest signed daily schedule from the files and decision record. Ask only if more
+than one version could control an affected date.
 
-Separate completed results, remaining firm events and conditional opportunities.
-Protect completed events; do not infer a pass or credit just because an event flew.
-Recommend the smallest fully checked reflow that preserves stated priorities.
-Trace direct, second- and third-order effects, including downstream upgrade effects.
-Show immediate changes against each day's latest signed daily schedule, using
-the published weekly schedule if no signed daily exists. Also show cumulative
-departures from the published weekly schedule.
+Preserve completed events and confirmed earned credit. Separate completed,
+remaining firm, conditional, cancelled/incomplete, and newly changed facts. Do
+not equate flown with passed or credited without evidence or human confirmation.
 
-For each changed or proposed person, role, event, timing, prerequisite,
-currency/qualification state or other publication-relevant fact, run a delta
-publication QC through DoW Policies Beta (GAMECHANGER). Re-query the affected rule
-rather than relying only on an earlier weekly lookup. Update or add P-### entries
-with publication number/title, current/effective status when available,
-paragraph/page/usable locator, retrieval time and one result: SOURCE-BACKED OK,
-SOURCE-BACKED ISSUE, CANNOT VERIFY or SOURCE CONFLICT.
+Recommend the minimum-change fully feasible reflow. Check the complete cascade:
+pilots, availability, duty boundaries, qualifications, prerequisites,
+instructor/evaluator placement, formation roles, aircraft/configuration, primary
+lines, protected spares, simulator/support windows, backups, displaced training,
+next-duty-day effects, at-risk upgrades, outlook and the current downside case.
 
-Do not use model memory, generic military knowledge or ordinary web search as
-regulatory evidence. If GAMECHANGER cannot retrieve a sufficiently traceable
-applicable publication, mark CANNOT VERIFY and make no regulatory determination.
-Do not claim the reflow or schedule is fully compliant.
+Report immediate deltas against the latest signed daily schedule for each affected
+date, falling back to the published weekly schedule when no signed daily exists.
+Report cumulative departure against the published weekly schedule.
 
-Identify daily scheduler/Top 3 sign-offs, DO decisions and waiver/coordination
-requirements. Keep proposals separate from approved daily schedules.
+For every changed/proposed person, role, event, timing, prerequisite or other
+publication-relevant fact, query DoW Policies Beta (GAMECHANGER) for the affected
+rule and update/add the P-### entry. Do not re-query unaffected rules merely to
+create churn. Do not use model memory or ordinary web search as fallback.
+
+Identify required daily scheduler/Top 3 sign-off, DO decision, waiver routing,
+possible 2407 trigger, source-system updates, numbered-change distribution and
+positive two-way notification. Do not imply any of those actions occurred until
+a human confirms them.
 ```
 
-Feasible personnel and mission changes within published times, turn pattern, coordinated support and DO guidance use daily scheduler and Top 3 sign-off. Changes outside those boundaries return to the DO. **Every waiver goes through the DO and the applicable waiver authority.** A GAMECHANGER result identifies publication evidence; it does not grant a waiver or approval. After humans sign a daily revision, tell Gemini its exact version so it becomes that day's immediate baseline.
-
-The optional DO adversarial review is not an automatic reflow step. The DO may use it separately for a particularly consequential reflow; an accepted finding returns to Gemini only as human DO direction.
-
-**Save:** updated schedule versions in **Schedules** and the report, updated P-### Weekly Publication Rule Ledger, run control and decision record in **Working Record**.
+Changes within published times, turn pattern, coordinated support and explicit DO guidance use daily scheduler and Top 3 sign-off when feasible. Changes outside those boundaries return to the DO. Every waiver still requires the DO and the applicable waiver authority.

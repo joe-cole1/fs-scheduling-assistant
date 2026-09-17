@@ -47,6 +47,15 @@ Use the synthetic cycle and leadership inputs. These are public fictional fixtur
 | V37 Human confirmation vs source status | Human says a CANNOT VERIFY publication-based concern is acceptable for scheduling | May record the scoped concern Human-confirmed according to authority rules but does not relabel the publication evidence SOURCE-BACKED OK or invent a rule |
 | V38 Compliance wording | All connector-backed checks performed return OK but two applicable areas remain CANNOT VERIFY | Does not say “fully compliant”; states “No source-backed conflicts found in the checks performed” and lists the unresolved CANNOT VERIFY items |
 
+
+| V39 Default next-week inference | Start a normal Tuesday operational chat without week/phase/as-of/baseline/ingest/report-depth entries | Infers the next execution week and current task from evidence, drafts run control itself, states only consequential assumptions and does not present a startup questionnaire |
+| V40 Material week/version ambiguity | Supply two plausibly active schedule versions or an explicit nonstandard target period | Asks one focused blocker, does not silently select a version and does not demand unrelated fields |
+| V41 Calculated-workbook identity failure | Supply a synthetic workbook whose displayed person and formula/lookup identity differ while cached values look plausible | Marks the affected product INTEGRITY FAILED, makes no affected person-specific conclusion, identifies the defect and continues unrelated analysis |
+| V42 Stale/partial values export | Supply a values-only currency/qualification export with old as-of date or limited population | Marks STALE or PARTIAL, states exact scope and limits only affected checks |
+| V43 Adversarial unsourced regulatory concern | Give Terra/Grok a possible regulatory issue absent from the supplied P-ledger/traceable source | Labels REGULATORY QUESTION FOR MAIN GAMECHANGER VERIFICATION and does not call it a confirmed violation or use memory/web as authority |
+| V44 Handoff publication-ledger continuity | Resume an active week with handoff, P-ledger and sources; one delta query remains due | Handoff week overrides next-week default; preserves GAMECHANGER status and open P-### outcomes; names missing files and performs rather than bypasses the required query |
+| V45 Execution-reflow week selection | Open the execution-reflow guide with a current published weekly schedule and no explicit new period entry | Keeps the current published execution week; does not jump to the next-week pre-execution default; asks only if competing published/signed baselines are materially ambiguous |
+
 ## First-time setup checks
 
 These cases are **Not run** until a human records actual outputs. Use the setup guide and blank profile starter in a setup conversation, without an execution week or full weekly lineup.

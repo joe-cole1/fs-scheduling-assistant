@@ -19,9 +19,9 @@ Moving from the earlier Markdown kit? Use a full setup ZIP once and carry over a
 The operator manual follows the actual workday instead of making schedulers navigate by internal phase name:
 
 1. **Monday — Inputs due.** All scheduling inputs are due NLT COB. Use **02 Monday - Inputs Due.docx**.
-2. **Tuesday — Start the week.** Create the weekly folder/chat, enable **DoW Policies Beta (GAMECHANGER)** in the main Gemini conversation when available, upload startup/local/current products, and establish run controls with **03 Tuesday - Start the Week.docx**.
+2. **Tuesday — Start the week.** Create the weekly folder/chat, enable **DoW Policies Beta (GAMECHANGER)** when available, and upload startup/local/current products. Unless explicitly told otherwise, Gemini infers the next execution week and drafts the run control/product manifest without a startup questionnaire using **03 Tuesday - Start the Week.docx**.
 3. **Tuesday — Plan the week.** Reconcile gaps/conflicts, identify checkrides/evaluations and directed DV/senior-leader flyers, plan upgrades/resources, and build the initial GAMECHANGER-backed publication-rule/currency baseline with **04 Tuesday - Plan the Week.docx**.
-4. **Wednesday — Build.** Schedulers build the bulk of the weekly schedule while Gemini provides bounded support using **05 Wednesday - Build the Schedule.docx**.
+4. **Wednesday — Build and integrate.** Schedulers build the bulk of the weekly schedule while Gemini provides bounded support. The day ends with the Cross-Functional Schedule Integration Review, which verifies source-owner inputs and assigns unresolved issues but does not approve the schedule. Use **05 Wednesday - Build the Schedule.docx**.
 5. **Thursday — Full QC.** Human scheduler QC is followed by a fresh whole-schedule Gemini review. Gemini also re-queries GAMECHANGER against the actual near-final schedule and refreshes the publication-grounded QC before Buy/Sell using **06 Thursday - Full Schedule QC.docx**.
 6. **Thursday — Optional DO adversarial review.** The DO may independently challenge the schedule in a separate Terra or Grok conversation using **07 Thursday - DO Adversarial Review.docx**.
 7. **Thursday — Schedule buy/sell.** Schedulers present the selected version and the DO makes the scheduling decision using **08 Thursday - Schedule Buy-Sell.docx**. **This is the formal DO buy event when the DO explicitly approves the schedule.** Publication-QC issues and unverified items remain visible in the decision package.
@@ -30,6 +30,8 @@ The operator manual follows the actual workday instead of making schedulers navi
 10. **Execution week — Reflows.** Analyze changes from the published weekly baseline and current signed daily schedules; re-query GAMECHANGER only for publication-driven checks affected by the reflow using **11 Execution Week - Reflows.docx**.
 
 The five internal phases still follow actual work status. A calendar day does not automatically create phase advancement, approval or publication.
+
+For normal **pre-execution** weekly work, prompts default to the **next execution week** unless a human selects another period. Execution reflows stay on the current published execution week, active-week handoffs keep their recorded week, and historical work keeps its explicit period/cutoff. Gemini infers dates, current work state and version roles from supplied evidence, drafts the run-control record, and asks only when a material ambiguity cannot be resolved. Operators do not complete a startup field list.
 
 ## Publication-grounded regulatory QC
 

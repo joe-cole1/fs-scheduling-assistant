@@ -1,63 +1,56 @@
-# Thursday — Schedule buy/sell
+# Thursday — Schedule Buy/Sell
 
-This is the DO approval event for the weekly schedule. Use it after **06 Thursday - Full Schedule QC.docx** and, if the DO chooses, the separate **07 Thursday - DO Adversarial Review.docx**.
+The Thursday Schedule Buy/Sell is the formal DO buy event when the DO explicitly approves the schedule. Wednesday's integration review is not approval. The exact presented schedule plus every explicit DO direction recorded during the meeting becomes the Buy/Sell baseline.
 
-Stay in the main Gemini scheduling conversation for the buy/sell package and decision capture.
+Before the meeting, identify the exact version being presented. The assistant should infer it from the clearly labeled Thursday QC product and conversation. If multiple versions could be presented, it should ask one version-selection question.
 
-Upload or identify:
+## Prepare the decision package
 
-- The exact schedule version being presented.
-- Latest guidance, unresolved findings and revised resource/personnel products.
-- The current Weekly Publication Rule Ledger and Thursday publication-grounded QC results.
-- Any DO question or direction resulting from the optional adversarial review. Enter the DO's human direction, not raw reviewer output as authority.
-
-Paste before the meeting:
+Paste:
 
 ```text
-Thursday — schedule buy/sell. Phase 3 SCHEDULE BUY/SELL.
-Primary scheduler workflow: Gemini.
-Presented schedule: [exact filename/version].
-Prepare a BRIEF decision package for the DO: feasibility and limits, priority
-checkrides/evaluations, directed DV or senior-leader flyers, upgrade progress and
-30-day risk, primary-line use, resource and IP constraints, tradeoffs, unresolved
-issues and exact decisions needed.
+Prepare the Thursday Buy/Sell decision package for the latest clearly identified
+schedule selected after full QC. Infer the execution week, as-of state, manifest,
+and current P-### ledger. If more than one version could be the presented
+schedule, ask which one controls; otherwise proceed without a run-control form.
 
-Include a distinct publication-grounded QC summary from the Thursday GAMECHANGER
-pass. List every SOURCE-BACKED ISSUE, SOURCE CONFLICT and CANNOT VERIFY item with
-its P-### ID and affected person/event. Do not replace missing publication support
-with model memory or web search. Do not claim full compliance. If accurate, use
-only “No source-backed conflicts found in the checks performed,” while still
-listing all CANNOT VERIFY and SOURCE CONFLICT items.
+Answer in this order:
+1. Can this plan work? State feasibility, material source limitations, hard
+   conflicts, high-consequence CANNOT VERIFY items, and human-confirmed closures.
+2. What does it accomplish? Show DO priorities, checkrides/evaluations, directed
+   DVs, upgrades, required pace and 30-day risk; separate firm and conditional.
+3. What constrains it? Show primary lines, protected spares, configuration,
+   instructor/evaluator capacity, support, weather and fragile dependencies.
+4. What did publication-grounded QC show? List SOURCE-BACKED ISSUE,
+   SOURCE CONFLICT and CANNOT VERIFY items with P-### references. Do not claim
+   full compliance.
+5. What are the material tradeoffs and moderate downside case?
+6. What exact decisions must the DO make? Number them and show recommendation,
+   affected people/resources/training, authority, coordination and deadline.
 
-For each decision, give the recommendation, alternatives and consequences.
-The DO will buy the weekly schedule in this meeting if satisfied. Do not imply
-approval before the DO actually states it.
+Use one advisory readiness status: BUY READY, READY WITH DO DECISIONS, or NOT
+READY. This status is not approval. Do not state that the schedule is bought
+until I provide the DO's explicit decision.
 ```
 
-## Record the buy/sell
+## Record the human decision
 
-After the meeting, paste the actual DO decision and directions:
+After the meeting, provide the exact DO statement and directions or upload the completed decision record. The assistant should create stable D-### entries and preserve exact scope.
+
+Paste only the decision substance that is not already in the uploaded record:
 
 ```text
-The Thursday buy/sell is complete.
-Presented schedule: [exact filename/version].
-DO buy decision: [paste the actual approval statement].
-DO directions/changes: [paste the actual directions, or NONE].
+Record the DO's explicit Buy/Sell decision and directions from the supplied
+statement/decision record. Preserve the exact presented version. If the DO bought
+the schedule, define the approved baseline as that presented version plus the
+recorded directions. If the DO did not explicitly buy it, record NOT BOUGHT and
+return the work to the appropriate earlier step. Do not infer approval from the
+meeting occurring.
 
-Record the presented version plus the explicit DO directions as the approved
-buy/sell baseline. Assign stable weekly decision IDs and exact scope to every
-direction. Preserve the current P-### publication-rule ledger and unresolved
-publication-QC items as supporting evidence, not as approval or waiver authority.
-The DO buy occurs in this meeting; there is no routine second buy after schedulers
-implement these directions.
-Begin phase 4 FINAL QC behavior. Schedulers will implement the directed changes.
-Keep any new proposal separate from a directed correction.
+Keep every waiver separate. A waiver still requires the DO and the applicable
+waiver authority. Publication remains a later human action.
 ```
 
-If the DO does **not** buy the schedule, record that result and return the draft to the appropriate earlier work. Do not invent approval from the fact that a sell meeting occurred.
-
-**Authority rule:** directed changes stated during the buy/sell are part of the DO's approval. Post-buy/sell implementation must stay within their recorded scope. If implementation reveals a material conflict or requires a materially different solution, return that issue to the DO rather than treating the earlier buy as blanket approval. A publication finding never grants a waiver or replaces the applicable authority.
-
-**You should get:** the concise decision package, publication-QC exceptions/limits, the exact DO buy statement, stable decision IDs, and a clear buy/sell baseline consisting of the presented schedule plus recorded DO directions.
+There is no routine second DO buy after faithful implementation. A materially different solution outside the recorded direction requires a scoped supplemental DO decision.
 
 **Next:** **09 Thursday-Friday - Apply Buy-Sell Changes.docx**.

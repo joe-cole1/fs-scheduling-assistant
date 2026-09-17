@@ -60,6 +60,8 @@ The assistant still tracks five **internal phases** selected by actual work stat
 
 A holiday, late input or reopened draft does not change state just because the calendar changed.
 
+Unless a human explicitly selects another period, a normal pre-execution weekly conversation defaults to the next execution week. Execution reflows use the current published execution week; an active-week handoff keeps its recorded week; historical work keeps its explicit period/cutoff. The assistant infers the exact dates, current task, as-of state, version roles and manifest from supplied evidence and drafts run control rather than presenting a startup questionnaire.
+
 ## Information flow
 
 ```mermaid
@@ -86,7 +88,7 @@ The arrows are human workflow and bounded connector evidence retrieval, not auto
 
 ### Evidence layer
 
-Each material normalized fact retains its source location, status and extraction confidence. Facts, interpretations and recommendations remain distinct. A missing or conflicted source limits the affected check; unaffected work continues. Schedulers choose when drafting begins despite gaps.
+Each material normalized fact retains its source location, status and extraction confidence. Products are CURRENT, STALE, PARTIAL, CONFLICTED, INTEGRITY FAILED, UNREADABLE or SUPERSEDED. A calculated person-specific source is INTEGRITY FAILED when displayed values cannot be reliably tied to the correct person/event or when duplicate identity, formula/lookup or similar material defects remain unresolved. Plausible cached values do not overcome the failure. Facts, interpretations and recommendations remain distinct; affected checks stop while unaffected work continues. Schedulers choose when drafting begins despite gaps.
 
 Publication-derived regulatory requirements use a second evidence ledger with stable P-### IDs. Each entry records applicability, retrieved requirement, publication number/title, version/effective/current status when available, paragraph/page/usable locator, retrieval date/time and one result: SOURCE-BACKED OK, SOURCE-BACKED ISSUE, CANNOT VERIFY or SOURCE CONFLICT. Tuesday builds the initial weekly ledger, Thursday refreshes/expands it against the near-final schedule, and later schedule changes trigger affected-rule delta queries. The same-week ledger provides continuity but never authorizes a memory/web fallback or bypasses a required connector refresh.
 
