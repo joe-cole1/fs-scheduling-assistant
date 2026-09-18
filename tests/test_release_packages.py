@@ -129,11 +129,13 @@ class ReleaseTests(unittest.TestCase):
 
     def test_asset_plan_resumes_matching_draft_without_overwrite(self):
         r.verify_build(self.folder, '0.5.3')
-        release = {'assets': [{'id': 1, 'name': r.ZIPS[0]}]}
+        release = {'assets': [{'id': 1, 'name': r.ZIPS[0], 'state': 'uploaded'}]}
         missing = r.asset_plan(release, self.folder, lambda asset: (self.folder / asset['name']).read_bytes())
         self.assertEqual(missing, list(r.FILES[1:]))
         with self.assertRaises(ValueError):
             r.asset_plan(release, self.folder, lambda asset: b'different bytes')
+        with self.assertRaisesRegex(ValueError, 'incomplete'):
+            r.asset_plan({'assets': [{'id': 1, 'name': r.ZIPS[0], 'state': 'starter'}]}, self.folder, lambda asset: b'')
 
     def test_duplicate_or_extra_draft_assets_fail(self):
         r.verify_build(self.folder, '0.5.3')
@@ -167,6 +169,50 @@ class ReleaseTests(unittest.TestCase):
         self.assertEqual(seen['authorization'], 'Bearer synthetic-token')
         self.assertEqual(seen['content_type'], 'application/zip')
         self.assertEqual(seen['timeout'], 180)
+
+    def test_transient_upload_failure_retries_after_reconciliation(self):
+        path = self.folder / r.ZIPS[0]
+        error = r.AssetUploadError(path.name, 'HTTP 500: error saving asset', status=500, detail='error saving asset')
+        sleeps = []
+        with patch.object(r, 'upload_asset', side_effect=[error, {'id': 99, 'name': path.name, 'state': 'uploaded'}]) as upload, \
+             patch.object(r, 'api', return_value=self.draft()), \
+             patch.object(r, 'time'):
+            result = r.upload_asset_with_retry(
+                'synthetic/example', self.draft(), path, lambda asset: path.read_bytes(), sleep=sleeps.append
+            )
+        self.assertEqual(result['id'], 99)
+        self.assertEqual(upload.call_count, 2)
+        self.assertEqual(sleeps, [1])
+
+    def test_ambiguous_upload_failure_accepts_verified_saved_asset(self):
+        path = self.folder / r.ZIPS[0]
+        saved = {'id': 99, 'name': path.name, 'state': 'uploaded'}
+        error = r.AssetUploadError(path.name, 'HTTP 500: error saving asset', status=500, detail='error saving asset')
+        refreshed = self.draft(assets=[saved])
+        with patch.object(r, 'upload_asset', side_effect=error) as upload, \
+             patch.object(r, 'api', return_value=refreshed):
+            result = r.upload_asset_with_retry(
+                'synthetic/example', self.draft(), path, lambda asset: path.read_bytes(), sleep=lambda _: None
+            )
+        self.assertEqual(result, saved)
+        self.assertEqual(upload.call_count, 1)
+
+    def test_incomplete_expected_asset_is_removed_before_resume(self):
+        starter = {'id': 55, 'name': r.ZIPS[0], 'state': 'starter'}
+        draft = self.draft(assets=[starter])
+        cleaned = self.draft(assets=[])
+        calls = []
+
+        def api(endpoint, method='GET', payload=None):
+            calls.append((endpoint, method))
+            if method == 'DELETE':
+                return None
+            return cleaned
+
+        with patch.object(r, 'api', side_effect=api):
+            result = r.remove_incomplete_expected_assets('synthetic/example', draft)
+        self.assertEqual(result, cleaned)
+        self.assertIn(('repos/synthetic/example/releases/assets/55', 'DELETE'), calls)
 
     def test_structured_notes_include_downloads_and_checksums(self):
         r.verify_build(self.folder, '0.5.3')

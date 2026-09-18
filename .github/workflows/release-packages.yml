@@ -1,12 +1,12 @@
 name: Publish release
 
-run-name: Publish ${{ inputs.version || 'next patch release' }}
+run-name: Publish ${{ inputs.version || 'source version' }}
 
 on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Optional version, e.g. 0.5.4. Leave blank to increment the latest published stable release by 0.0.1.'
+        description: 'Optional confirmation. Leave blank to use packaging/version.txt; if entered, it must match the source version.'
         required: false
         default: ''
         type: string
@@ -14,7 +14,7 @@ on:
 permissions:
   contents: read
 
-# Serialize every publication so a blank auto-version run cannot race an explicit version run.
+# Serialize every publication so release transactions cannot race each other.
 concurrency:
   group: publish-release
   cancel-in-progress: false
@@ -108,5 +108,5 @@ jobs:
         run: |
           echo '### Release publication needs attention' >> "$GITHUB_STEP_SUMMARY"
           echo 'No published release is intentionally modified by this workflow.' >> "$GITHUB_STEP_SUMMARY"
-          echo 'If failure occurred before draft creation, rerun after fixing the cause. If a matching draft exists, rerunning the same resolved version resumes that draft and verifies existing asset bytes before uploading anything missing.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'If failure occurred before draft creation, rerun after fixing the cause. If a matching draft exists, rerunning the same source version resumes that draft, removes only incomplete expected upload placeholders, verifies existing asset bytes, and uploads anything missing.' >> "$GITHUB_STEP_SUMMARY"
           echo 'Do not publish the draft manually while this workflow is incomplete. See packaging/README.md.' >> "$GITHUB_STEP_SUMMARY"
