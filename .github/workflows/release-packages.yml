@@ -21,6 +21,8 @@ concurrency:
 
 jobs:
   publish:
+    # Defense in depth: repository Actions policy should enforce the same boundary before execution.
+    if: github.actor == github.repository_owner
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     permissions:
