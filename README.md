@@ -1,68 +1,58 @@
 # Fighter Squadron Scheduling Assistant
 
-Download a ZIP, extract it into your scheduling location, and open **START HERE.docx**. The operator workflow is Word-first; schedulers do not need GitHub access inside GenAI.mil.
+Download a setup ZIP, extract it into an approved scheduling location, and open **START HERE.docx**. Choose the checklist for your task, work down its boxes, and paste the short prompt. The assistant should give you one next action at a time.
 
-## Download the latest release
+## Downloads
 
-- **[Pantons setup ZIP](https://github.com/joe-cole1/fs-scheduling-assistant/releases/latest/download/Pantons_Setup.zip)** — approved Pantons local profile plus the complete kit.
-- **[First-time squadron setup ZIP](https://github.com/joe-cole1/fs-scheduling-assistant/releases/latest/download/First_Time_Squadron_Setup.zip)** — complete kit with a blank local profile and guided setup questions.
-- **[Update an existing setup](https://github.com/joe-cole1/fs-scheduling-assistant/releases/latest/download/Update_Existing_Setup.zip)** — use at the next-week boundary; follow UPDATE INSTRUCTIONS.docx. It preserves Local Guidance and weekly work.
+- **[Pantons setup](https://github.com/joe-cole1/fs-scheduling-assistant/releases/latest/download/Pantons_Setup.zip)** — complete kit with the approved Pantons profile seed.
+- **[First-time squadron setup](https://github.com/joe-cole1/fs-scheduling-assistant/releases/latest/download/First_Time_Squadron_Setup.zip)** — complete kit with a blank draft profile for another squadron.
+- **[Update an existing setup](https://github.com/joe-cole1/fs-scheduling-assistant/releases/latest/download/Update_Existing_Setup.zip)** — adopt before next week’s planning; follow UPDATE INSTRUCTIONS.docx.
 
-You can also open the [latest release](https://github.com/joe-cole1/fs-scheduling-assistant/releases/latest) and choose a named ZIP under **Assets**. GitHub's automatic Source code downloads do not contain the built Word kit.
+The [latest published release](https://github.com/joe-cole1/fs-scheduling-assistant/releases/latest) contains the named ZIPs under Assets. GitHub’s automatic Source code downloads are maintainer sources, not the operator kit. A reviewed source change appears in these downloads only after the release workflow publishes it.
 
-Right-click the downloaded ZIP, select **Extract All**, open the extracted folder, and open **START HERE.docx**. GenAI.mil itself needs no GitHub access. The release workflow publishes only after the operator ZIPs, manifest, checksums and release notes have been generated and verified, so a newly published release should already be complete.
+## What operators use
 
-Moving from the earlier Markdown kit? Use a full setup ZIP once and carry over approved Local Guidance and weekly work. Subsequent updates replace only **System** and **START HERE.docx** unless an explicit persistent migration requires human review.
+| Location | Use |
+| --- | --- |
+| START HERE.docx | Choose the task checklist |
+| System → Instructions | Fourteen short checklists with one action per box |
+| System → Prompts | Complete copy-and-paste text, also printed on the relevant checklist |
+| System → UPLOAD THIS TO START.docx | Detailed instructions for the assistant to read |
+| Local Guidance | Human-maintained local rules, references and playbook |
+| Each weekly folder | Inputs, Schedules and the complete Working Record |
 
-## Pantons weekly battle rhythm
+Every complete prompt includes **Do not delegate to subagents**. No specific model is required. Prefer one main GenAI.mil conversation per execution week. The optional DO review uses a separate human-started conversation and follows the same no-delegation rule.
 
-The operator manual follows the actual workday instead of making schedulers navigate by internal phase name:
+## Weekly rhythm
 
-1. **Monday — Inputs due.** All scheduling inputs are due NLT COB. Use **02 Monday - Inputs Due.docx**.
-2. **Tuesday — Start the week.** Create the weekly folder/chat, enable **DoW Policies Beta (GAMECHANGER)** when available, and upload startup/local/current products. Unless explicitly told otherwise, Gemini infers the next execution week and drafts the run control/product manifest without a startup questionnaire using **03 Tuesday - Start the Week.docx**.
-3. **Tuesday — Plan the week.** Reconcile gaps/conflicts, identify checkrides/evaluations and directed DV/senior-leader flyers, plan upgrades/resources, and build the initial GAMECHANGER-backed publication-rule/currency baseline with **04 Tuesday - Plan the Week.docx**.
-4. **Wednesday — Build and integrate.** Schedulers build the bulk of the weekly schedule while Gemini provides bounded support. The day ends with the Cross-Functional Schedule Integration Review, which verifies source-owner inputs and assigns unresolved issues but does not approve the schedule. Use **05 Wednesday - Build the Schedule.docx**.
-5. **Thursday — Full QC.** Human scheduler QC is followed by a fresh whole-schedule Gemini review. Gemini also re-queries GAMECHANGER against the actual near-final schedule and refreshes the publication-grounded QC before Buy/Sell using **06 Thursday - Full Schedule QC.docx**.
-6. **Thursday — Optional DO adversarial review.** The DO may independently challenge the schedule in a separate Terra or Grok conversation using **07 Thursday - DO Adversarial Review.docx**.
-7. **Thursday — Schedule buy/sell.** Schedulers present the selected version and the DO makes the scheduling decision using **08 Thursday - Schedule Buy-Sell.docx**. **This is the formal DO buy event when the DO explicitly approves the schedule.** Publication-QC issues and unverified items remain visible in the decision package.
-8. **Thursday–Friday — Implement buy/sell directions.** Schedulers make the directed changes and Gemini verifies implementation/cascades. Changes that affect publication-driven requirements receive GAMECHANGER delta checks using **09 Thursday-Friday - Apply Buy-Sell Changes.docx**. There is no routine second DO buy. A materially different solution outside the recorded direction returns to the DO.
-9. **Friday — Final QC and publish.** Verify faithful implementation, preserve publication-QC exceptions/limits, resolve any required supplemental DO decision, and publish using **10 Friday - Final QC and Publish.docx**. Publication is a separate human action.
-10. **Execution week — Reflows.** Analyze changes from the published weekly baseline and current signed daily schedules; re-query GAMECHANGER only for publication-driven checks affected by the reflow using **11 Execution Week - Reflows.docx**.
+1. **Monday:** inputs due NLT COB; collect existing squadron products.
+2. **Tuesday:** start the weekly chat and planning together; identify checkrides, directed flyers, upgrade windows and constraints.
+3. **Wednesday:** schedulers build the lineup; the Cross-Functional Schedule Integration Review verifies inputs and assigns remaining issues.
+4. **Thursday:** human QC followed by fresh full-schedule assistant QC; optional independent DO review; then formal Buy/Sell.
+5. **Thursday–Friday:** humans implement DO directions; the assistant checks implementation and the complete result.
+6. **Friday:** final QC, then human publication.
+7. **Execution week:** analyze changes against the published week and each affected day’s current signed daily schedule.
 
-The five internal phases still follow actual work status. A calendar day does not automatically create phase advancement, approval or publication.
+The assistant infers dates and file roles, asks only about material ambiguities, and keeps all material findings visible. It retains detailed facts, sources, publication checks, decisions, version roles, outlook and downside analysis in one complete weekly record with distinct sections. Operators do not fill out a startup questionnaire or duplicate trackers.
 
-For normal **pre-execution** weekly work, prompts default to the **next execution week** unless a human selects another period. Execution reflows stay on the current published execution week, active-week handoffs keep their recorded week, and historical work keeps its explicit period/cutoff. Gemini infers dates, current work state and version roles from supplied evidence, drafts the run-control record, and asks only when a material ambiguity cannot be resolved. Operators do not complete a startup field list.
+## Approval and evidence
 
-## Publication-grounded regulatory QC
+Humans create and edit schedules, coordinate, approve and publish. Thursday’s Buy/Sell becomes the formal DO buy only when the DO explicitly approves. The exact presented schedule plus recorded directions is the approved baseline. Faithful implementation needs no routine second buy; a materially different solution returns to the DO. Publication is separate. Every waiver requires the DO and applicable waiver authority.
 
-For publication-derived currency, qualification, crew-rest/duty, evaluation, syllabus/prerequisite, event-credit, recurring-training and similar regulatory requirements, the main Gemini workflow uses **DoW Policies Beta (GAMECHANGER)** as the required AI-side publication source. A regulatory finding must identify a connector-retrieved applicable publication plus a usable paragraph/page/locator. Gemini may calculate and reason from that retrieved rule using the squadron's actual tracker/schedule data.
+Publication-derived regulatory checks require sufficiently traceable **DoW Policies Beta (GAMECHANGER)** publications. Tuesday creates the initial rule ledger; Thursday refreshes it against the entire candidate; later changes query affected rules. Unavailable or inadequate evidence stays **CANNOT VERIFY**; conflicting authorities stay **SOURCE CONFLICT**. Model memory and ordinary web search cannot fill these gaps. Other supported planning continues. No assistant output certifies full compliance or grants approval.
 
-The system does **not** allow model memory, generic military knowledge or ordinary web search to fill a missing regulatory rule. Results are reported as **SOURCE-BACKED OK**, **SOURCE-BACKED ISSUE**, **CANNOT VERIFY**, or **SOURCE CONFLICT**. If GAMECHANGER is unavailable, normal scheduling analysis continues but publication-based regulatory checks remain CANNOT VERIFY. A source-backed result is evidence only; it does not grant approval or a waiver.
+## Install and update
 
-Tuesday creates the initial **Weekly Publication Rule Ledger** with stable P-### IDs. Thursday refreshes it against the complete near-final schedule before Buy/Sell. Post-Buy/Sell changes and execution reflows re-query only affected publication rules when applicability changes. The system never summarizes this as “fully compliant”; the strongest clean result is “No source-backed conflicts found in the checks performed,” with any CANNOT VERIFY/SOURCE CONFLICT items still listed.
+First use: extract the appropriate full setup into a new folder and follow checklist 01. Keep existing approved guidance. Existing install: use the update ZIP and replace **System** and **START HERE** before next week. Preserve Local Guidance and weekly work. Review any explicit persistent-profile migration and merge it manually after human review. Never extract a full setup over an existing install.
 
-## What the Thursday buy/sell approves
+Use checklist 12 to transfer an active week with its actual source files. A new chat has no assumed access to earlier chats or uploads. Use checklist 13 for updates/rollback and checklist 14 for a fictional first-use trial.
 
-The approved buy/sell baseline is the **exact presented schedule plus the explicit DO directions recorded during the Thursday meeting**. Post-buy/sell corrections are implementation of that decision, not a second approval cycle. Gemini checks whether the corrected file faithfully implements the directions and whether the changes create downstream conflicts.
+Use only systems and locations authorized for your material. Keep actual schedules, personnel data, reports and handoffs outside this repository. Static package/layout checks do not prove native Word, GenAI.mil, connector behavior or operational readiness; those trials require observed outputs and human review.
 
-If implementing a direction is infeasible or requires a materially different solution, that specific issue goes back to the DO for a supplemental decision. Every waiver still goes through the DO and the applicable waiver authority. Publication is recorded separately from approval.
+## Maintainers
 
-## Other operator guides
+Read [AGENTS.md](AGENTS.md), [architecture](ARCHITECTURE.md), [approved design](docs/v0.4/design-decisions.md), [the primer](docs/v0.4/system-primer.md), [validation](docs/v0.4/validation-plan.md) and [packaging instructions](packaging/README.md). Edit maintained sources and rebuild through scripts/build_packages.py. Generated ZIPs remain outside Git.
 
-- **12 Hand Off an Active Week.docx** — use only when an already-started week moves to another chat/user.
-- **13 Update for Next Week.docx** — replace the reusable System safely at a week boundary.
-- **14 Check the Setup.docx** — synthetic first-use checks and troubleshooting.
+The reviewed stable release identity is packaging/version.txt. After a reviewed PR is merged and publication is authorized, use **Actions → Publish release** from main. Leave Version blank to use the source version; an entered value must match. The workflow validates and builds, stages a matching draft, verifies all assets, and publishes last. Do not manually create the normal release or move an existing tag.
 
-Use the trackers, calendars and schedules the squadron already maintains. Blank forms capture missing guidance and changes; they do not require retyping supplied products. Schedulers build and edit the schedule; humans approve and publish it.
-
-Prefer one main Gemini conversation per execution week. The optional DO adversarial review is intentionally separate and never becomes an automatic second scheduler. The core scheduling workflow does not depend on GAMECHANGER, but **publication-grounded regulatory QC does**; no connector means those checks stay CANNOT VERIFY rather than falling back to memory or web search. A Word handoff plus the actual source files lets another user continue in a new chat. Shared-chat features, APIs and custom software are not required.
-
-DOCX/package structure checks are separate from model or connector behavior. **Operational GenAI.mil/GAMECHANGER behavior still requires the documented rehearsal/pilot validation.** Use only systems and locations authorized for the material; actual operational data stays outside this repository.
-
-## For maintainers
-
-Read [AGENTS.md](AGENTS.md), [architecture](ARCHITECTURE.md), [approved design decisions](docs/v0.4/design-decisions.md), [the primer](docs/v0.4/system-primer.md), [validation plan](docs/v0.4/validation-plan.md), and [packaging instructions](packaging/README.md). Markdown is maintained source; release ZIPs are the operator product. Generated ZIPs are not stored in the repository tree.
-
-To publish after a reviewed PR is merged, first set `packaging/version.txt` to the intended stable release version in that reviewed source change. Then open **Actions → Publish release** and run it from `main`. Normally leave **Version** blank; the workflow uses the source version. If a Version is entered as an extra confirmation, it must exactly match `packaging/version.txt` or the workflow stops before creating or modifying a release. The workflow builds/tests first, generates release notes, creates or resumes only the matching draft, retries transient GitHub asset-upload failures safely, verifies all assets, then publishes the release as its final action. **Do not manually create/publish the normal release or move an existing tag.** Package updates are manual and normally adopted at the next scheduling-week boundary.
-
-No open-source license has been selected. The owner decides licensing and public distribution.
+No open-source license has been selected; the owner decides licensing and public distribution.

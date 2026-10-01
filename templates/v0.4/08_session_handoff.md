@@ -76,4 +76,4 @@ Retain each Buy/Sell decision's disposition and both DO routing and waiver-autho
 
 ## Receiving-chat instruction
 
-Read the v0.4 primer, approved local profile, this handoff, current P-### ledger, decision record and attached current products. The handoff's week overrides the normal next-week default. Identify missing files and conflicting state. Preserve recorded human confirmations as human-confirmed. Do not infer approval or independently verified facts from the summary. Confirm ambiguous active/baseline roles, apply the recorded historical cutoff, perform any required current connector query and continue the requested task. If the handoff includes disallowed hindsight, stop the blind review and require an isolated clean restart.
+Do not delegate to subagents. Read UPLOAD THIS TO START.docx, my local guidance, the handoff and attached sources. Resume the recorded active week. Give me one next action at a time.

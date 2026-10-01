@@ -1,9 +1,13 @@
-This release reduces startup friction and aligns the reusable system with the revised Pantons scheduling flow.
+# What changed
 
-Normal **pre-execution** weekly conversations now default to the **next execution week** unless a human explicitly selects another period. Execution-week reflows stay on the current published execution week, active-week handoffs keep their recorded week, and historical work keeps its explicit period/cutoff. The assistant infers the exact dates, timezone, workflow step, active schedule, baselines, product status and connector availability from the current date, local counting week, folder/file names, schedule headers, uploads and conversation. Operators are no longer asked to complete a startup run-control field list. The assistant drafts that record, states only consequential assumptions and asks one focused question only when an ambiguity would materially change the work.
+All fourteen operator workflows are now short checklists with one action per checkbox. Complete prompts are printed on the checklists and supplied in System → Prompts. The assistant’s upload file carries the detailed scheduling and QC instructions, explains findings plainly, and gives one next action while preserving the complete weekly record.
 
-The source-ingest contract now uses **CURRENT, STALE, PARTIAL, CONFLICTED, INTEGRITY FAILED, UNREADABLE,** and **SUPERSEDED**. Calculated person-specific workbooks must show reliable identity linkage, freshness and error-state handling. A material identity or formula defect is quarantined as INTEGRITY FAILED; plausible cached values do not authorize person-specific conclusions. Unaffected planning continues.
+Every prompt includes **Do not delegate to subagents**. The package requires no specific model. Tuesday startup starts planning directly; Thursday full QC still covers the entire schedule and refreshes publication evidence. Existing scheduling, source, approval, waiver, publication and handoff boundaries continue.
 
-Wednesday's cross-functional meeting is standardized as the **Cross-Functional Schedule Integration Review**. It verifies representation of inputs and assigns unresolved issues; it is not a DO approval event. Thursday's Schedule Buy/Sell remains the formal DO buy. The package also adds the artifact-responsibility map, tightens the Terra/Grok regulatory boundary, strengthens P-ledger continuity during handoff and expands synthetic setup tests.
+## What to do
 
-Existing installations should adopt this System update at the next scheduling-week boundary using the normal **Update an existing setup** package. Local Guidance and weekly work are preserved; no persistent migration is required. The revised squadron SOP and checklist are separate local operational documents and are not installed automatically by this reusable System update.
+For an existing setup, adopt Update_Existing_Setup.zip before next week’s planning and follow UPDATE INSTRUCTIONS.docx. Replace System and START HERE only. Review PERSISTENT MIGRATIONS.docx and merge the current model-neutral conversation guidance into your human-maintained Local Profile. Preserve all numerical/local scheduling rules and later edits.
+
+## Validation limits
+
+Package checks and visual document review are separate from live GenAI.mil/connector and novice-scheduler trials. Actual platform behavior remains Not run until observed and reviewed by humans.

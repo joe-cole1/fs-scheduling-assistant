@@ -1,47 +1,29 @@
 # First time setup
 
-Do this once. A scheduler or designated setup owner maintains the folder; the DO confirms new standing guidance. Source owners provide their existing products.
+Do this once in an approved scheduling location. The setup owner maintains the files; the DO confirms new standing guidance.
 
-## Put the folder where your squadron works
+- [ ] Download the full setup ZIP for your squadron.
+- [ ] Extract the ZIP into a new folder.
+- [ ] Put the extracted folder in your approved scheduling location.
+- [ ] Open Local Guidance and keep any existing approved local files.
+- [ ] Collect your current rules, references, playbook and normal source products.
+- [ ] Open a new GenAI.mil conversation.
+- [ ] Upload System → UPLOAD THIS TO START.docx.
+- [ ] Upload the available Local Guidance and governing source files.
+- [ ] Paste the setup prompt below.
+- [ ] Answer the assistant’s one next question.
+- [ ] Have the DO confirm any proposed standing guidance.
+- [ ] Save confirmed guidance in Local Guidance.
+- [ ] Run 14 Check the Setup before operational use.
 
-1. Download the ZIP for your squadron. Right-click it and select **Extract All**. Put the extracted scheduling-assistant folder in an approved shared-drive location, such as **S:\Operations\Scheduling Assistant**. The drive letter is only an example.
-2. Open **Local Guidance**. Pantons receives its approved profile in **Local Profile.docx**. The other-squadron package has a clearly marked blank draft. Keep any already approved local profile instead of replacing it with a blank.
-3. Collect existing governing references, an approved playbook if one exists, and examples of the squadron's normal trackers and schedules. Keep the actual files in approved locations. A file path alone does not give the chat access.
+## Setup prompt
 
-## Start the setup conversation
-
-Open a new GenAI.mil chat. Upload **System → UPLOAD THIS TO START.docx**, **Local Guidance → Local Profile.docx**, **Stable References.docx**, and **Playbook.docx**, plus available governing source documents. Blank files are prompts for setup, not issued guidance.
-
-Paste this:
+Copy **System → Prompts → 01_First_Time_Setup.txt** or paste the complete text below.
 
 ```text
-Read the startup document and local uploads. Enter first-time setup Q&A;
-no execution week or operational phase is selected. Do not build a schedule.
-Identify readable files, then ask my squadron, role and existing guidance.
-Ask one substantive question at a time, explain why it matters, recommend an
-answer with tradeoffs when useful, and wait.
-Use existing products. Preserve approved rules; draft missing guidance only
-from sources and human answers. Distinguish confirmed facts, proposals,
-approved rules and unknowns. Invent no limits or authority. Do not import
-Pantons rules into another squadron. Raise primer conflicts for human decision.
-Help draft Local Profile, Stable References, Playbook and Setup Record.
-Apply the primer's human-confirmation and dual waiver requirements.
-Begin with your first question.
+Do not delegate to subagents. Read UPLOAD THIS TO START.docx and my local files. Help me set up our squadron guidance one question at a time.
 ```
 
-## Save the results
+A blank profile is a draft. Use your squadron’s rules; the assistant must not invent them.
 
-Ask for each completed product as a Word document if the chat supports file creation. Otherwise copy its text into the matching Word file and save it yourself. The assistant cannot save directly to your shared drive.
-
-- **Local Profile.docx:** approved scheduling rules, local responsibilities and unresolved rules clearly labeled.
-- **Stable References.docx:** where the actual governing rules are found, their dates and owners. Keep supplied publications alongside the index or in an identified approved location.
-- **Playbook.docx:** existing approved lessons and candidate decisions; an empty playbook is fine. Candidates keep stable IDs and Pending/Approved/Rejected status.
-- **Setup Record.docx:** setup owner, date, current filenames, supplied approvals and remaining questions. Create this simple record from the chat; no separate form is required.
-
-Only record approval after a human actually gives it. Missing local rules limit affected checks; they are not filled from general military knowledge. Temporary priorities and personnel restrictions belong in weekly inputs.
-
-## Try it, then start the weekly rhythm
-
-Use **14 Check the Setup.docx** for a short synthetic trial, including reading the startup upload. GenAI.mil DOCX ingestion and instruction-following require separate validation from package structure checks. Record what works and any unreadable content.
-
-For an actual scheduling week, follow **02 Monday - Inputs Due.docx** at the Monday input deadline. On Tuesday, use **03 Tuesday - Start the Week.docx** and then **04 Tuesday - Plan the Week.docx**.
+**Finished when:** Local Profile, Stable References, Playbook and a Setup Record are saved with approval status and remaining gaps visible.

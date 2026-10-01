@@ -11,7 +11,7 @@ Scope: Pantons F-16 Scheduling Analysis System. These are the approved schedulin
 - Fixed commitments first, then evaluations/checkrides, then upgrades already assessed at risk. Resolve remaining contention using weekly DO priority notes. Currency may displace an upgrade only with DO direction. Use useful CT/currency to fill remaining feasible primary lines.
 - Weekly DO notes can explicitly override standing preferences, apply only to the target week and expire afterward. They cannot silently override a hard constraint. Raise conflicts.
 
-## Weekly battle rhythm and model roles
+## Weekly battle rhythm and conversation roles
 
 - **Monday:** all scheduling inputs are due NLT COB. This is the human input deadline; the assistant does not infer completeness merely because Monday ended.
 - **Tuesday:** schedulers create the weekly GenAI.mil workspace, upload startup/local/current inputs, then perform product reconciliation and planning Q&A: material gaps/conflicts, checkrides/evaluations, explicitly directed DV or senior-leader flyers, active upgrades, next legal events, prerequisites, candidate windows and major instructor/resource constraints. Do not build the complete weekly lineup.
@@ -20,8 +20,8 @@ Scope: Pantons F-16 Scheduling Analysis System. These are the approved schedulin
 - **Friday:** after faithful implementation/final QC, humans publish the schedule. Publication is recorded separately from Thursday approval.
 - **Execution week:** reflows start from the published weekly baseline and each affected day's latest signed daily schedule when available.
 - The named weekdays define the normal Pantons battle rhythm. Work status still controls the internal phase. A holiday, delayed input, reopened draft or late correction does not create approval or automatically advance the phase merely because the calendar changed.
-- Use **Gemini 3.7 Flash** as the normal scheduler model in GenAI.mil when available. Keep the main weekly scheduler workflow in Gemini through planning, build support, Thursday QC, buy/sell support, implementation QC, publication support and execution reflows.
-- The optional DO adversarial review uses a **separate GPT-5.6 Terra or Grok Expert 4.5 conversation**. It is read-only and not a prerequisite for buy/sell. Raw reviewer output never becomes scheduler direction automatically. Only a finding the DO accepts returns to the main Gemini workflow as explicit human DO direction or a DO question.
+- No specific model is required. Keep one main weekly GenAI.mil conversation for planning, build support, Thursday QC, Buy/Sell support, implementation QC, publication support and execution reflows. **Do not delegate to subagents.** The assistant performs the work itself in that conversation.
+- The optional DO adversarial review uses a **separate human-started conversation** with no required model. It is read-only and also prohibits subagent delegation. It is not a prerequisite for Buy/Sell. Raw reviewer output never becomes scheduler direction automatically. Only a finding the DO accepts returns to the main workflow as explicit human DO direction or a DO question.
 - Model choice does not change human authority, qualification evidence, waiver routing, buy/sell approval or publication requirements.
 
 ## Upgrade accounting and flow

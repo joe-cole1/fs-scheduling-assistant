@@ -1,5 +1,16 @@
 # Change log
 
+## [0.6.0] — 2026-10-02
+
+- Replace all fourteen long operator guides with one-page checklists and single-action steps.
+- Add twenty complete plain-text prompts and mirror task prompts on their checklists; every prompt includes "Do not delegate to subagents".
+- Remove named-model prerequisites, including the optional independent DO review.
+- Put detailed task contracts in the upload primer, default intake to CONFLICTS ONLY and guide one next action while retaining a complete weekly record.
+- Start Tuesday intake/planning together; preserve fresh full Thursday QC, publication source gates, human decisions and active-week continuity.
+- Add an explicit persistent-profile migration for model-neutral conversation guidance and retain append-only migration history.
+- Validate regenerated setup/update packages, exact prompts, source coverage and deterministic builds. GenAI.mil and novice trials remain separate.
+
+
 ## Unreleased — release publication hardening
 
 - Make `packaging/version.txt` the authoritative stable release identity. A blank **Actions → Publish release** Version uses the reviewed source value; an entered Version is only a confirmation and must match exactly.

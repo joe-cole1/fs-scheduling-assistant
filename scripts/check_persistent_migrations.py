@@ -69,6 +69,7 @@ def validate_current(root: Path | None = None, manifest: dict | None = None) -> 
     ids = [item.get('id') for item in migrations]
     if any(not item for item in ids) or len(ids) != len(set(ids)):
         raise ValueError('Persistent migration IDs must be unique and nonempty')
+    earlier={}
     for item in migrations:
         action = item.get('action')
         if action not in ALLOWED_ACTIONS:
@@ -83,6 +84,15 @@ def validate_current(root: Path | None = None, manifest: dict | None = None) -> 
             raise ValueError(f'Actionable persistent migration needs instructions: {item.get("id")}')
         if not item.get('introduced_in') or not item.get('summary'):
             raise ValueError(f'Persistent migration needs introduced_in and summary: {item.get("id")}')
+        supersedes=item.get('supersedes', [])
+        if not isinstance(supersedes,list) or len(set(supersedes))!=len(supersedes):
+            raise ValueError('Migration supersedes must be a unique list of earlier IDs')
+        for prior in supersedes:
+            if prior not in earlier:
+                raise ValueError('Migration may supersede only an earlier record: '+str(prior))
+            if not set(earlier[prior]['artifacts']).issubset(affected):
+                raise ValueError('Consolidated migration must cover all superseded artifacts')
+        earlier[item['id']]=item
     return manifest
 
 

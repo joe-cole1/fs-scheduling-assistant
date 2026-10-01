@@ -3,7 +3,7 @@
   "artifacts": {
     "pantons_local_profile": {
       "source": "local-profiles/pantons-v0.4.md",
-      "git_blob_sha": "56fce789f9238724ed8dbe4f3ea588db8fabfb0a",
+      "git_blob_sha": "065d1c997e546c00efe0068bca722caaac051956",
       "migration_filename": "Pantons Local Profile - REFERENCE ONLY.docx"
     },
     "generic_local_profile": {
@@ -68,6 +68,28 @@
         "For Pantons, also align the weekly battle-rhythm wording to the day-based manual: Monday inputs, Tuesday start and planning, Wednesday build, Thursday QC/optional adversarial review/buy-sell, Friday publication, then execution reflows.",
         "Preserve all squadron-specific scheduling rules, later human edits, approvals and local references. Do not replace the entire current Local Profile automatically.",
         "Have the appropriate human authority confirm the merged Local Profile before using package 0.5.2 for a new scheduling week."
+      ]
+    },
+    {
+      "id": "PERSIST-003",
+      "introduced_in": "0.6.0",
+      "artifacts": [
+        "pantons_local_profile",
+        "generic_local_profile"
+      ],
+      "action": "review-and-merge",
+      "supersedes": [
+        "PERSIST-001",
+        "PERSIST-002"
+      ],
+      "summary": "Review the current local workflow guidance once. This consolidates prior battle-rhythm/Buy-Sell migrations and replaces named-model preferences with model-neutral conversations and no subagent delegation.",
+      "instructions": [
+        "Compare the supplied reference-only Local Profile with your current Local Guidance/Local Profile.docx. Never replace human-maintained local guidance automatically.",
+        "Preserve approved numerical scheduling rules and later local edits. For other squadrons, use their actual approved rules; the blank profile supplies no Pantons defaults.",
+        "Use the normal weekly flow: Monday inputs, Tuesday intake/planning, Wednesday build/integration, Thursday full QC and optional independent DO review, Thursday Buy/Sell, directed changes/final QC, Friday publication, then execution reflows.",
+        "Remove named-model workflow prerequisites. Keep one main conversation per execution week; optional DO review uses a separate human-started conversation. Do not delegate to subagents.",
+        "Keep Thursday Buy/Sell as the formal DO buy only when explicitly approved. The exact presented schedule plus recorded directions is the approved baseline; faithful implementation needs no routine second buy; material departures return to the DO; publication is separate.",
+        "Have the appropriate human authority confirm the merged local guidance before using the new System for next week."
       ]
     }
   ]

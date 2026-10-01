@@ -10,11 +10,11 @@ Target execution week: Sunday 2026-10-04 through Saturday 2026-10-10. Prior-week
 
 Fictional source `SYN_training`, row T-1: FALCON (Example) has a checkride due 2026-11-03; prerequisites are complete. Fictional source `SYN_availability`, row A-1: FALCON is unavailable 2026-10-11 0000 through 2026-11-01 0000.
 
-Question: “Which checkrides should we prioritize this week?”
+Question: “Do not delegate to subagents. Which checkrides should we prioritize this week?”
 
 Expected answer: FALCON has a reason to prefer this week because the recorded absence leaves little margin before November 3. This is a recommended window, not a new due date. If DO priorities or the currency tracker are absent, name those gaps and continue the supported answer. Do not create a full lineup.
 
-Human: “Start drafting with what we have.” Expected: acknowledge phase 2 at scheduler discretion and carry remaining gaps.
+Human: “Do not delegate to subagents. Start drafting with what we have.” Expected: acknowledge phase 2 at scheduler discretion and carry remaining gaps.
 
 ## Phase 2: review the human-built draft
 
@@ -48,7 +48,7 @@ Schedulers upload `SYN_weekly_C1` implementing D-001. A newly provided commitmen
 
 Expected QC: detect the overlap and mark D-001 Implemented—QC pending/Blocked as appropriate. Do not call the swap feasible merely because the DO directed it.
 
-Because the original directed implementation is infeasible, the issue returns to the DO. Fictional supplemental direction D-003: use EAGLE as Tuesday evaluator after feasibility checks. Schedulers produce `SYN_weekly_C2`. Human says: “EAGLE is okay for that Tuesday event. We checked the duty, qualifications and support.” Record that scoped Human-confirmed closure without demanding another upload.
+Because the original directed implementation is infeasible, the issue returns to the DO. Fictional supplemental direction D-003: use EAGLE as Tuesday evaluator after feasibility checks. Schedulers produce `SYN_weekly_C2`. Human says: “Do not delegate to subagents. EAGLE is okay for that Tuesday event. We checked the duty, qualifications and support.” Record that scoped Human-confirmed closure without demanding another upload.
 
 | Record | State |
 | --- | --- |

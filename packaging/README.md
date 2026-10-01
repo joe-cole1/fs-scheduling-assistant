@@ -110,7 +110,8 @@ For rollback, operators use **System → Instructions → 13 Update for Next Wee
 
 ## Sources and local build
 
-- `guides/`: START HERE and day/step Word guide sources.
+- `guides/`: START HERE and day/step one-page Word checklist sources.
+- `prompts/`: complete short UTF-8 text prompts, mirrored on relevant checklists. Each starts with `Do not delegate to subagents.` and requires no named model.
 - `version.txt`: reviewed stable release/package identity used by the publish workflow.
 - `update-note.md`: release/change summary embedded in update instructions and used for release notes.
 - `release-notes-template.md`: maintained explanation of automatically generated release-note structure.
@@ -131,5 +132,9 @@ python -m unittest discover -s tests -v
 ```
 
 The temporary output has a `build` folder of DOCX documents and `downloads` with the three ZIPs and manifest. Keep generated files out of Git. Native Word/GenAI.mil behavior needs separate validation; build success is not proof of operational readiness.
+
+All three distributions share identical System checklists, startup instructions, forms, references and plain-text prompts. The checker verifies prompt guards, exact checklist/text-file agreement, model-neutral current package content, genuine checkbox glyphs, source coverage and deterministic metadata. Render the current checklists and all delivered Word documents for visual review; one-page checklist counts are a separate layout check. Every operational and test prompt retains the no-delegation instruction.
+
+Migration history stays append-only. An appended consolidated migration may name earlier IDs in `supersedes` only if it covers all their artifacts. The current migration document shows unsuperseded actions, preventing obsolete named-model guidance from being reintroduced while preserving historical records in source.
 
 GitHub Releases retain past versions/source tags. There are no current-tree archive folders or committed ZIP copies. For a fork, update repository URLs in the root README before distribution.
