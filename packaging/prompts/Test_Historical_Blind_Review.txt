@@ -1,0 +1,1 @@
+Do not delegate to subagents. Use the historical period and cutoff I supplied. Begin a blind review using only the allowed inputs.

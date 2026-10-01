@@ -36,7 +36,7 @@ The formal DO buy occurs during the Thursday buy/sell when the DO explicitly app
 ## Post-buy/sell implementation and final QC
 
 | Corrected filename/version | Buy/sell-presented baseline | Previous corrected version | Directed decisions implemented | New proposals | Downstream checks and findings | Human-confirmed closures | Remaining issues / supplemental DO decision |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | --- | --- | --- | --- |
 | [value] | [value] | [value/None] | [D-IDs] | [R/D-IDs] | [report/reference] | [D-IDs] | [IDs/None] |
 
 Check exact direction disposition, complete cascades, affected duty/role/resource/training relationships, and cross-cutting conflicts. There is no routine second DO buy. If the needed solution materially exceeds the recorded direction, return that item to the DO and record the supplemental decision.

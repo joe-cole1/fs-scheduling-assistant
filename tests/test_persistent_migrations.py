@@ -68,6 +68,18 @@ class PersistentMigrationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'append-only'):
             p.validate_change_declaration(previous,current,'0.4.1','0.4.2')
 
+    def test_consolidation_cannot_hide_an_uncovered_artifact(self):
+        manifest=copy.deepcopy(p.load_manifest())
+        manifest['migrations'][-1]['artifacts']=['pantons_local_profile']
+        with self.assertRaisesRegex(ValueError,'cover all superseded artifacts'):
+            p.validate_current(manifest=manifest)
+
+    def test_consolidation_cannot_reference_future_or_unknown_record(self):
+        manifest=copy.deepcopy(p.load_manifest())
+        manifest['migrations'][-1]['supersedes']=['PERSIST-FUTURE']
+        with self.assertRaisesRegex(ValueError,'earlier record'):
+            p.validate_current(manifest=manifest)
+
 
 if __name__ == '__main__':
     unittest.main()

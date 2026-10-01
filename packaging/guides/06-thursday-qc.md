@@ -1,61 +1,25 @@
-# Thursday — Full schedule QC
+# Thursday full QC
 
-Complete the scheduler's normal checklist first. Then use Gemini for a fresh whole-schedule review of the exact near-final version intended for the Buy/Sell. This is not a delta-only review.
+Continue the weekly chat. This command requests a fresh review of the entire exact schedule going to Buy/Sell.
 
-The assistant should infer the execution week, as-of state, current source manifest and most recent clearly identified near-final schedule. If multiple files could be the intended Buy/Sell version, it should ask one version-selection question rather than require a run-control form.
+- [ ] Complete the squadron’s human scheduling QC checklist.
+- [ ] Save the near-final candidate with a unique filename in Schedules.
+- [ ] Upload that exact candidate to the weekly chat.
+- [ ] Upload source products that changed since the last review.
+- [ ] Provide Wednesday’s remaining issues or decision notes.
+- [ ] Paste the full-QC prompt below.
+- [ ] Check the candidate filename shown by the assistant.
+- [ ] Follow the assistant’s one next action to resolve findings.
+- [ ] Save the updated complete QC record in Working Record.
 
-## Upload or confirm
+## Full QC prompt
 
-- The exact near-final schedule.
-- Any Monday-Wednesday source changes.
-- Current decision record and unresolved integration-review issues.
-- Current P-### Weekly Publication Rule Ledger.
-- Weather/support updates that materially affect the plan.
-
-## Full-QC prompt
+Copy **System → Prompts → 06_Run_Full_QC.txt** or paste the complete text below.
 
 ```text
-Perform Thursday full-schedule QC for the inferred execution week. Review the
-entire latest clearly identified near-final schedule from scratch, not only its
-recent edits. If more than one schedule could be the intended Buy/Sell version,
-ask me which one controls; otherwise infer the version and proceed.
-
-Reconcile all source products first. Classify each as CURRENT, STALE, PARTIAL,
-CONFLICTED, INTEGRITY FAILED, UNREADABLE, or SUPERSEDED. Do not use values from a
-calculated person-specific source with a material identity/formula integrity
-failure. Explain exactly which checks are limited and continue unaffected work.
-
-Check hard constraints, approval and waiver needs, availability, exact-time
-commitments, prior/next duty boundaries, qualifications, prerequisites,
-instructor/evaluator placement, ratios, formations, aircraft/configuration,
-primary lines, protected spares, simulator capacity, range/airspace/tanker and
-other support, backups, weather placement, checkrides/evaluations, directed DVs,
-upgrade progression, IP workload, 30-day outlook, unused feasible opportunities,
-and one moderate downside case. Validate every proposed cascade completely.
-
-Run a fresh publication-grounded pass through DoW Policies Beta (GAMECHANGER)
-against the people, roles, events, timing and prerequisites actually scheduled.
-Refresh and expand the P-### ledger. For publication-derived requirements, use
-only sufficiently traceable connector-retrieved publications. Do not use model
-memory, generic military knowledge, or ordinary web search. Preserve
-SOURCE-BACKED ISSUE, SOURCE CONFLICT, and CANNOT VERIFY items. Do not claim the
-schedule is fully compliant.
-
-Provide:
-1. bottom-line advisory readiness: BUY READY, READY WITH DO DECISIONS, or NOT READY;
-2. packet/source limitations and high-consequence unverified checks;
-3. hard conflicts and approval/waiver needs;
-4. ranked exact corrections with full downstream effects;
-5. checkrides, directed DVs, at-risk upgrades, primary-line use, protected spares,
-   configuration and resource/IP bottlenecks;
-6. refreshed P-ledger exceptions and limits;
-7. exact DO decisions required; and
-8. a concise change list for the scheduler.
-
-This review is advisory. Do not infer approval, coordination, waiver, publication,
-or a Thursday DO buy.
+Do not delegate to subagents. Run full schedule QC.
 ```
 
-**Save:** the exact QC schedule version, full report, refreshed P-ledger and corrected decision record in **Working Record**. Keep the schedule source file in **Schedules**.
+After a corrected candidate is uploaded, paste the same full-QC prompt again. Uploading alone does not start a review. Publication checks require fresh GAMECHANGER evidence or stay CANNOT VERIFY.
 
-**Next:** optional **07 Thursday - DO Adversarial Review.docx**, then **08 Thursday - Schedule Buy-Sell.docx**.
+**Finished when:** The exact candidate and full QC record are saved. Remaining decisions, waivers and unverified checks stay visible for the DO at Buy/Sell.

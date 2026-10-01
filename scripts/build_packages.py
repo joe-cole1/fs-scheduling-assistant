@@ -1,4 +1,4 @@
-"""Build the current Word-only operator ZIPs. Maintainer utility, not runtime software."""
+"""Build Word checklists and complete text prompts. Maintainer utility only."""
 from pathlib import Path
 from datetime import datetime, timezone
 import argparse
@@ -60,7 +60,19 @@ REFERENCES = [
     ('docs/data-handling.md', 'Data Handling.docx'),
     ('examples/v0.4/SYNTHETIC_weekly_cycle.md', 'SYNTHETIC Weekly Cycle.docx'),
     ('examples/v0.4/SYNTHETIC_leadership_inputs.md', 'SYNTHETIC Leadership Inputs.docx'),
+    ('examples/v0.4/SYNTHETIC_beginner_chat.md', 'SYNTHETIC Beginner Chat.docx'),
 ]
+PROMPTS = sorted(p.name for p in (ROOT/'packaging/prompts').glob('*.txt'))
+DELEGATION_GUARD = 'Do not delegate to subagents.'
+
+
+def validate_prompt(prompt, name):
+    if not prompt.startswith(DELEGATION_GUARD):
+        raise ValueError('Prompt must start with the no-delegation instruction: '+name)
+    if not prompt[len(DELEGATION_GUARD):].strip():
+        raise ValueError('Prompt needs a task: '+name)
+    if re.search(r'Gemini|Terra|Grok|GPT-?\d|\[|\]|<[^>]+>',prompt,re.I):
+        raise ValueError('Prompt must require no named model or unfilled field: '+name)
 LINK_NAMES = {k:v for k,v in FORMS}
 LINK_NAMES.update({Path(k).name:v for k,v in REFERENCES})
 LINK_NAMES.update({'first-time-setup.md':'01 First time setup.docx',
@@ -86,14 +98,30 @@ def validate_reproducibility_contract():
 
 
 def actionable_migrations():
-    return [item for item in PERSISTENT['migrations'] if item['action'] != 'none']
+    superseded={prior for item in PERSISTENT['migrations'] for prior in item.get('supersedes', [])}
+    return [item for item in PERSISTENT['migrations'] if item['action'] != 'none' and item['id'] not in superseded]
 
 
 def update_instructions_source():
     change_note=(ROOT/'packaging/update-note.md').read_text().strip()
     if not change_note:
         raise ValueError('packaging/update-note.md must describe this release')
-    return '# Update to package '+VERSION+'\n\n'+change_note+'\n\n## Use next week\n\n1. Extract this update into a temporary folder, separate from your squadron scheduling folder.\n2. Before starting next week’s planning, replace the entire System folder in your permanent scheduling folder with the supplied System folder.\n3. Replace START HERE.docx with the supplied copy.\n4. Keep Local Guidance, COPY THIS FOLDER FOR EACH NEW WEEK, and every Week of date folder in place. Never save local guidance or completed work inside System.\n5. If **PERSISTENT MIGRATIONS.docx** is included, read it before deleting the temporary update folder. Review and merge only the explicitly listed persistent changes; reference-only files are never automatic replacements or approvals.\n6. Follow the new System → Instructions → 03 Tuesday - Start the Week.docx when starting next week’s chat. Upload the new startup document.\n\nThe package number in generated document headers is the authoritative installed System version. File dates are deterministic packaging metadata, not release/install timestamps.\n\nThis update does not change an existing conversation or any operational approvals. Current-week work and decisions carry forward. Routine updates include no local guidance or weekly folders. A release that deliberately changes persistent local seeds or folder structure must declare that migration and may include clearly marked reference-only copies outside System for human review.\n\n## Rollback\n\nTo restore a prior System release, download that release’s Update_Existing_Setup.zip and follow System → Instructions → 13 Update for Next Week.docx. Replace only System and START HERE. Do not roll back Local Guidance, weekly work or operational decisions automatically.\n\n## Coming from the earlier Markdown kit?\n\nUse the appropriate full setup ZIP once. Copy your existing approved local guidance and weekly work into the new layout; preserve their contents. Future updates use the System replacement above plus any explicitly declared persistent-migration review.\n\nSee System → Instructions → 13 Update for Next Week.docx for details. Downloading an update or rollback grants no new scheduling approval or waiver.\n'
+    change_note=change_note.split('## What to do',1)[0].replace('# What changed\n\n','',1).strip()
+    return ('# Update to package '+VERSION+'\n\n'
+        'Adopt this update before next week’s planning. The package number in document headers identifies the installed version.\n\n'
+        '- [ ] Extract this update into a temporary folder.\n'
+        '- [ ] Back up your existing System folder and START HERE.docx.\n'
+        '- [ ] Replace the entire existing System folder with the supplied System.\n'
+        '- [ ] Replace START HERE.docx with the supplied copy.\n'
+        '- [ ] Review any PERSISTENT MIGRATIONS.docx in the temporary update.\n'
+        '- [ ] Merge only the listed persistent changes after human review.\n'
+        '- [ ] Keep Local Guidance, the weekly-folder template and all weekly work in place.\n'
+        '- [ ] Start next week with 03 Tuesday - Start the Week.docx.\n\n'
+        'This update does not alter an existing chat, approval, waiver, published schedule or completed result. Never save completed work inside System.\n\n'
+        'For rollback, use the prior release’s update ZIP and replace only System and START HERE. Preserve human-maintained local rules and operational records. An urgent active-week System change uses the handoff/resume checklist.\n\n'
+        'Moving from the older Markdown layout? Use the appropriate full setup once and carry your approved guidance and weekly work into it.\n\n'
+        '## What changed\n\n'+change_note+'\n\n'
+        'Static package and layout checks are separate from live GenAI.mil/connector and novice-scheduler trials. Those remain Not run until observed and reviewed.\n')
 
 
 def persistent_migration_source():
@@ -107,8 +135,8 @@ def persistent_migration_source():
         ''
     ]
     for item in migrations:
-        lines += [f'## {item["id"]} — package {item["introduced_in"]}', '', item['summary'], '', '**Affected persistent artifacts:** '+', '.join(item['artifacts']), '', 'Required actions:']
-        lines += [f'{index}. {instruction}' for index,instruction in enumerate(item['instructions'],1)]
+        lines += [f'## {item["id"]} package {item["introduced_in"]}', '', item['summary'], '', 'Required actions:']
+        lines += ['- [ ] '+instruction for instruction in item['instructions']]
         lines += ['', 'Reference-only source copies, when applicable, are provided under **Persistent Migration Sources**. They are comparison material, not installed replacements and not evidence of approval.', '']
     return '\n'.join(lines)
 
@@ -119,7 +147,7 @@ def el(tag, **attrs):
     return node
 
 
-def configure(doc):
+def configure(doc, checklist=False):
     """compact_reference_guide preset; compact customer_pack title, no cover page."""
     sec=doc.sections[0]
     sec.page_width=Inches(8.5); sec.page_height=Inches(11)
@@ -134,12 +162,39 @@ def configure(doc):
             'Header':(9,0,0,'555555',False), 'Footer':(9,0,0,'555555',False)}
     for name,(size,before,after,color,bold) in tokens.items():
         st=styles[name] if name in styles else styles.add_style(name,WD_STYLE_TYPE.PARAGRAPH)
-        st.font.name='Calibri';st.font.size=Pt(size);st.font.color.rgb=RGBColor.from_string(color);st.font.bold=bold
+        st.font.name='Arial';st.font.size=Pt(size);st.font.color.rgb=RGBColor.from_string(color);st.font.bold=bold
+        if name in ('Title','Subtitle','Heading 1','Heading 2','Heading 3','Record Label','Header'):
+            st.font.color.rgb=RGBColor(0,0,0)
+        pp=st._element.find(qn('w:pPr'))
+        if pp is not None:
+            for tag in ('w:pBdr','w:shd'):
+                for node in list(pp.findall(qn(tag))): pp.remove(node)
         pf=st.paragraph_format;pf.space_before=Pt(before);pf.space_after=Pt(after);pf.line_spacing=1.25
         pf.widow_control=True
         if name.startswith('Heading') or name in ('Title','Subtitle','Record Label'): pf.keep_with_next=True
-    styles['Prompt']._element.get_or_add_pPr().append(el('shd',fill='F4F6F9'))
     styles['Prompt'].paragraph_format.keep_together=True
+    if checklist:
+        sec.top_margin=Inches(.65);sec.bottom_margin=Inches(.6)
+        sec.left_margin=sec.right_margin=Inches(.7)
+        sec.header_distance=sec.footer_distance=Inches(.25)
+        for name in ('Normal','List Bullet','List Number','Prompt'):
+            styles[name].font.size=Pt(11.5)
+            styles[name].paragraph_format.line_spacing=1.12
+            styles[name].paragraph_format.space_after=Pt(5)
+        styles['Title'].font.size=Pt(25)
+        styles['Title'].paragraph_format.space_after=Pt(4)
+        styles['Subtitle'].font.size=Pt(10.5)
+        styles['Subtitle'].paragraph_format.space_after=Pt(8)
+        for name in ('Heading 1','Heading 2','Heading 3'):
+            styles[name].font.size=Pt(13)
+            styles[name].paragraph_format.space_before=Pt(9)
+            styles[name].paragraph_format.space_after=Pt(4)
+        st=styles.add_style('Checklist',WD_STYLE_TYPE.PARAGRAPH)
+        st.base_style=styles['Normal']
+        st.paragraph_format.left_indent=Inches(.29)
+        st.paragraph_format.first_line_indent=Inches(-.29)
+        st.paragraph_format.keep_together=True
+        st.paragraph_format.space_after=Pt(6)
     numbering=doc.part.numbering_part.element
     for abstract_id,fmt,marker in [(70,'bullet','•'),(71,'decimal','%1.')]:
         a=el('abstractNum',abstractNumId=abstract_id);lvl=el('lvl',ilvl=0)
@@ -177,8 +232,24 @@ def listpara(doc,text,num_id):
     inline(p,text)
 
 
-def write_doc(source, destination, subtitle=None):
-    doc=Document();configure(doc);lines=source.splitlines();i=0;seq=100
+def title_text(text):
+    text=re.sub(r'\bv\d+(?:\.\d+)+\b', '', clean(text))
+    text=re.sub(r'[^\w\s.]',' ',text)
+    text=re.sub(r'(?<!\d)\.|\.(?!\d)', ' ', text)
+    return re.sub(r'\s+',' ',text).strip()
+
+
+def write_doc(source, destination, subtitle=None, checklist=False):
+    doc=Document();configure(doc,checklist);lines=source.splitlines();i=0;seq=100;checkbox_number=0
+    if destination.name in ('09 Playbook.docx', 'Playbook.docx'):
+        # Keep the short blank record together without changing its type size.
+        doc.styles['Normal'].paragraph_format.space_after=Pt(4)
+    if destination.name in ('Local Profile.docx', 'Pantons Local Profile - REFERENCE ONLY.docx', 'Blank Local Profile - REFERENCE ONLY.docx'):
+        # Avoid a final page containing only the profile's closing sentence.
+        doc.styles['Normal'].paragraph_format.space_after=Pt(4)
+        doc.styles['List Bullet'].paragraph_format.space_after=Pt(2)
+        for style in ('Normal', 'List Bullet', 'List Number'):
+            doc.styles[style].paragraph_format.line_spacing=1.2
     while i<len(lines):
         line=lines[i].strip()
         if not line: i+=1;continue
@@ -212,7 +283,7 @@ def write_doc(source, destination, subtitle=None):
             continue
         heading=re.match(r'^(#{1,6}) (.*)',line)
         if heading:
-            level=len(heading[1]);title=heading[2]
+            level=len(heading[1]);title=title_text(heading[2])
             if level==1:
                 inline(doc.add_paragraph(style='Title'),title)
                 inline(doc.add_paragraph(style='Subtitle'),subtitle or 'Package '+VERSION+' · Human-led scheduling')
@@ -223,7 +294,13 @@ def write_doc(source, destination, subtitle=None):
             while i<len(lines) and re.match(r'^\d+\. ',lines[i].strip()):
                 listpara(doc,re.sub(r'^\d+\. ','',lines[i].strip()),seq);i+=1
             continue
-        if line.startswith('- '): listpara(doc,line[2:].replace('[ ] ','Check: '),70);i+=1;continue
+        if line.startswith('- [ ] '):
+            checkbox_number+=1
+            p=doc.add_paragraph(style='Checklist' if checklist else 'Normal')
+            box=p.add_run('☐  ');box.font.name='DejaVu Sans';box.font.size=Pt(12)
+            p.add_run(str(checkbox_number)+'. ').bold=True
+            inline(p,line[6:]);i+=1;continue
+        if line.startswith('- '): listpara(doc,line[2:],70);i+=1;continue
         buf=[line];i+=1
         while i<len(lines) and lines[i].strip() and not re.match(r'^(#|\||```|- |\d+\. )',lines[i].strip()):
             buf.append(lines[i].strip());i+=1
@@ -253,18 +330,24 @@ def build(out):
     staging=out/'build';downloads=out/'downloads'
     if staging.exists(): shutil.rmtree(staging)
     common=staging/'common';system=common/'System'
-    write_doc((ROOT/'packaging/guides/start.md').read_text(),common/'START HERE.docx')
+    write_doc((ROOT/'packaging/guides/start.md').read_text(),common/'START HERE.docx',checklist=True)
     for source,name in GUIDES:
-        write_doc((ROOT/'packaging/guides'/source).read_text(),system/'Instructions'/name)
+        write_doc((ROOT/'packaging/guides'/source).read_text(),system/'Instructions'/name,checklist=True)
+    if not PROMPTS:
+        raise ValueError('No complete operator prompts found')
+    for name in PROMPTS:
+        prompt=(ROOT/'packaging/prompts'/name).read_text()
+        validate_prompt(prompt,name)
+        dest=system/'Prompts'/name;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_text(prompt)
     primer=(ROOT/'docs/v0.4/system-primer.md').read_text().split('## START OF PRIMER',1)[1].split('## END OF PRIMER',1)[0]
-    intro='# Upload this to start\n\nThis is the assistant’s scheduling primer. Upload this document with current local guidance and sources, then paste the activation prompt in 03 Tuesday - Start the Week.docx. These instructions are advisory and do not establish approval of a schedule.\n\n'
+    intro='# Upload this to start\n\nUpload this file with current local guidance and sources, then paste the complete prompt on your task checklist. This file is for the assistant to read; operators follow the numbered checklists. No specific model is required. These advisory instructions establish no scheduling approval.\n\n'
     write_doc(intro+primer,system/'UPLOAD THIS TO START.docx')
     for source,name in FORMS:
         write_doc((ROOT/'templates/v0.4'/source).read_text(),system/'Blank Forms'/name)
     for source,name in REFERENCES:
         write_doc((ROOT/source).read_text(),system/'Reference'/name)
     release=update_instructions_source()
-    write_doc(release,staging/'UPDATE INSTRUCTIONS.docx')
+    write_doc(release,staging/'UPDATE INSTRUCTIONS.docx',checklist=True)
     for variant,label,profile in [('Pantons','Pantons Scheduling Assistant','local-profiles/pantons-v0.4.md'),('First_Time_Squadron','Squadron Scheduling Assistant','templates/setup/local_profile_template.md')]:
         dest=staging/variant/label;shutil.copytree(common,dest)
         local=dest/'Local Guidance';write_doc((ROOT/profile).read_text(),local/'Local Profile.docx', 'Pantons approved local profile' if variant=='Pantons' else 'DRAFT — local rules must be supplied and approved')
@@ -277,7 +360,7 @@ def build(out):
     shutil.copy2(staging/'UPDATE INSTRUCTIONS.docx',update/'UPDATE INSTRUCTIONS.docx')
     migrations=actionable_migrations()
     if migrations:
-        write_doc(persistent_migration_source(),update/MIGRATION_DOC,'Human-reviewed persistent-state migration')
+        write_doc(persistent_migration_source(),update/MIGRATION_DOC,'Human-reviewed persistent-state migration',checklist=True)
         included=set()
         for item in migrations:
             for artifact in item['artifacts']:

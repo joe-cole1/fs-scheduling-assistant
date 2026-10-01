@@ -7,23 +7,23 @@ For Pantons, the normal battle rhythm is:
 | Day / step | Human work | Assistant role |
 | --- | --- | --- |
 | Monday | All scheduling inputs due NLT COB | No automatic action or assumption of completeness |
-| Tuesday — start | Create weekly workspace/chat, enable GAMECHANGER when available and upload startup/local/current products | Gemini confirms readable sources, connector availability, run controls and gaps |
-| Tuesday — plan | Ask planning questions; identify checkrides/evaluations, directed DV/senior-leader flyers and plan upgrades | Gemini reconciles products, builds the planning picture, queries GAMECHANGER for relevant publication rules and creates the initial P-### rule/currency baseline |
-| Wednesday — build and integration review | Schedulers build the bulk of the schedule; Flight Commanders and functional owners verify their inputs and assign unresolved issues | Gemini supports bounded planning questions, conflict/cascade checks and an exception-based integration-review summary; Wednesday is not approval |
-| Thursday — QC | Schedulers conduct QC on the near-final draft | Gemini performs a fresh full-schedule review and refreshes/expands publication-grounded QC through GAMECHANGER |
-| Thursday — optional DO review | DO may independently challenge the schedule | Separate Terra or Grok adversarial review; read-only, optional, not part of scheduler flow |
-| Thursday — buy/sell | Schedulers present the chosen version; DO decides and buys the weekly schedule if satisfied | Gemini prepares decision support, surfaces publication-QC exceptions/limits and records the explicit DO buy plus directions |
-| Thu–Fri after buy/sell | Schedulers implement recorded directions | Gemini verifies implementation and second/third-order effects; re-queries affected publication rules; no routine second buy |
-| Friday | Humans publish the corrected schedule | Gemini verifies the publication candidate remains within the Thursday buy/sell, preserves publication-QC limits and records publication separately |
-| Execution week | Daily scheduler/Top 3 manage bounded changes; DO handles changes beyond delegation | Gemini analyzes reflows against current baselines and runs GAMECHANGER delta checks for affected regulatory facts |
+| Tuesday — start | Create weekly workspace/chat, enable GAMECHANGER when available and upload startup/local/current products | the assistant confirms readable sources, connector availability, run controls and gaps |
+| Tuesday — plan | Ask planning questions; identify checkrides/evaluations, directed DV/senior-leader flyers and plan upgrades | the assistant reconciles products, builds the planning picture, queries GAMECHANGER for relevant publication rules and creates the initial P-### rule/currency baseline |
+| Wednesday — build and integration review | Schedulers build the bulk of the schedule; Flight Commanders and functional owners verify their inputs and assign unresolved issues | the assistant supports bounded planning questions, conflict/cascade checks and an exception-based integration-review summary; Wednesday is not approval |
+| Thursday — QC | Schedulers conduct QC on the near-final draft | the assistant performs a fresh full-schedule review and refreshes/expands publication-grounded QC through GAMECHANGER |
+| Thursday — optional DO review | DO may independently challenge the schedule | Separate independent adversarial review; read-only, optional, not part of scheduler flow |
+| Thursday — buy/sell | Schedulers present the chosen version; DO decides and buys the weekly schedule if satisfied | the assistant prepares decision support, surfaces publication-QC exceptions/limits and records the explicit DO buy plus directions |
+| Thu–Fri after buy/sell | Schedulers implement recorded directions | the assistant verifies implementation and second/third-order effects; re-queries affected publication rules; no routine second buy |
+| Friday | Humans publish the corrected schedule | the assistant verifies the publication candidate remains within the Thursday buy/sell, preserves publication-QC limits and records publication separately |
+| Execution week | Daily scheduler/Top 3 manage bounded changes; DO handles changes beyond delegation | the assistant analyzes reflows against current baselines and runs GAMECHANGER delta checks for affected regulatory facts |
 
 The weekday labels describe the normal Pantons rhythm. Work status still controls the internal phase. A weekday, filename or meeting title does not create approval when the required human action did not occur.
 
-Unless a human explicitly selects another period, normal pre-execution weekly work defaults to the next execution week. Execution reflows use the current published execution week; handoffs/historical work keep their recorded or explicit periods. Gemini infers the exact dates, current task, as-of state, manifest and version roles from the current date, approved counting week, guide, folder/file names, schedule headers, uploads and conversation. It drafts run control itself and asks only when a material ambiguity remains.
+Unless a human explicitly selects another period, normal pre-execution weekly work defaults to the next execution week. Execution reflows use the current published execution week; handoffs/historical work keep their recorded or explicit periods. the assistant infers the exact dates, current task, as-of state, manifest and version roles from the current date, approved counting week, guide, folder/file names, schedule headers, uploads and conversation. It drafts run control itself and asks only when a material ambiguity remains.
 
-The normal scheduler conversation uses Gemini 3.7 Flash when available. The optional DO adversarial review uses a separate GPT-5.6 Terra or Grok Expert 4.5 conversation. Raw reviewer output does not become scheduler direction. Only DO-accepted human direction returns to the main Gemini workflow.
+No specific model is required. Every prompt prohibits subagent delegation. The optional DO adversarial review uses a separate human-started conversation. Raw reviewer output does not become scheduler direction. Only DO-accepted human direction returns to the main assistant workflow.
 
-**DoW Policies Beta (GAMECHANGER)** is the publication-authority layer for the main Gemini workflow. For publication-derived currency, qualification, crew-rest/duty, evaluation, syllabus/prerequisite, event-credit, recurring-training or similar regulatory requirements, Gemini may make a regulatory determination only from a sufficiently traceable publication retrieved through that connector. Model memory, generic military knowledge and ordinary web search are not fallback authorities. If the connector/source is insufficient, the affected check is CANNOT VERIFY while unrelated scheduling analysis continues.
+**DoW Policies Beta (GAMECHANGER)** is the publication-authority layer for the main assistant workflow. For publication-derived currency, qualification, crew-rest/duty, evaluation, syllabus/prerequisite, event-credit, recurring-training or similar regulatory requirements, the assistant may make a regulatory determination only from a sufficiently traceable publication retrieved through that connector. Model memory, generic military knowledge and ordinary web search are not fallback authorities. If the connector/source is insufficient, the affected check is CANNOT VERIFY while unrelated scheduling analysis continues.
 
 ## 1. Product gathering — Monday input deadline and Tuesday planning
 
@@ -47,7 +47,7 @@ Then use the currency tracker, Letter of Xs, upgrade/evaluation status and plann
 
 ### Wednesday — build
 
-Schedulers build the bulk of the schedule. Gemini provides bounded analysis during construction: check specific placements, identify hard blockers, examine checkride/DV/upgrade placement, test a cascade and identify major resource constraints. The purpose is to help humans construct the schedule without turning every intermediate draft into a complete weekly QC cycle. If a bounded answer depends on a publication-derived rule, the same GAMECHANGER source gate applies.
+Schedulers build the bulk of the schedule. the assistant provides bounded analysis during construction: check specific placements, identify hard blockers, examine checkride/DV/upgrade placement, test a cascade and identify major resource constraints. The purpose is to help humans construct the schedule without turning every intermediate draft into a complete weekly QC cycle. If a bounded answer depends on a publication-derived rule, the same GAMECHANGER source gate applies.
 
 **Inputs:** a named scheduler-built draft and exact times, known products supporting affected assignments, and a human-selected draft baseline or explicit None for the first draft. Do not call assignments feasible where prerequisites, resources, duty checks or required publication evidence are unresolved.
 
@@ -57,19 +57,19 @@ Before Thursday QC, Flight Commanders and material functional owners verify that
 
 ### Thursday — full QC
 
-Once substantially complete, schedulers conduct their own QC and Gemini performs a fresh review of the entire active schedule rather than only the latest edits. Cover hard constraints, approvals, checkrides, directed flyers, upgrade flow, primary lines/spares/configuration/formations/backups, IP/evaluator workload, support/weather placement, 30-day outlook, unused feasible opportunities and one moderate downside case. Validate every proposed cascade completely.
+Once substantially complete, schedulers conduct their own QC and the assistant performs a fresh review of the entire active schedule rather than only the latest edits. Cover hard constraints, approvals, checkrides, directed flyers, upgrade flow, primary lines/spares/configuration/formations/backups, IP/evaluator workload, support/weather placement, 30-day outlook, unused feasible opportunities and one moderate downside case. Validate every proposed cascade completely.
 
 Run a distinct publication-grounded QC pass. Re-query GAMECHANGER against the people, roles, events, timing and prerequisites actually scheduled; refresh and expand the P-### ledger; check available evidence for current/superseded/more-specific guidance and source conflicts. Do not claim “fully compliant.” List SOURCE-BACKED ISSUE, SOURCE CONFLICT and CANNOT VERIFY items explicitly.
 
 ### Optional Thursday DO adversarial review
 
-After normal Thursday QC and before the buy/sell, the DO may open a separate Terra or Grok conversation and challenge the schedule independently. This review is optional, read-only and outside the main scheduler state. If the DO accepts a finding, return the DO's human direction or question to Gemini.
+After normal Thursday QC and before the buy/sell, the DO may open a separate independent-review conversation and challenge the schedule independently. This review is optional, read-only and outside the main scheduler state. If the DO accepts a finding, return the DO's human direction or question to the assistant.
 
 **Advance:** humans identify the version to present at the buy/sell. **Carry:** presented version, chosen draft baseline, latest report, P-### ledger, source versions, unresolved decisions and proposals.
 
 ## 3. Schedule buy/sell — Thursday
 
-**Contributors:** schedulers present; DO reviews, decides and buys the weekly schedule if satisfied; Gemini prepares decision support and records the human decision.
+**Contributors:** schedulers present; DO reviews, decides and buys the weekly schedule if satisfied; the assistant prepares decision support and records the human decision.
 
 **Inputs:** exact presented version, latest evidence/limits, priorities/outlook, alternatives, unresolved decisions and the Thursday publication-grounded QC summary. Any accepted adversarial issue enters only as explicit DO direction/question, not raw model authority.
 
@@ -81,13 +81,13 @@ After normal Thursday QC and before the buy/sell, the DO may open a separate Ter
 
 ## 4. Post-buy/sell implementation, final QC and publication — Thursday through Friday
 
-**Contributors:** schedulers edit; Gemini checks; humans close findings; DO resolves material departures beyond the buy/sell; humans publish through the normal distribution process.
+**Contributors:** schedulers edit; the assistant checks; humans close findings; DO resolves material departures beyond the buy/sell; humans publish through the normal distribution process.
 
 **Inputs:** buy/sell-presented baseline, DO directions/decision record, corrected active version, current P-### ledger and updated evidence/confirmations.
 
 **Outputs:** disposition of every buy/sell decision; exact comparison to the presented schedule and incremental corrected versions; revalidated second/third-order effects; complete-schedule conflict check; affected GAMECHANGER delta checks; separately identified new proposals.
 
-**No routine second buy:** implementing a recorded buy/sell direction does not require the DO to buy the schedule again. Gemini verifies that the corrected version faithfully implements the approved direction. If implementation is infeasible or the necessary solution materially exceeds the recorded direction, return that specific issue to the DO for a supplemental decision. Do not silently expand the Thursday buy.
+**No routine second buy:** implementing a recorded buy/sell direction does not require the DO to buy the schedule again. the assistant verifies that the corrected version faithfully implements the approved direction. If implementation is infeasible or the necessary solution materially exceeds the recorded direction, return that specific issue to the DO for a supplemental decision. Do not silently expand the Thursday buy.
 
 **Publication-rule delta:** if a correction changes a person, role, event, timing, prerequisite, currency/qualification state or other publication-relevant fact, re-query the affected rule through GAMECHANGER and update/add the P-### entry. Human confirmation can close a stated scheduling concern, but it does not transform missing connector evidence into SOURCE-BACKED OK.
 
@@ -107,4 +107,4 @@ After normal Thursday QC and before the buy/sell, the DO may open a separate Ter
 
 ## Across users and weeks
 
-Prefer one weekly Gemini conversation for the main scheduler workflow; use the handoff form only when an active week moves chats/users. The optional DO adversarial review is deliberately separate. Preserve the published weekly baseline unless humans explicitly reissue it. Preserve the P-### ledger as continuity evidence, but do not use a handoff copy to bypass a required current connector check. Next week uses a fresh weekly record with current inputs and a new Tuesday publication-discovery pass. Weekly guidance expires unless explicitly renewed. Only DO-approved playbook lessons carry as standing rules.
+Prefer one weekly assistant conversation for the main scheduler workflow; use the handoff form only when an active week moves chats/users. The optional DO adversarial review is deliberately separate. Preserve the published weekly baseline unless humans explicitly reissue it. Preserve the P-### ledger as continuity evidence, but do not use a handoff copy to bypass a required current connector check. Next week uses a fresh weekly record with current inputs and a new Tuesday publication-discovery pass. Weekly guidance expires unless explicitly renewed. Only DO-approved playbook lessons carry as standing rules.

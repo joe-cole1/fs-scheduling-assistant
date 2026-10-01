@@ -42,11 +42,13 @@ Do not keep historical archives in the current repository tree or download packa
 
 ## Write for a pilot new to scheduling
 
-The README is the download entry point; START HERE.docx and numbered Word guides are the operator instructions. The manual is chronological by day/step so a scheduler can open the document for the task being performed.
+The README is the download entry point; START HERE.docx and numbered one-page Word checklists are the operator instructions. The checklists are chronological by task, with one action per checkbox. Detailed command contracts live in the upload primer; complete short text prompts live in `packaging/prompts` and ship in System/Prompts.
 
 - Maintain separate Word guides for Monday inputs, Tuesday start, Tuesday planning, Wednesday build, Thursday full QC, optional DO adversarial review, Thursday buy/sell, post-buy/sell implementation, Friday final QC/publication, execution reflows, active-week handoff, updates and setup check.
+- Every complete AI prompt must include the exact instruction **Do not delegate to subagents**. The assistant performs analysis itself in the current conversation; no specific model is required. This applies to task, help, independent-review, handoff and test prompts. Do not add automatic agent/model offloading.
+- Keep checklist prompts complete, short and identical to their shipped text files. The assistant gives one concrete next action while retaining every material issue and a complete weekly record. A short visible response must not narrow a required check.
 - State what to do, which existing products to upload, what may be missing, the exact prompt to paste, expected output and next step.
-- Keep copy/paste prompts executable after replacing marked placeholders. Define terms such as active schedule, comparison baseline, buy/sell baseline and publication in plain language.
+- Keep operational copy/paste prompts complete without placeholder replacement. Define terms such as active schedule, comparison baseline, buy/sell baseline and publication in plain language.
 - Explain GAMECHANGER setup and the fail-closed source rule in the Tuesday/Thursday/reflow guides without making schedulers memorize policy values.
 - Keep setup, buy/sell authority, implementation/QC, publication, reflow and handoff instructions consistent with the primer.
 - Use standard squadron products as inputs. Forms capture missing guidance/changes; do not require users to transcribe information already supplied elsewhere.
@@ -75,7 +77,7 @@ PR descriptions and final responses should explain what changed, why, what was c
 
 ## Word packages and updates
 
-Maintain guide sources in `packaging/guides` and generate release ZIPs with `scripts/build_packages.py`. Read `packaging/README.md` before changing the build. Keep generated ZIPs/manifests out of the repository tree. GitHub Releases hold the full packages/update; README points to the latest published release. Do not hand-edit generated ZIP contents.
+Maintain checklist sources in `packaging/guides`, complete prompts in `packaging/prompts`, and generate release ZIPs with `scripts/build_packages.py`. Read `packaging/README.md` before changing the build. Keep generated ZIPs/manifests out of the repository tree. GitHub Releases hold the full packages/update; README points to the latest published release. Do not hand-edit generated ZIP contents.
 
 Updates replace **System** and **START HERE** only and are normally adopted next week. Never overwrite Local Guidance or weekly work automatically. If persistent local seeds change, append a migration record and provide reference-only copies for human review/merge. Actual GenAI.mil behavior requires separate testing.
 

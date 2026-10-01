@@ -6,7 +6,7 @@ This describes the document-based scheduling-assistant architecture and its exte
 
 The product is a reusable instruction and input package for a human-led workflow in GenAI.mil. It is not a scheduling application, optimizer service or authoritative database. It has no required server, API, autonomous agent, custom code or shared multiuser chat. The assistant operates on supplied documents, conversation and explicitly enabled platform capabilities; humans maintain the actual schedule and operational products in their existing tools.
 
-The core scheduling workflow remains usable without connectors. **Publication-grounded regulatory QC is a bounded exception:** when DoW Policies Beta (GAMECHANGER) is available in the main Gemini conversation, it is the required AI-side source for publication-derived currency, qualification, crew-rest/duty, evaluation, syllabus/prerequisite, event-credit, recurring-training and similar regulatory determinations. If the connector is unavailable or cannot return a sufficiently traceable applicable publication, those checks fail closed as CANNOT VERIFY while unrelated scheduling analysis continues. Ordinary web search and model memory are never fallback regulatory authorities.
+The core scheduling workflow remains usable without connectors. **Publication-grounded regulatory QC is a bounded exception:** when DoW Policies Beta (GAMECHANGER) is available in the main assistant conversation, it is the required AI-side source for publication-derived currency, qualification, crew-rest/duty, evaluation, syllabus/prerequisite, event-credit, recurring-training and similar regulatory determinations. If the connector is unavailable or cannot return a sufficiently traceable applicable publication, those checks fail closed as CANNOT VERIFY while unrelated scheduling analysis continues. Ordinary web search and model memory are never fallback regulatory authorities.
 
 The repository holds reusable instructions, blank forms, approved local workflow references and synthetic examples. Actual weekly packets, rosters, operational reports and handoffs stay outside it. Repository file edits are development work; they are distinct from prohibited autonomous modification of operational source files.
 
@@ -30,6 +30,8 @@ The repository holds reusable instructions, blank forms, approved local workflow
 The primer and approved local profile are loaded together for operational use. Stable references supply local source indexes, dates and parameters. The approved playbook supplies enduring lessons. Weekly DO guidance supplies time-bounded direction. GAMECHANGER supplies publication evidence when the workflow makes a publication-derived regulatory determination. Architectural summaries do not replace those sources.
 
 ## Operator navigation versus internal state
+
+The current beginner interface uses one-page checklists with one action per box, complete short text prompts in System/Prompts, and detailed command contracts in the upload primer. Every complete prompt includes **Do not delegate to subagents**; no named model is required. The assistant guides one next action and keeps all material findings visible, with complete facts, ledgers, decisions, version roles, outlook and downside in a cumulative weekly record with distinct sections.
 
 The **operator manual is chronological** because schedulers need to know what to open for the work they are doing. The current generated Word instruction set is:
 
@@ -98,7 +100,7 @@ A scoped human confirmation can close an identified concern without another uplo
 
 The internal phase selects the work and churn posture. The assistant consolidates inputs before drafting, supports human-built lineups, performs a deliberate Thursday whole-schedule QC, prepares the buy/sell decision brief, checks post-buy/sell implementation and recommends execution reflows. Exact local constraints and complete downstream feasibility checks govern proposals. Publication-derived regulatory rules must satisfy the GAMECHANGER source gate before they can support a regulatory conclusion. The assistant does not implement or approve proposals.
 
-BRIEF versus DETAILED changes report depth. CONFIRM versus CONFLICTS ONLY changes fact-ledger display/validation flow. Neither changes scheduling rules, publication evidence requirements or authority.
+BRIEF versus DETAILED changes report depth. CONFIRM versus CONFLICTS ONLY changes fact-ledger display/validation flow; the guided interface defaults to CONFLICTS ONLY unless the human selects CONFIRM. Neither changes scheduling rules, publication evidence requirements or authority.
 
 ### Human authority layer
 

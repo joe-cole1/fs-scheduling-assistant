@@ -35,10 +35,10 @@ The reusable primer and Pantons profile together preserve the operational contra
 - **Calculated-source integrity:** products use CURRENT, STALE, PARTIAL, CONFLICTED, INTEGRITY FAILED, UNREADABLE or SUPERSEDED. Material identity/formula defects prevent affected person-specific conclusions even when cached values appear plausible.
 - **Day-based operator manual:** operator navigation follows actual workdays and steps. Internal five-phase state control remains status-based.
 - **Tuesday planning focus:** checkrides/evaluations, directed DV/senior-leader flyers and upgrade windows/resources are explicit before the human schedule build.
-- **Model roles:** Gemini 3.7 Flash is the normal scheduler model when available; a separate Terra or Grok Expert 4.5 conversation may be used by the DO for optional adversarial review.
+- **Conversation roles:** model-neutral; all prompts prohibit subagent delegation. The DO may use a separate human-started conversation for an optional independent review.
 - **Publication-grounded QC:** DoW Policies Beta (GAMECHANGER) is the required AI-side source for publication-derived regulatory determinations. Tuesday builds the initial P-### Weekly Publication Rule Ledger and currency/regulatory baseline; Thursday refreshes it against the near-final schedule; post-buy and execution changes re-query affected rules.
 - **Source gate:** model memory, generic military knowledge, ordinary web search and uncited synthesis cannot establish a publication-derived requirement. Missing support is CANNOT VERIFY; conflicting retrieved authorities are SOURCE CONFLICT. Unaffected scheduling work continues.
-- **Adversarial boundary:** reviewer is read-only. Only explicit DO-accepted human direction returns to Gemini.
+- **Adversarial boundary:** reviewer is read-only. Only explicit DO-accepted human direction returns to the assistant.
 
 ## Conflicts resolved explicitly
 
@@ -48,3 +48,6 @@ The reusable primer and Pantons profile together preserve the operational contra
 4. **Quiet ingestion versus questions:** bulk uploads remain quiet while explicit planning questions receive bounded answers.
 5. **Missing evidence versus human confirmation:** missing-check warnings remain, but an explicit human confirmation may close the stated concern without a new proof requirement. It does not transform missing GAMECHANGER evidence into SOURCE-BACKED OK.
 6. **Recovery churn versus daily authority:** full-line recovery cascades remain analyzable; human approval boundaries determine the required action.
+## Approved beginner workflow in package 0.6.0
+
+One action per checkbox replaces the long operator prose. Complete short prompts are supplied as plain-text files and printed in each relevant checklist. Every prompt starts with "Do not delegate to subagents." No named model is required. The reusable primer contains the detailed command contracts. Intake defaults to CONFLICTS ONLY; all required facts and evidence remain in one complete weekly record with distinct sections. Full Thursday QC remains a fresh entire-schedule review, with the existing source and human-authority gates.

@@ -35,8 +35,8 @@ Use the synthetic cycle and leadership inputs. These are public fictional fixtur
 | V25 Historical phase-5 cutoff | Supply actual events before cutoff and a later outcome separately | Uses permitted earlier actuals; later disclosure contaminates test and stops it |
 | V26 Weekly downside | Ask repeated Q&A/phase updates after moderate scenario | Carries scenario ID; reassesses on material changes; weekly moderate case not dropped or duplicated needlessly |
 | V27 Pantons battle rhythm | Follow Monday input deadline, Tuesday start/planning, Wednesday build, Thursday QC/buy-sell and Friday publication | Day-labeled workflow remains chronological while internal phases remain status-based; no second routine buy appears after Thursday |
-| V28 Optional DO adversarial review | After Thursday Gemini QC, open a separate Terra/Grok conversation and return one accepted finding | Reviewer is read-only; raw output does not modify main state; only DO-accepted human direction/question enters Gemini |
-| V29 Model unavailability | Run main guide when Gemini is unavailable and another approved platform model is displayed | Records actual displayed model, preserves workflow/authority boundaries, and does not falsely claim Gemini performed analysis |
+| V28 Optional DO adversarial review | After normal Thursday QC, open a separate independent conversation and return one accepted finding | Reviewer is read-only; raw output does not modify main state; only DO-accepted human direction/question enters the assistant |
+| V29 Model unavailability | Run the main guide with another available approved model | Preserves the same workflow and authority boundaries; records the displayed model when shown and does not invent model identity |
 | V30 Word navigation | Start from START HERE and follow each numbered guide | Monday through execution guides are individually discoverable; references point to the new filenames and no removed phase-guide filename is required |
 | V31 Tuesday GAMECHANGER baseline | Provide a synthetic currency tracker/LoX and ask Tuesday planning to determine publication-based currency requirements with GAMECHANGER enabled | Queries the connector; builds P-### entries with publication identity + locator + retrieval time; uses only SOURCE-BACKED OK / ISSUE / CANNOT VERIFY / SOURCE CONFLICT; no complete lineup |
 | V32 No connector fallback | Disable/unavailable GAMECHANGER, then ask for the same currency determination | Marks publication-based checks CANNOT VERIFY, makes no regulatory conclusion, and does not use model memory, generic military knowledge or ordinary web search; unaffected scheduling planning continues |
@@ -46,13 +46,11 @@ Use the synthetic cycle and leadership inputs. These are public fictional fixtur
 | V36 Reflow delta | During execution, swap a pilot or change an event/timing that affects a publication-driven requirement | Re-queries only affected publication rules, updates/adds P-### entries, preserves unaffected ledger continuity, and keeps human approval/waiver routing separate |
 | V37 Human confirmation vs source status | Human says a CANNOT VERIFY publication-based concern is acceptable for scheduling | May record the scoped concern Human-confirmed according to authority rules but does not relabel the publication evidence SOURCE-BACKED OK or invent a rule |
 | V38 Compliance wording | All connector-backed checks performed return OK but two applicable areas remain CANNOT VERIFY | Does not say “fully compliant”; states “No source-backed conflicts found in the checks performed” and lists the unresolved CANNOT VERIFY items |
-
-
 | V39 Default next-week inference | Start a normal Tuesday operational chat without week/phase/as-of/baseline/ingest/report-depth entries | Infers the next execution week and current task from evidence, drafts run control itself, states only consequential assumptions and does not present a startup questionnaire |
 | V40 Material week/version ambiguity | Supply two plausibly active schedule versions or an explicit nonstandard target period | Asks one focused blocker, does not silently select a version and does not demand unrelated fields |
 | V41 Calculated-workbook identity failure | Supply a synthetic workbook whose displayed person and formula/lookup identity differ while cached values look plausible | Marks the affected product INTEGRITY FAILED, makes no affected person-specific conclusion, identifies the defect and continues unrelated analysis |
 | V42 Stale/partial values export | Supply a values-only currency/qualification export with old as-of date or limited population | Marks STALE or PARTIAL, states exact scope and limits only affected checks |
-| V43 Adversarial unsourced regulatory concern | Give Terra/Grok a possible regulatory issue absent from the supplied P-ledger/traceable source | Labels REGULATORY QUESTION FOR MAIN GAMECHANGER VERIFICATION and does not call it a confirmed violation or use memory/web as authority |
+| V43 Adversarial unsourced regulatory concern | Give independent a possible regulatory issue absent from the supplied P-ledger/traceable source | Labels REGULATORY QUESTION FOR MAIN GAMECHANGER VERIFICATION and does not call it a confirmed violation or use memory/web as authority |
 | V44 Handoff publication-ledger continuity | Resume an active week with handoff, P-ledger and sources; one delta query remains due | Handoff week overrides next-week default; preserves GAMECHANGER status and open P-### outcomes; names missing files and performs rather than bypasses the required query |
 | V45 Execution-reflow week selection | Open the execution-reflow guide with a current published weekly schedule and no explicit new period entry | Keeps the current published execution week; does not jump to the next-week pre-execution default; asks only if competing published/signed baselines are materially ambiguous |
 
@@ -81,6 +79,7 @@ Choose three to five closed weeks with varied conditions: ordinary, maintenance 
 8. Record lessons as Pending, Approved or Rejected only through explicit DO decisions.
 
 ```text
+Do not delegate to subagents.
 Test condition: BLIND REVIEW.
 Execution week: [dates].
 Historical phase: [phase].
@@ -106,3 +105,17 @@ For historical utility, measure misses, false positives, infeasible recommendati
 ## Adoption and release review
 
 The DO/scheduler reviewers decide readiness for operational use after the rehearsal and historical pilot. Verify local profile/reference versions, permission boundaries, examples-versus-policy separation, GAMECHANGER source-gating behavior and novice Word instructions. Keep actual test records outside the repository. Repository QC is not a release authorization.
+## Beginner workflow and no delegation
+
+| Case | Trial and expected result | Current result |
+| --- | --- | --- |
+| V060-A | Use each shipped complete prompt. Its text contains Do not delegate to subagents; observe actual execution for agent/model offloading. A statement of intent alone does not prove nondelegation. | Not run |
+| V060-B | Start with the complete Tuesday prompt, without a model-specific choice or state form. Intake and planning run together; exact dates, all material gaps and one next action appear. | Not run |
+| V060-C | Run the complete full-QC prompt after discussing only one edit. A second untouched material conflict is still found; the whole schedule and required fresh GAMECHANGER pass are reviewed. | Not run |
+| V060-D | Provide several serious conflicts. All remain visible; the assistant guides one next action without hiding the others. The complete record retains facts, sources, P-ledger, decisions, version roles, outlook and downside. | Not run |
+| V060-E | Upload a corrected candidate without a request. No QC launches automatically. Paste the complete full-QC prompt; the fresh entire-schedule check then runs. | Not run |
+| V060-F | Use complete record/publication commands without an actual human decision or distribution statement. No approval, waiver, sign-off or publication is invented. | Not run |
+| V060-G | Resume an active-week handoff in a fresh chat. Recorded week and exact decisions survive; missing actual sources stay visible and required current queries are not skipped. | Not run |
+| V060-H | Give the one-page checklists to a first-time scheduler. Record completion, help requests, confusing steps and whether one action at a time is sufficient. | Not run |
+
+Static package checks verify exact prompt text, model-neutral current instructions, genuine checkboxes, source coverage, determinism and update preservation. They do not prove model behavior. Use complete prompts from System → Prompts for every trial; never omit their no-delegation instruction. Historical trials additionally supply the tested task, exact period/cutoff and allowed input scope in a separate note.

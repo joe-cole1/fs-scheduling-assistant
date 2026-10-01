@@ -1,0 +1,1 @@
+Do not delegate to subagents. Run final publication QC.

@@ -58,3 +58,6 @@ Do not merge an assistant proposal into an approval record. Do not label human-c
 Post-buy/sell QC verifies faithful implementation; it does not manufacture a second approval gate. A material solution outside the recorded Thursday direction returns to the DO. Publication remains a separate human distribution milestone.
 
 The full initial weekly review includes one moderate downside scenario. Carry it forward with its assumptions and ID; reassess when a change matters. Do not impose a new weekly quota of scenarios for every phase or question.
+## Guided visible answer and complete weekly record
+
+Use a direct answer, material needs-attention items and one concrete next action. Explain formal statuses in plain language without changing their meaning. Do not hide another serious issue for brevity. Retain all required details in one cumulative weekly record with separate sections for run/source state, facts, analysis/findings, publication-rule ledger, human decisions/waivers, schedule roles/deltas, outlook/downside, playbook history and continuity. Provide the complete updated record after a completed planning or QC pass. DOCX export is optional; otherwise give complete text and human copy/paste/save guidance. Never claim shared-drive saving. All copyable help/task prompts include "Do not delegate to subagents"; the workflow requires no named model.

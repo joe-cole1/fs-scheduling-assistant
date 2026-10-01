@@ -10,9 +10,9 @@ import zipfile
 from docx import Document
 
 from build_packages import (
-    ROOT, VERSION, GUIDES, FORMS, REFERENCES, PERSISTENT, WEEKLY_DIRS,
+    ROOT, VERSION, GUIDES, FORMS, REFERENCES, PROMPTS, DELEGATION_GUARD, PERSISTENT, WEEKLY_DIRS,
     MIGRATION_DOC, METADATA_TIMESTAMP, ZIP_TIMESTAMP, actionable_migrations,
-    clean, persistent_migration_source, update_instructions_source,
+    clean, title_text, persistent_migration_source, update_instructions_source,
     validate_reproducibility_contract,
 )
 from check_persistent_migrations import validate_current as validate_persistent
@@ -24,7 +24,8 @@ def text(docx_bytes):
 
 
 def normalize(s):
-    return re.sub(r'\s+',' ',clean(s).replace('**','').replace('[ ] ','Check: ')).strip()
+    s=re.sub(r'☐\s*\d+\.\s*','',s)
+    return re.sub(r'\s+',' ',clean(s).replace('**','').replace('[ ] ','')).strip()
 
 
 def _table_row(line):
@@ -55,6 +56,7 @@ def source_coverage(source, actual):
     for raw in source.splitlines():
         s=raw.strip()
         if not s or s.startswith(('```','|')): continue
+        if re.match(r'^#{1,6} ',s): s=title_text(re.sub(r'^#{1,6} ','',s))
         s=re.sub(r'^(#{1,6} |[-] |\d+\. )','',s)
         fragment=normalize(s)
         if fragment:
@@ -111,7 +113,12 @@ def check(out):
             contents[name]={n:z.read(n) for n in z.namelist() if not n.endswith('/')}
         for n,data in contents[name].items():
             assert '..' not in PurePosixPath(n).parts and not n.startswith('/')
-            assert n.endswith('.docx'),n
+            assert n.endswith(('.docx','.txt')),n
+            if n.endswith('.txt'):
+                prompt=data.decode('utf-8')
+                assert prompt.startswith(DELEGATION_GUARD), ('Missing delegation guard',n)
+                assert not re.search(r'Gemini|Terra|Grok|GPT-?\d|\[|\]|<[^>]+>',prompt,re.I), ('Model or placeholder in prompt',n)
+                continue
             with zipfile.ZipFile(BytesIO(data)) as z:
                 assert z.testzip() is None
                 assert not any('vbaProject' in x for x in z.namelist())
@@ -119,9 +126,15 @@ def check(out):
                 assert all(info.date_time==ZIP_TIMESTAMP for info in z.infolist()), ('DOCX timestamp drift',n)
             d=Document(BytesIO(data));sec=d.sections[0]
             assert sec.page_width.twips==12240 and sec.page_height.twips==15840
-            assert all(x.twips==1440 for x in (sec.left_margin,sec.right_margin,sec.top_margin,sec.bottom_margin))
-            assert d.styles['Normal'].font.size.pt==11
-            assert d.styles['Normal'].paragraph_format.line_spacing==1.25
+            compact='/Instructions/' in n or PurePosixPath(n).name in ('START HERE.docx','UPDATE INSTRUCTIONS.docx',MIGRATION_DOC)
+            margins=tuple(x.twips for x in (sec.left_margin,sec.right_margin,sec.top_margin,sec.bottom_margin))
+            assert margins==((1008,1008,936,864) if compact else (1440,1440,1440,1440)), (n,margins)
+            assert d.styles['Normal'].font.size.pt==(11.5 if compact else 11)
+            profile=PurePosixPath(n).name in ('Local Profile.docx','Pantons Local Profile - REFERENCE ONLY.docx','Blank Local Profile - REFERENCE ONLY.docx')
+            spacing=1.12 if compact else (1.2 if profile else 1.25)
+            assert abs(d.styles['Normal'].paragraph_format.line_spacing-spacing)<.002
+            for style in ('Title','Subtitle','Heading 1','Heading 2','Heading 3','Header'):
+                assert str(d.styles[style].font.color.rgb)=='000000', (n,style)
             assert not d.tables
             assert d.core_properties.created and _datetime_tuple(d.core_properties.created)==ZIP_TIMESTAMP, ('DOCX created metadata drift',n)
             assert d.core_properties.modified and _datetime_tuple(d.core_properties.modified)==ZIP_TIMESTAMP, ('DOCX modified metadata drift',n)
@@ -132,6 +145,7 @@ def check(out):
     expected.update('System/Instructions/'+n for _,n in GUIDES)
     expected.update('System/Blank Forms/'+n for _,n in FORMS)
     expected.update('System/Reference/'+n for _,n in REFERENCES)
+    expected.update('System/Prompts/'+n for n in PROMPTS)
     update_only={'UPDATE INSTRUCTIONS.docx'}
     migration_refs=_migration_reference_entries()
     if actionable_migrations():
@@ -147,6 +161,16 @@ def check(out):
     source_coverage((ROOT/'packaging/guides/start.md').read_text(),text(update['START HERE.docx']))
     for source,name in GUIDES:
         source_coverage((ROOT/'packaging/guides'/source).read_text(),text(update['System/Instructions/'+name]))
+        src=(ROOT/'packaging/guides'/source).read_text()
+        assert sum(p.text.startswith('☐') for p in Document(BytesIO(update['System/Instructions/'+name])).paragraphs)==src.count('- [ ] ')
+        for prompt in re.findall(r'```text\n(.*?)\n```',src,re.S):
+            assert prompt.startswith(DELEGATION_GUARD), ('Guide prompt missing guard',source)
+            assert any(prompt==update['System/Prompts/'+p].decode('utf-8').strip() for p in PROMPTS), ('Guide prompt differs from copy-ready file',source)
+    for name in PROMPTS:
+        assert update['System/Prompts/'+name]==(ROOT/'packaging/prompts'/name).read_bytes()
+    for name,data in update.items():
+        if name.endswith('.docx'):
+            assert not re.search(r'\bGemini\b|\bTerra\b|\bGrok\b|GPT-?\d',text(data),re.I), ('Named model in current package',name)
     for source,name in FORMS:
         source_coverage((ROOT/'templates/v0.4'/source).read_text(),text(update['System/Blank Forms/'+name]))
     for source,name in REFERENCES:
@@ -156,7 +180,7 @@ def check(out):
     assert 'DRAFT' in gp and 'three countable' not in gp and '8p8x4' not in gp
     source_coverage((ROOT/'local-profiles/pantons-v0.4.md').read_text(),text(pantons[a+'Local Guidance/Local Profile.docx']))
     primer=(ROOT/'docs/v0.4/system-primer.md').read_text().split('## START OF PRIMER',1)[1].split('## END OF PRIMER',1)[0]
-    intro='# Upload this to start\n\nThis is the assistant’s scheduling primer. Upload this document with current local guidance and sources, then paste the activation prompt in 03 Tuesday - Start the Week.docx. These instructions are advisory and do not establish approval of a schedule.\n\n'
+    intro='# Upload this to start\n\nUpload this file with current local guidance and sources, then paste the complete prompt on your task checklist. This file is for the assistant to read; operators follow the numbered checklists. No specific model is required. These advisory instructions establish no scheduling approval.\n\n'
     source_coverage(intro+primer,text(update['System/UPLOAD THIS TO START.docx']))
     source_coverage(update_instructions_source(),text(update['UPDATE INSTRUCTIONS.docx']))
     if actionable_migrations():
