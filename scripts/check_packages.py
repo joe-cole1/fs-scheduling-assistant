@@ -11,6 +11,8 @@ from docx import Document
 
 from build_packages import (
     ROOT, VERSION, GUIDES, FORMS, REFERENCES, PROMPTS, DELEGATION_GUARD, PERSISTENT, WEEKLY_DIRS,
+    OPERATIONAL_GUIDES, OPERATIONAL_FORMS, OPERATIONAL_REFERENCES, OPERATIONAL_PROMPTS,
+    SETUP_GUIDES, SETUP_REFERENCES, SETUP_PROMPTS, SETUP_FOLDER, INPUT_CHECKLIST, INPUT_SOURCE,
     MIGRATION_DOC, METADATA_TIMESTAMP, ZIP_TIMESTAMP, actionable_migrations,
     clean, title_text, persistent_migration_source, update_instructions_source,
     validate_reproducibility_contract,
@@ -21,6 +23,21 @@ from check_persistent_migrations import validate_current as validate_persistent
 def text(docx_bytes):
     doc=Document(BytesIO(docx_bytes))
     return '\n'.join(p.text for p in doc.paragraphs)
+
+
+def operational_inventory():
+    expected={'System/UPLOAD THIS TO START.docx'}
+    expected.update('System/Instructions/'+n for _,n in OPERATIONAL_GUIDES)
+    expected.update('System/Blank Forms/'+n for _,n in OPERATIONAL_FORMS)
+    expected.update('System/Reference/'+n for _,n in OPERATIONAL_REFERENCES)
+    expected.update('System/Prompts/'+n for n in OPERATIONAL_PROMPTS)
+    return expected
+
+
+def validate_operational_inventory(paths):
+    expected=operational_inventory()
+    if set(paths)!=expected:
+        raise ValueError('System must contain weekly operational materials only: '+str(sorted(set(paths)^expected)))
 
 
 def normalize(s):
@@ -126,7 +143,7 @@ def check(out):
                 assert all(info.date_time==ZIP_TIMESTAMP for info in z.infolist()), ('DOCX timestamp drift',n)
             d=Document(BytesIO(data));sec=d.sections[0]
             assert sec.page_width.twips==12240 and sec.page_height.twips==15840
-            compact='/Instructions/' in n or PurePosixPath(n).name in ('START HERE.docx','UPDATE INSTRUCTIONS.docx',MIGRATION_DOC)
+            compact='/Instructions/' in n or PurePosixPath(n).name in ('START HERE.docx','UPDATE INSTRUCTIONS.docx',MIGRATION_DOC,INPUT_CHECKLIST,'Weekly Inputs Checklist - REFERENCE ONLY.docx')
             margins=tuple(x.twips for x in (sec.left_margin,sec.right_margin,sec.top_margin,sec.bottom_margin))
             assert margins==((1008,1008,936,864) if compact else (1440,1440,1440,1440)), (n,margins)
             assert d.styles['Normal'].font.size.pt==(11.5 if compact else 11)
@@ -141,11 +158,11 @@ def check(out):
             assert '.md' not in text(data), ('Operator Markdown reference',n)
     pantons=contents['Pantons_Setup.zip'];generic=contents['First_Time_Squadron_Setup.zip'];update=contents['Update_Existing_Setup.zip']
     a='Pantons Scheduling Assistant/';b='Squadron Scheduling Assistant/'
-    expected={'START HERE.docx','System/UPLOAD THIS TO START.docx'}
-    expected.update('System/Instructions/'+n for _,n in GUIDES)
-    expected.update('System/Blank Forms/'+n for _,n in FORMS)
-    expected.update('System/Reference/'+n for _,n in REFERENCES)
-    expected.update('System/Prompts/'+n for n in PROMPTS)
+    expected=operational_inventory()|{'START HERE.docx'}
+    setup={SETUP_FOLDER+'/SETUP PRIMER.docx'}
+    setup.update(SETUP_FOLDER+'/Instructions/'+n for _,n in SETUP_GUIDES)
+    setup.update(SETUP_FOLDER+'/Reference/'+n for _,n in SETUP_REFERENCES)
+    setup.update(SETUP_FOLDER+'/Prompts/'+n for n in SETUP_PROMPTS)
     update_only={'UPDATE INSTRUCTIONS.docx'}
     migration_refs=_migration_reference_entries()
     if actionable_migrations():
@@ -153,28 +170,49 @@ def check(out):
         update_only.update(migration_refs)
     assert set(update)==expected|update_only
     local={'Local Guidance/Local Profile.docx','Local Guidance/Stable References.docx','Local Guidance/Playbook.docx'}
-    assert {n.removeprefix(a) for n in pantons}==expected|local
-    assert {n.removeprefix(b) for n in generic}==expected|local
-    for name in expected:
+    weekly={'COPY THIS FOLDER FOR EACH NEW WEEK/Inputs/'+INPUT_CHECKLIST}
+    assert {n.removeprefix(a) for n in pantons}==expected|local|weekly
+    assert {n.removeprefix(b) for n in generic}==expected|local|weekly|setup
+    for name in operational_inventory():
         assert pantons[a+name]==generic[b+name]==update[name],name
+    assert pantons[a+'START HERE.docx']==update['START HERE.docx']
+    assert generic[b+'START HERE.docx']!=update['START HERE.docx']
+    for package,prefix in ((pantons,a),(generic,b),(update,'')):
+        validate_operational_inventory({n.removeprefix(prefix) for n in package if n.startswith(prefix+'System/')})
+        for n,data in package.items():
+            if n.startswith(prefix+'System/') and n.endswith('.docx'):
+                assert not any(s in text(data) for s in ('Help me set up our squadron guidance','Check the uploaded setup','First time setup and setup check')),n
+    assert not any(SETUP_FOLDER in n for n in pantons)
+    for path in weekly:assert pantons[a+path]==generic[b+path]
+    source_coverage((ROOT/INPUT_SOURCE).read_text(),text(pantons[a+next(iter(weekly))]))
 
     source_coverage((ROOT/'packaging/guides/start.md').read_text(),text(update['START HERE.docx']))
+    source_coverage((ROOT/'packaging/guides/start-first-time.md').read_text(),text(generic[b+'START HERE.docx']))
     for source,name in GUIDES:
-        source_coverage((ROOT/'packaging/guides'/source).read_text(),text(update['System/Instructions/'+name]))
+        path='System/Instructions/'+name if (source,name) in OPERATIONAL_GUIDES else SETUP_FOLDER+'/Instructions/'+name
+        data=update[path] if (source,name) in OPERATIONAL_GUIDES else generic[b+path]
+        source_coverage((ROOT/'packaging/guides'/source).read_text(),text(data))
         src=(ROOT/'packaging/guides'/source).read_text()
-        assert sum(p.text.startswith('☐') for p in Document(BytesIO(update['System/Instructions/'+name])).paragraphs)==src.count('- [ ] ')
+        assert sum(p.text.startswith('☐') for p in Document(BytesIO(data)).paragraphs)==src.count('- [ ] ')
         for prompt in re.findall(r'```text\n(.*?)\n```',src,re.S):
             assert prompt.startswith(DELEGATION_GUARD), ('Guide prompt missing guard',source)
-            assert any(prompt==update['System/Prompts/'+p].decode('utf-8').strip() for p in PROMPTS), ('Guide prompt differs from copy-ready file',source)
-    for name in PROMPTS:
+            assert any(prompt==(ROOT/'packaging/prompts'/p).read_text().strip() for p in PROMPTS), ('Guide prompt differs from copy-ready file',source)
+    for name in OPERATIONAL_PROMPTS:
         assert update['System/Prompts/'+name]==(ROOT/'packaging/prompts'/name).read_bytes()
+    for name in SETUP_PROMPTS:
+        assert generic[b+SETUP_FOLDER+'/Prompts/'+name]==(ROOT/'packaging/prompts'/name).read_bytes()
     for name,data in update.items():
         if name.endswith('.docx'):
             assert not re.search(r'\bGemini\b|\bTerra\b|\bGrok\b|GPT-?\d',text(data),re.I), ('Named model in current package',name)
-    for source,name in FORMS:
+    for source,name in OPERATIONAL_FORMS:
         source_coverage((ROOT/'templates/v0.4'/source).read_text(),text(update['System/Blank Forms/'+name]))
-    for source,name in REFERENCES:
+    for source,name in OPERATIONAL_REFERENCES:
         source_coverage((ROOT/source).read_text(),text(update['System/Reference/'+name]))
+    for source,name in SETUP_REFERENCES:
+        source_coverage((ROOT/source).read_text(),text(generic[b+SETUP_FOLDER+'/Reference/'+name]))
+    source_coverage((ROOT/'docs/v0.4/setup-primer.md').read_text(),text(generic[b+SETUP_FOLDER+'/SETUP PRIMER.docx']))
+    for source,name in (('04_stable_local_rules_and_references.md','Stable References.docx'),('09_playbook.md','Playbook.docx')):
+        source_coverage((ROOT/'templates/v0.4'/source).read_text(),text(pantons[a+'Local Guidance/'+name]))
     source_coverage((ROOT/'templates/setup/local_profile_template.md').read_text(),text(generic[b+'Local Guidance/Local Profile.docx']))
     gp=text(generic[b+'Local Guidance/Local Profile.docx'])
     assert 'DRAFT' in gp and 'three countable' not in gp and '8p8x4' not in gp
@@ -203,15 +241,22 @@ def check(out):
         for name,data in samples.items():
             p=install/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(data)
         (install/'System/obsolete.docx').write_bytes(b'old')
+        old_setup=install/'System/Instructions/01 First time setup.docx';old_setup.parent.mkdir(parents=True,exist_ok=True);old_setup.write_bytes(b'OLD SETUP')
         import shutil
         shutil.rmtree(install/'System')
         for name,data in update.items():
             if name=='START HERE.docx' or name.startswith('System/'):
                 p=install/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(data)
         assert not (install/'System/obsolete.docx').exists()
+        assert not old_setup.exists()
         for name,data in samples.items():assert (install/name).read_bytes()==data
         for name in WEEKLY_DIRS:
             assert (install/'COPY THIS FOLDER FOR EACH NEW WEEK'/name).is_dir()
+        custom=install/'COPY THIS FOLDER FOR EACH NEW WEEK/Inputs/custom-owner-notes.txt';custom.write_bytes(b'KEEP NOTES')
+        copy_target=install/'COPY THIS FOLDER FOR EACH NEW WEEK/Inputs'/INPUT_CHECKLIST
+        copy_target.write_bytes(update['Persistent Migration Sources/Weekly Inputs Checklist - REFERENCE ONLY.docx'])
+        assert custom.read_bytes()==b'KEEP NOTES'
+        source_coverage((ROOT/INPUT_SOURCE).read_text(),text(copy_target.read_bytes()))
 
         # Represent a subsequently installed/broken System, then restore the prior
         # release's captured System + START HERE exactly as Guide 13 instructs.

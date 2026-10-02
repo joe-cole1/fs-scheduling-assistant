@@ -1,5 +1,12 @@
 # Change log
 
+## [0.6.1] — 2026-10-02
+
+- Separate already-configured Pantons use from first-time squadron setup. System contains weekly operational materials only; one-time setup ships outside System in the first-time package only.
+- Give the first-time package its own START HERE and setup primer. Pantons and updates enter weekly work directly; duplicate blank stable-reference/playbook forms are removed from System.
+- Add a required/optional input checklist to the reusable weekly folder's Inputs directory. Existing installs receive a manual checklist migration that preserves local guidance and weekly work.
+- Keep all prompts' no-delegation instructions, model-neutral operation and scheduling/approval/evidence contracts.
+
 ## [0.6.0] — 2026-10-02
 
 - Replace all fourteen long operator guides with one-page checklists and single-action steps.

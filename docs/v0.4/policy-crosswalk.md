@@ -4,6 +4,8 @@ Sources: original v0.3 DOCX/starter kit and explicit decisions in design-decisio
 
 The reusable primer and Pantons profile together preserve the operational contract. A generic adopting squadron must not treat Pantons rules as universal policy.
 
+Package 0.6.1 routes administrative setup to [a separate setup primer](setup-primer.md) and keeps System weekly-only, as approved in [V061-01 through V061-03](design-decisions.md). The [weekly input checklist](../../packaging/guides/weekly-inputs.md) names source products without creating scheduling policy or an approval gate.
+
 | v0.3 topic | v0.4 location | Disposition |
 | --- | --- | --- |
 | Advisory role / no invented facts | Primer §§1,3,5 | Preserved |

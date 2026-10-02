@@ -35,7 +35,7 @@ The current beginner interface uses one-page checklists with one action per box,
 
 The **operator manual is chronological** because schedulers need to know what to open for the work they are doing. The current generated Word instruction set is:
 
-1. First time setup
+1. First time setup (separate First Time Setup folder, new-squadron package only)
 2. Monday — Inputs Due
 3. Tuesday — Start the Week
 4. Tuesday — Plan the Week
@@ -48,7 +48,7 @@ The **operator manual is chronological** because schedulers need to know what to
 11. Execution Week — Reflows
 12. Hand Off an Active Week
 13. Update for Next Week
-14. Check the Setup
+14. Check the Setup (separate First Time Setup folder, new-squadron package only)
 
 The assistant still tracks five **internal phases** selected by actual work status rather than weekday:
 
@@ -170,7 +170,9 @@ Static document/package checks establish structural consistency only. Behavioral
 
 Maintainers edit Markdown sources and run the Python packaging utility; operators need only Word and GenAI.mil. The utility is not an operational prerequisite. [Packaging instructions](packaging/README.md) define generation and release checks.
 
-Each full ZIP contains START HERE.docx, System (startup primer, day-based numbered guides, blank forms and references), Local Guidance (Pantons approved seed or a blank adopting-squadron draft), and COPY THIS FOLDER FOR EACH NEW WEEK. Humans create weekly Inputs, Schedules and Working Record folders from that template.
+Each full ZIP contains START HERE.docx, System (weekly upload primer, guides 02–13, weekly prompts/forms and operational references), Local Guidance (Pantons agreed profile or a blank adopting-squadron draft), and COPY THIS FOLDER FOR EACH NEW WEEK. The template includes Inputs/INPUT CHECKLIST.docx listing required weekly products and optional or applicable extras. Humans create weekly Inputs, Schedules and Working Record folders from that template.
+
+Only the first-time full package includes First Time Setup, outside System, with guides 01/14, setup prompts, SETUP PRIMER.docx and the validation reference. Its START HERE begins guidance setup. Pantons and updates use the operational START HERE and have no first-time folder. Stable-reference and playbook seed records exist in Local Guidance only. System carries no administrative setup contract or duplicate blank guidance seeds.
 
 The update ZIP replaces System and START HERE at the next-week boundary. It excludes Local Guidance and weekly work by construction. When a release deliberately changes a persistent profile seed or layout, PERSISTENT MIGRATIONS.docx and reference-only copies support human review/merge rather than automatic overwrite.
 

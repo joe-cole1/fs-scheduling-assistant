@@ -3,6 +3,7 @@
 Use a clean chat and clearly fictional inputs. Record Passed, Failed or Not run with actual output and reviewer.
 
 - [ ] Open a new GenAI.mil conversation.
+- [ ] Upload First Time Setup → SETUP PRIMER.docx.
 - [ ] Upload System → UPLOAD THIS TO START.docx.
 - [ ] Upload local guidance suitable for the trial.
 - [ ] Paste the setup-check prompt below.
@@ -12,12 +13,12 @@ Use a clean chat and clearly fictional inputs. Record Passed, Failed or Not run 
 - [ ] Run full QC on a fictional draft containing a known conflict.
 - [ ] Confirm the conflict and unverified checks stay visible.
 - [ ] Confirm it performs the work without subagent delegation.
-- [ ] Run the applicable cases in System → Reference → Validation Plan.
+- [ ] Run the applicable cases in First Time Setup → Reference → Validation Plan.docx.
 - [ ] Save actual outputs and reviewer results in an approved test location.
 
 ## Setup check prompt
 
-Copy **System → Prompts → 14_Check_Setup.txt** or paste the complete text below.
+Copy **First Time Setup → Prompts → 14_Check_Setup.txt** or paste the complete text below.
 
 ```text
 Do not delegate to subagents. Check the uploaded setup.

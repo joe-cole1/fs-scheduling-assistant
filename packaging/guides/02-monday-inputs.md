@@ -2,6 +2,8 @@
 
 Inputs are due NLT COB Monday for the next execution week. Use the squadron products you already maintain.
 
+Use **COPY THIS FOLDER FOR EACH NEW WEEK → Inputs → INPUT CHECKLIST.docx** to track required and optional products.
+
 - [ ] Request the current upgrade tracker and recent results.
 - [ ] Request checkride, currency and qualification products.
 - [ ] Request leave, commitments and known future absences.

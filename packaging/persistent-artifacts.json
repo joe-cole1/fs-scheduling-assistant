@@ -27,6 +27,11 @@
         "Schedules",
         "Working Record"
       ]
+    },
+    "weekly_input_checklist": {
+      "source": "packaging/guides/weekly-inputs.md",
+      "git_blob_sha": "1e23684c3ee732039d1dbff5a2cc4286bee44105",
+      "migration_filename": "Weekly Inputs Checklist - REFERENCE ONLY.docx"
     }
   },
   "migrations": [
@@ -90,6 +95,22 @@
         "Remove named-model workflow prerequisites. Keep one main conversation per execution week; optional DO review uses a separate human-started conversation. Do not delegate to subagents.",
         "Keep Thursday Buy/Sell as the formal DO buy only when explicitly approved. The exact presented schedule plus recorded directions is the approved baseline; faithful implementation needs no routine second buy; material departures return to the DO; publication is separate.",
         "Have the appropriate human authority confirm the merged local guidance before using the new System for next week."
+      ]
+    },
+    {
+      "id": "PERSIST-004",
+      "introduced_in": "0.6.1",
+      "artifacts": [
+        "weekly_input_checklist",
+        "weekly_folder_layout"
+      ],
+      "action": "review-and-merge",
+      "summary": "Add the required and optional input checklist to the reusable weekly folder without replacing existing local guidance or operational work.",
+      "instructions": [
+        "Review Weekly Inputs Checklist - REFERENCE ONLY.docx in Persistent Migration Sources. It lists input products; it creates no scheduling rule or approval.",
+        "Copy that document into COPY THIS FOLDER FOR EACH NEW WEEK/Inputs and name the copy INPUT CHECKLIST.docx. Keep any existing collection notes and source files.",
+        "New weekly folder copies will include the checklist. Existing weekly sources, schedules and decisions stay in place.",
+        "Replace the entire System folder and START HERE using the normal update instructions. One-time setup materials are outside System and are supplied only in the first-time squadron package. Do not restart guidance setup or replace Local Guidance."
       ]
     }
   ]

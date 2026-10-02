@@ -42,7 +42,9 @@ Do not keep historical archives in the current repository tree or download packa
 
 ## Write for a pilot new to scheduling
 
-The README is the download entry point; START HERE.docx and numbered one-page Word checklists are the operator instructions. The checklists are chronological by task, with one action per checkbox. Detailed command contracts live in the upload primer; complete short text prompts live in `packaging/prompts` and ship in System/Prompts.
+The README is the download entry point; START HERE.docx and numbered one-page Word checklists are the operator instructions. The checklists are chronological by task, with one action per checkbox. System contains weekly operational materials only (guides 02–13); first-time guides 01/14, setup prompts/primer and the validation reference belong in a separate First Time Setup folder supplied only in the first-time full package. Pantons starts weekly work with its established guidance. Never put duplicate blank local-guidance templates in System. Detailed weekly contracts live in the operational upload primer; the separate setup primer carries administrative setup contracts.
+
+The reusable weekly folder contains Inputs/INPUT CHECKLIST.docx with required products and optional or applicable extras. Keep it source-backed and declare persistent checklist changes. Missing inputs limit affected checks rather than stopping all supported planning. Keep schedules in Schedules and avoid duplicate tracker transcription.
 
 - Maintain separate Word guides for Monday inputs, Tuesday start, Tuesday planning, Wednesday build, Thursday full QC, optional DO adversarial review, Thursday buy/sell, post-buy/sell implementation, Friday final QC/publication, execution reflows, active-week handoff, updates and setup check.
 - Every complete AI prompt must include the exact instruction **Do not delegate to subagents**. The assistant performs analysis itself in the current conversation; no specific model is required. This applies to task, help, independent-review, handoff and test prompts. Do not add automatic agent/model offloading.

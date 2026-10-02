@@ -70,7 +70,7 @@ class PersistentMigrationTests(unittest.TestCase):
 
     def test_consolidation_cannot_hide_an_uncovered_artifact(self):
         manifest=copy.deepcopy(p.load_manifest())
-        manifest['migrations'][-1]['artifacts']=['pantons_local_profile']
+        next(m for m in manifest['migrations'] if m.get('supersedes'))['artifacts']=['pantons_local_profile']
         with self.assertRaisesRegex(ValueError,'cover all superseded artifacts'):
             p.validate_current(manifest=manifest)
 
