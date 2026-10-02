@@ -219,7 +219,7 @@ def release_summary(state):
 
 Existing setups: use **Update_Existing_Setup.zip** at the normal next-week boundary if adopting this release. Replace System and START HERE; preserve Local Guidance and weekly work. {migration_action}
 
-First installation: choose **Pantons_Setup.zip** or **First_Time_Squadron_Setup.zip**, extract it, and open START HERE.docx.
+Pantons with established guidance: extract **Pantons_Setup.zip**, open START HERE.docx, and start weekly work with 02 or 03. A new squadron establishing guidance uses **First_Time_Squadron_Setup.zip** and its separate First Time Setup folder. System contains weekly materials only.
 
 ## Validation and known limitations
 
@@ -243,7 +243,7 @@ def notes(body, state, folder):
         raise ValueError('Release notes are missing the required structured summary headings.')
     base = f'https://github.com/{state["repo"]}'
     assets = f'{base}/releases/download/{state["tag"]}'
-    labels = ('Pantons setup', 'First-time squadron setup', 'Update existing setup')
+    labels = ('Pantons — guidance already established', 'First-time squadron setup', 'Update existing setup')
     links = '\n'.join(f'- [{label}]({assets}/{name})' for label, name in zip(labels, ZIPS))
     checks = '\n'.join(f'| {name} | `{digest(folder / name)}` |' for name in ZIPS)
     block = f'''{START}

@@ -100,9 +100,10 @@ Persistent installed-state changes require an explicit package-version change an
 | Folder or file | Contents | Update/rollback behavior |
 | --- | --- | --- |
 | START HERE.docx | Short day/step entry instructions | Replaced by an update or prior-release rollback |
-| System | Startup, day-based numbered guides, blank forms and references | Replaced next week; same replaceable surface for rollback |
+| System | Weekly upload primer, operational guides 02–13, weekly prompts/forms and operational references | Replaced next week; contains no first-time setup materials |
+| First Time Setup (first-time full package only) | Guides 01/14, setup prompts/primer and validation reference | Outside System; absent from the Pantons full package and update |
 | Local Guidance | Human-maintained profile, references and playbook | Preserved; never automatically rolled back |
-| COPY THIS FOLDER FOR EACH NEW WEEK | Empty Inputs, Schedules, Working Record | Preserved; layout changes require a declared migration |
+| COPY THIS FOLDER FOR EACH NEW WEEK | Inputs with INPUT CHECKLIST.docx; empty Schedules and Working Record | Preserved; the checklist is a registered persistent artifact with a manual migration |
 | Week of date | Weekly sources, schedules and records | Never included in update/rollback |
 | PERSISTENT MIGRATIONS.docx (when present) | Persistent-state review instructions | Read from temporary update; do not install as local policy |
 
@@ -110,8 +111,9 @@ For rollback, operators use **System → Instructions → 13 Update for Next Wee
 
 ## Sources and local build
 
-- `guides/`: START HERE and day/step one-page Word checklist sources.
+- `guides/`: operational START HERE, distinct first-time START HERE, one-page task checklists and the weekly input checklist. The builder routes 01/14 outside System.
 - `prompts/`: complete short UTF-8 text prompts, mirrored on relevant checklists. Each starts with `Do not delegate to subagents.` and requires no named model.
+- The operational System is byte-identical across all packages. The Pantons and update START HERE copies enter weekly work; the first-time copy enters its separate setup folder. Stable-reference/playbook seed forms are generated directly into Local Guidance, without duplicate blanks in System.
 - `version.txt`: reviewed stable release/package identity used by the publish workflow.
 - `update-note.md`: release/change summary embedded in update instructions and used for release notes.
 - `release-notes-template.md`: maintained explanation of automatically generated release-note structure.

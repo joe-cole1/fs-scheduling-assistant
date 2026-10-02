@@ -30,7 +30,7 @@ class OperatorPromptTests(unittest.TestCase):
                 b.validate_prompt((b.ROOT/'packaging/prompts'/name).read_text(),name)
 
     def test_current_migration_does_not_reintroduce_superseded_model_roles(self):
-        self.assertEqual([m['id'] for m in b.actionable_migrations()],['PERSIST-003'])
+        self.assertEqual([m['id'] for m in b.actionable_migrations()],['PERSIST-003','PERSIST-004'])
         self.assertNotIn('Gemini',b.persistent_migration_source())
 
 

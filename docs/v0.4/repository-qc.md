@@ -1,6 +1,18 @@
-# Repository QC record — package 0.6.0
+# Repository QC record — package 0.6.1
 
-This is the current repository-level QC record. The v0.6.0 checks below cover the regenerated beginner workflow. Earlier hosted release evidence is retained separately; it does not establish publication or operational validation of v0.6.0.
+This is the current repository-level QC record. The v0.6.1 checks cover package routing and the weekly input checklist. Earlier v0.6.0 and hosted release evidence is retained separately; it does not establish publication or operational validation of v0.6.1.
+
+## Package 0.6.1 checks completed
+
+- All 47 repository unit tests passed. Negative inventory cases reject first-time guides/prompts, duplicate blank guidance forms and the setup validation reference inside System.
+- Both independent builds passed package checks and produced byte-identical ZIPs and manifest. Every package uses the same operational System; Pantons and updates enter weekly work, while the first-time package has its own entry point and separate setup folder.
+- All 42 unique generated Word documents (113 pages) were rendered. All 40 changed/new pages were visually reviewed; the other 73 pages matched previously reviewed renders pixel-for-pixel apart from the expected package-version label. All fourteen task guides, both entry points and the working/reference input checklists fit on one page.
+- Source coverage and a scan of all System documents found no first-time setup material. Administrative command contracts are retained in the separate setup primer. No local-profile or existing local-guidance template source changed.
+- The input checklist appears in both full packages' reusable weekly Inputs folder. Its new source fingerprint and PERSIST-004 migration passed validation. The update simulation removes legacy setup copies through entire-System replacement, preserves local guidance and weekly records, and adds the checklist without deleting custom input notes.
+- All complete prompts retain the no-delegation instruction and model-neutral content. Relative links, fenced prompts and whitespace checks passed. Release-note routing distinguishes established Pantons guidance from new squadron setup.
+- The fourteen-page printable weekly PDF contains the operational entry point, twelve weekly task guides and input checklist. Every final PDF page renders identically to its reviewed source. The direct-download input DOCX matches the working copy included in both full packages.
+
+Native Word, live GenAI.mil/GAMECHANGER instruction following, no-delegation behavior and operator usability trials remain **Not run**. The current behavioral cases include V061-A through V061-D in the [validation plan](validation-plan.md). No merge or release publication is established by these local checks.
 
 ## Package 0.6.0 checks completed
 

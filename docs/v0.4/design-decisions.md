@@ -71,3 +71,11 @@ No platform collaboration/export feature is asserted. No API/custom software/age
 | V060-03 | Default intake to CONFLICTS ONLY. Keep all material findings visible and preserve complete evidence, ledgers, decisions, outlook, scenario and version roles in one cumulative weekly record with distinct sections. The short visible answer never narrows a required check. |
 | V060-04 | Tuesday startup explicitly requests intake and planning together. Thursday’s short QC command still requests a fresh entire-schedule review and GAMECHANGER refresh. Upload alone remains insufficient to start another review. |
 | V060-05 | Keep editable Word checklists and add complete plain-text prompts under replaceable System. Local Guidance and the reusable weekly-folder layout stay human maintained; existing installs review and merge the explicit model-neutral local-profile migration. |
+
+## Approved package routing and weekly collection 0.6.1
+
+| ID | Approved decision |
+| --- | --- |
+| V061-01 | System contains weekly operational materials only. First-time guides 01/14, setup prompts, administrative setup primer and validation reference are outside System in a separate First Time Setup folder supplied only in the first-time squadron package. Duplicate blank local-guidance seed forms are excluded from System. |
+| V061-02 | Pantons and update START HERE enter weekly work using established local guidance. The first-time package has a distinct START HERE that routes to one-time guidance setup. No automatic restart or replacement of approved local guidance. |
+| V061-03 | The reusable weekly folder includes Inputs/INPUT CHECKLIST.docx with required weekly products and optional or applicable extras. Use existing products and record missing items; missing inputs limit affected checks. A source-backed manual migration adds the list to existing templates without overwriting guidance, schedules or weekly records. |

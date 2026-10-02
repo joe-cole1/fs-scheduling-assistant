@@ -118,4 +118,15 @@ The DO/scheduler reviewers decide readiness for operational use after the rehear
 | V060-G | Resume an active-week handoff in a fresh chat. Recorded week and exact decisions survive; missing actual sources stay visible and required current queries are not skipped. | Not run |
 | V060-H | Give the one-page checklists to a first-time scheduler. Record completion, help requests, confusing steps and whether one action at a time is sufficient. | Not run |
 
-Static package checks verify exact prompt text, model-neutral current instructions, genuine checkboxes, source coverage, determinism and update preservation. They do not prove model behavior. Use complete prompts from System → Prompts for every trial; never omit their no-delegation instruction. Historical trials additionally supply the tested task, exact period/cutoff and allowed input scope in a separate note.
+Static package checks verify exact prompt text, model-neutral current instructions, genuine checkboxes, source coverage, determinism and update preservation. They do not prove model behavior. Use the complete weekly prompts from System → Prompts or the setup prompts from First Time Setup → Prompts for the applicable trial; never omit their no-delegation instruction. Historical trials additionally supply the tested task, exact period/cutoff and allowed input scope in a separate note.
+
+## Package routing and weekly input trials
+
+| Case | Trial and expected result | Current result |
+| --- | --- | --- |
+| V061-A | Open the Pantons START HERE with current approved guidance. It starts weekly work with 02 or 03, and System has no setup guide/prompt/primer, validation reference or duplicate blank guidance forms. | Not run |
+| V061-B | Open the first-time package. START HERE routes to First Time Setup outside System; the assistant uses SETUP PRIMER for administrative Q&A and does not treat draft guidance as approved. | Not run |
+| V061-C | Copy the reusable weekly folder. Inputs includes the required/optional checklist; combined products can satisfy several items, missing items stay visible and no duplicate tracker transcription is required. | Not run |
+| V061-D | Update an existing install and manually add the checklist as instructed. Entire-System replacement removes old setup copies, established Local Guidance and weekly work survive, and custom input collection notes remain. | Not run |
+
+Static package inventory, source coverage and update-preservation checks verify file routing separately. The trials above require actual operator/model observations and human review.

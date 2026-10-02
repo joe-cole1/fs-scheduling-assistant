@@ -1,13 +1,11 @@
 # What changed
 
-All fourteen operator workflows are now short checklists with one action per checkbox. Complete prompts are printed on the checklists and supplied in System → Prompts. The assistant’s upload file carries the detailed scheduling and QC instructions, explains findings plainly, and gives one next action while preserving the complete weekly record.
+System now contains weekly scheduling materials only. The Pantons package uses its agreed local guidance and starts with weekly checklist 02 or 03. One-time setup guides, prompts, setup primer and validation reference are in a separate First Time Setup folder supplied only in the first-time squadron package. Duplicate blank stable-reference/playbook forms are removed from System.
 
-Every prompt includes **Do not delegate to subagents**. The package requires no specific model. Tuesday startup starts planning directly; Thursday full QC still covers the entire schedule and refreshes publication evidence. Existing scheduling, source, approval, waiver, publication and handoff boundaries continue.
+The reusable weekly folder includes Inputs → INPUT CHECKLIST.docx with required weekly products and optional or situation-specific extras. Existing installs receive a reference copy and simple manual instructions to add it without replacing local guidance or weekly work.
+
+Every complete prompt still includes Do not delegate to subagents. No specific model is required. Scheduling rules, full QC, GAMECHANGER evidence and human authority remain intact.
 
 ## What to do
 
-For an existing setup, adopt Update_Existing_Setup.zip before next week’s planning and follow UPDATE INSTRUCTIONS.docx. Replace System and START HERE only. Review PERSISTENT MIGRATIONS.docx and merge the current model-neutral conversation guidance into your human-maintained Local Profile. Preserve all numerical/local scheduling rules and later edits.
-
-## Validation limits
-
-Package checks and visual document review are separate from live GenAI.mil/connector and novice-scheduler trials. Actual platform behavior remains Not run until observed and reviewed by humans.
+Replace the entire System folder and START HERE before next week. Preserve Local Guidance and all weekly work. Follow PERSISTENT MIGRATIONS.docx to add the input checklist to the reusable weekly folder. Continue using existing approved guidance; guidance setup is for new squadrons only.

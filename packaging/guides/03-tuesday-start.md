@@ -4,7 +4,7 @@ Start next week’s planning. Use your existing squadron scheduling folder; each
 
 - [ ] Copy COPY THIS FOLDER FOR EACH NEW WEEK.
 - [ ] Rename the copy Week of YYYY-MM-DD using your approved counting week’s first date.
-- [ ] Put the received source products in the new week’s Inputs folder.
+- [ ] Use Inputs → INPUT CHECKLIST.docx to collect the source products.
 - [ ] Open a new GenAI.mil conversation for that week.
 - [ ] Enable DoW Policies Beta (GAMECHANGER) if available.
 - [ ] Upload System → UPLOAD THIS TO START.docx.

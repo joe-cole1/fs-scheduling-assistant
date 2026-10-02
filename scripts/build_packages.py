@@ -63,6 +63,17 @@ REFERENCES = [
     ('examples/v0.4/SYNTHETIC_beginner_chat.md', 'SYNTHETIC Beginner Chat.docx'),
 ]
 PROMPTS = sorted(p.name for p in (ROOT/'packaging/prompts').glob('*.txt'))
+SETUP_GUIDES = [item for item in GUIDES if item[0] in ('01-setup.md','14-check.md')]
+OPERATIONAL_GUIDES = [item for item in GUIDES if item not in SETUP_GUIDES]
+LOCAL_FORMS = [item for item in FORMS if item[0] in ('04_stable_local_rules_and_references.md','09_playbook.md')]
+OPERATIONAL_FORMS = [item for item in FORMS if item not in LOCAL_FORMS]
+SETUP_REFERENCES = [item for item in REFERENCES if item[0]=='docs/v0.4/validation-plan.md']
+OPERATIONAL_REFERENCES = [item for item in REFERENCES if item not in SETUP_REFERENCES]
+SETUP_PROMPTS = ['01_First_Time_Setup.txt','14_Check_Setup.txt']
+OPERATIONAL_PROMPTS = [name for name in PROMPTS if name not in SETUP_PROMPTS]
+SETUP_FOLDER = 'First Time Setup'
+INPUT_CHECKLIST = 'INPUT CHECKLIST.docx'
+INPUT_SOURCE = 'packaging/guides/weekly-inputs.md'
 DELEGATION_GUARD = 'Do not delegate to subagents.'
 
 
@@ -76,6 +87,7 @@ def validate_prompt(prompt, name):
 LINK_NAMES = {k:v for k,v in FORMS}
 LINK_NAMES.update({Path(k).name:v for k,v in REFERENCES})
 LINK_NAMES.update({'first-time-setup.md':'01 First time setup.docx',
+                   'setup-primer.md':'SETUP PRIMER.docx',
                    'system-primer.md':'UPLOAD THIS TO START.docx',
                    'local_profile_template.md':'Local Profile.docx',
                    'pantons-v0.4.md':'Local Profile.docx',
@@ -331,30 +343,46 @@ def build(out):
     if staging.exists(): shutil.rmtree(staging)
     common=staging/'common';system=common/'System'
     write_doc((ROOT/'packaging/guides/start.md').read_text(),common/'START HERE.docx',checklist=True)
-    for source,name in GUIDES:
+    for source,name in OPERATIONAL_GUIDES:
         write_doc((ROOT/'packaging/guides'/source).read_text(),system/'Instructions'/name,checklist=True)
     if not PROMPTS:
         raise ValueError('No complete operator prompts found')
-    for name in PROMPTS:
+    for name in OPERATIONAL_PROMPTS:
         prompt=(ROOT/'packaging/prompts'/name).read_text()
         validate_prompt(prompt,name)
         dest=system/'Prompts'/name;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_text(prompt)
     primer=(ROOT/'docs/v0.4/system-primer.md').read_text().split('## START OF PRIMER',1)[1].split('## END OF PRIMER',1)[0]
     intro='# Upload this to start\n\nUpload this file with current local guidance and sources, then paste the complete prompt on your task checklist. This file is for the assistant to read; operators follow the numbered checklists. No specific model is required. These advisory instructions establish no scheduling approval.\n\n'
     write_doc(intro+primer,system/'UPLOAD THIS TO START.docx')
-    for source,name in FORMS:
+    for source,name in OPERATIONAL_FORMS:
         write_doc((ROOT/'templates/v0.4'/source).read_text(),system/'Blank Forms'/name)
-    for source,name in REFERENCES:
+    for source,name in OPERATIONAL_REFERENCES:
         write_doc((ROOT/source).read_text(),system/'Reference'/name)
+    seeds=staging/'local-seeds'
+    for source,name in LOCAL_FORMS:
+        write_doc((ROOT/'templates/v0.4'/source).read_text(),seeds/name)
+    write_doc((ROOT/INPUT_SOURCE).read_text(),staging/INPUT_CHECKLIST,checklist=True)
     release=update_instructions_source()
     write_doc(release,staging/'UPDATE INSTRUCTIONS.docx',checklist=True)
     for variant,label,profile in [('Pantons','Pantons Scheduling Assistant','local-profiles/pantons-v0.4.md'),('First_Time_Squadron','Squadron Scheduling Assistant','templates/setup/local_profile_template.md')]:
         dest=staging/variant/label;shutil.copytree(common,dest)
         local=dest/'Local Guidance';write_doc((ROOT/profile).read_text(),local/'Local Profile.docx', 'Pantons approved local profile' if variant=='Pantons' else 'DRAFT — local rules must be supplied and approved')
         for src,name in [('04 Stable References.docx','Stable References.docx'),('09 Playbook.docx','Playbook.docx')]:
-            shutil.copy2(system/'Blank Forms'/src,local/name)
+            shutil.copy2(seeds/src,local/name)
         for directory in WEEKLY_DIRS:
             (dest/'COPY THIS FOLDER FOR EACH NEW WEEK'/directory).mkdir(parents=True)
+        shutil.copy2(staging/INPUT_CHECKLIST,dest/'COPY THIS FOLDER FOR EACH NEW WEEK'/'Inputs'/INPUT_CHECKLIST)
+        if variant=='First_Time_Squadron':
+            write_doc((ROOT/'packaging/guides/start-first-time.md').read_text(),dest/'START HERE.docx',checklist=True)
+            setup=dest/SETUP_FOLDER
+            for source,name in SETUP_GUIDES:
+                write_doc((ROOT/'packaging/guides'/source).read_text(),setup/'Instructions'/name,checklist=True)
+            for name in SETUP_PROMPTS:
+                prompt=(ROOT/'packaging/prompts'/name).read_text();validate_prompt(prompt,name)
+                target=setup/'Prompts'/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_text(prompt)
+            write_doc((ROOT/'docs/v0.4/setup-primer.md').read_text(),setup/'SETUP PRIMER.docx')
+            for source,name in SETUP_REFERENCES:
+                write_doc((ROOT/source).read_text(),setup/'Reference'/name)
         make_zip(staging/variant,downloads/(variant+'_Setup.zip'))
     update=staging/'Update';shutil.copytree(common,update)
     shutil.copy2(staging/'UPDATE INSTRUCTIONS.docx',update/'UPDATE INSTRUCTIONS.docx')
@@ -368,7 +396,8 @@ def build(out):
                 if 'source' not in spec or artifact in included:
                     continue
                 included.add(artifact)
-                write_doc((ROOT/spec['source']).read_text(),update/'Persistent Migration Sources'/spec['migration_filename'],'REFERENCE ONLY — compare and merge; do not overwrite local guidance')
+                subtitle='REFERENCE ONLY — review before installing' if artifact=='weekly_input_checklist' else 'REFERENCE ONLY — compare and merge; do not overwrite local guidance'
+                write_doc((ROOT/spec['source']).read_text(),update/'Persistent Migration Sources'/spec['migration_filename'],subtitle,checklist=artifact=='weekly_input_checklist')
     make_zip(update,downloads/'Update_Existing_Setup.zip')
     manifests={}
     for p in sorted(downloads.glob('*.zip')):
