@@ -1,0 +1,6 @@
+PRACTICE DATA - FICTIONAL. Upgrade tracker as of 9 Oct 2026,,,,,,,
+Callsign,Program,Completed (date),Next events in order,Prerequisites,Countable events remaining,Planned completion,Notes
+TALON,FLUG (4-ship lead),FLUG-1 sim (22 Sep); FLUG-2 flight (29 Sep); FLUG-3 flight (6 Oct),FLUG-4 sim; FLUG-5 flight; FLUG-6 flight; FLUG-7 flight; FLUG-8 flight; FLUG-9 checkride,FLUG-4 before FLUG-5,6,20 Nov 2026,FLUG-4 sim booked Mon 19 Oct 1600-1800L
+MAMBA,IPUG,IPUG-1 sim (30 Sep); IPUG-2 flight (7 Oct),IPUG-3 flight; IPUG-4 flight; IPUG-5 flight; IPUG-6 sim; IPUG-7 flight; IPUG-8 checkride,IPUG-3 before IPUG-4,6,11 Dec 2026,Prefer IPUG pit events Tue/Thu
+COUGAR,MQT,MQT-1 sim (28 Sep); MQT-2 BFM flight (1 Oct); MQT-3 BFM flight (8 Oct),MQT-4 BFM flight; MQT-5 A/G sim; MQT-6 A/G flight; MQT-7 A/G flight; MQT-8 checkride,MQT-4 before MQT-5; academics A3 before MQT-5,5,6 Nov 2026,MQT-4 is BFM-configuration only
+FALCON,Evaluation,Prerequisites complete (tracker note 5 Oct),I/Q mission checkride,Evaluator required,1,Due 3 Nov 2026,

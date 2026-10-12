@@ -1,0 +1,14 @@
+PRACTICE DATA - FICTIONAL. Simulator and academics schedule for 19-23 Oct 2026,,,,,
+Date,Time,Device or room,Event,People,Status
+Mon 2026-10-19,0700-0900L,MTC,Open,,Available
+Mon 2026-10-19,1300-1500L,MTC,Open,,Available
+Mon 2026-10-19,1600-1800L,MTC,FLUG-4 sim,TALON (student) / HAWK (IP),Booked
+Tue 2026-10-20,0700-0900L,MTC,Open,,Available
+Tue 2026-10-20,0800-1000L,Room 12,MQT academics A3,COUGAR / RAVEN (instructor),Booked
+Tue 2026-10-20,1300-1500L,MTC,Open,,Available
+Wed 2026-10-21,0700-0900L,MTC,Open,,Available
+Wed 2026-10-21,1300-1500L,MTC,Open,,Available
+Wed 2026-10-21,1600-1800L,MTC,Open,,Available
+Thu 2026-10-22,All day,MTC,Device maintenance,,DOWN
+Fri 2026-10-23,0700-0900L,MTC,Open,,Available
+Fri 2026-10-23,1300-1500L,MTC,MQT-5 A/G sim,COUGAR,Tentative
