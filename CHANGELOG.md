@@ -1,5 +1,12 @@
 # Change log
 
+## [0.7.0] - in progress (draft PR)
+
+- Simplify the operator workflow to the same 4 moves for every task: open a new chat, drag in the task file plus Squadron Rules plus the newest WEEK FILE, follow the assistant one step at a time, then save the new WEEK FILE. The design decisions are V070-01 through V070-04.
+- Add Stage 1 prototype sources under packaging/kit and a fictional practice week for a GenAI.mil smoke test.
+- Apply the DO-approved Pantons profile wording for new-chat-per-task (PERSIST-005). Existing installs review and merge it; it never overwrites Local Guidance automatically.
+- Scheduling rules, Buy/Sell authority, waiver routing and the GAMECHANGER source gate are unchanged.
+
 ## [0.6.1] — 2026-10-02
 
 - Separate already-configured Pantons use from first-time squadron setup. System contains weekly operational materials only; one-time setup ships outside System in the first-time package only.

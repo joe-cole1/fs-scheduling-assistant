@@ -3,7 +3,7 @@
   "artifacts": {
     "pantons_local_profile": {
       "source": "local-profiles/pantons-v0.4.md",
-      "git_blob_sha": "065d1c997e546c00efe0068bca722caaac051956",
+      "git_blob_sha": "66115d033895de5498dcd1066af42ca00cf2dd25",
       "migration_filename": "Pantons Local Profile - REFERENCE ONLY.docx"
     },
     "generic_local_profile": {
@@ -111,6 +111,21 @@
         "Copy that document into COPY THIS FOLDER FOR EACH NEW WEEK/Inputs and name the copy INPUT CHECKLIST.docx. Keep any existing collection notes and source files.",
         "New weekly folder copies will include the checklist. Existing weekly sources, schedules and decisions stay in place.",
         "Replace the entire System folder and START HERE using the normal update instructions. One-time setup materials are outside System and are supplied only in the first-time squadron package. Do not restart guidance setup or replace Local Guidance."
+      ]
+    },
+    {
+      "id": "PERSIST-005",
+      "introduced_in": "0.7.0",
+      "artifacts": [
+        "pantons_local_profile"
+      ],
+      "action": "review-and-merge",
+      "summary": "DO-approved wording (2026-10-12) for the 0.7.0 workflow: each task starts a new GenAI.mil conversation with its task file, the Squadron Rules and the newest WEEK FILE, which carries the week's decisions and state between conversations.",
+      "instructions": [
+        "Compare the supplied reference-only Pantons Local Profile with your current local profile. Never replace human-maintained local guidance automatically.",
+        "In the Tuesday battle-rhythm bullet, replace the opening with: schedulers start the week with the Tuesday task file and the current inputs, then perform product reconciliation and planning Q&A.",
+        "Replace the one-main-weekly-conversation bullet with: Start a new GenAI.mil conversation for each task with its task file, these Squadron Rules and the newest WEEK FILE. The WEEK FILE carries the week's decisions and state from one conversation to the next. Do not delegate to subagents.",
+        "Preserve every other approved rule and later local edit. The DO approved this wording on 2026-10-12."
       ]
     }
   ]

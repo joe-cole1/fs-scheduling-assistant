@@ -79,3 +79,16 @@ No platform collaboration/export feature is asserted. No API/custom software/age
 | V061-01 | System contains weekly operational materials only. First-time guides 01/14, setup prompts, administrative setup primer and validation reference are outside System in a separate First Time Setup folder supplied only in the first-time squadron package. Duplicate blank local-guidance seed forms are excluded from System. |
 | V061-02 | Pantons and update START HERE enter weekly work using established local guidance. The first-time package has a distinct START HERE that routes to one-time guidance setup. No automatic restart or replacement of approved local guidance. |
 | V061-03 | The reusable weekly folder includes Inputs/INPUT CHECKLIST.docx with required weekly products and optional or applicable extras. Use existing products and record missing items; missing inputs limit affected checks. A source-backed manual migration adds the list to existing templates without overwriting guidance, schedules or weekly records. |
+
+## Approved simplification decisions 0.7.0 (in progress)
+
+Decisions made by the product authority during the 2026-10-12 planning session. The DO approved the Squadron Rules wording the same day. They take effect when package 0.7.0 is released; until then the 0.6.1 package and records above remain current.
+
+| ID | Approved decision |
+| --- | --- |
+| V070-01 | Start a new GenAI.mil conversation for each task. A saved WEEK FILE carries the week's state between conversations: schedule versions, human decisions, findings, the regulation-check record, outlook and open items. A person picking up a week uses the week folder; no separate handoff procedure is needed. Supersedes V04-11 and V04-12 at release. |
+| V070-02 | Use one self-contained, day-named task file per task. Each task file carries the shared core instructions, its own step-by-step script and the WEEK FILE format. It replaces the separate upload primer plus short activation prompts (V041-02 and V060-01 in part). Every task file still includes "Do not delegate to subagents" (V060-02 unchanged). |
+| V070-03 | Ship a Pantons kit only. First-time and other-squadron setup leaves the release downloads, with Git history retaining it; it returns as an add-on if another squadron asks. Supersedes V041-01, V061-01 and V061-02 at release. |
+| V070-04 | The DO approved this Pantons profile wording on 2026-10-12. Tuesday: "schedulers start the week with the Tuesday task file and the current inputs." Conversation: "Start a new GenAI.mil conversation for each task with its task file, these Squadron Rules and the newest WEEK FILE. The WEEK FILE carries the week's decisions and state from one conversation to the next." Existing installs review and merge it through PERSIST-005. |
+
+These decisions change only the operator workflow and packaging. All authority, Buy/Sell, waiver, GAMECHANGER source-gate, evidence and local scheduling rules above remain in force.

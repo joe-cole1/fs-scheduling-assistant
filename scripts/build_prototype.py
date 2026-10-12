@@ -28,22 +28,8 @@ def task_file(task_src, title):
               'task file; Part 2, this task\'s step-by-step script; Part 3, the WEEK FILE format. It ends with an end marker.')
     return '\n\n'.join([GUARD, header, core, task, week, END]) + '\n'
 
-PROFILE_EDITS = [
-    ('- **Tuesday:** schedulers create the weekly GenAI.mil workspace, upload startup/local/current inputs, then perform',
-     '- **Tuesday:** schedulers start the week with the Tuesday task file and the current inputs, then perform'),
-    ('- No specific model is required. Keep one main weekly GenAI.mil conversation for planning, build support, Thursday QC, '
-     'Buy/Sell support, implementation QC, publication support and execution reflows. **Do not delegate to subagents.** '
-     'The assistant performs the work itself in that conversation.',
-     '- No specific model is required. Start a new GenAI.mil conversation for each task with its task file, these Squadron '
-     'Rules and the newest WEEK FILE. The WEEK FILE carries the week\'s decisions and state from one conversation to the '
-     'next. **Do not delegate to subagents.** The assistant performs the work itself in each conversation.'),
-]
-
 def squadron_rules():
     profile = (REPO / 'local-profiles/pantons-v0.4.md').read_text()
-    for old, new in PROFILE_EDITS:
-        assert old in profile, old[:60]
-        profile = profile.replace(old, new)
     body = profile.split('\n', 1)[1].strip()          # drop the profile's own title
     body = re.sub(r'^## ', '### ', body, flags=re.M)  # nest under Section 1
     rules = (REPO / 'packaging/kit/squadron-rules.md').read_text().replace('{{PROFILE}}', body)
