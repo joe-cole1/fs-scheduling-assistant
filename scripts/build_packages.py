@@ -1,6 +1,6 @@
-"""Build Word checklists and complete text prompts. Maintainer utility only."""
+"""Build the Pantons operator kit and its update ZIP. Maintainer utility only."""
 from pathlib import Path
-from datetime import datetime, timezone
+from datetime import datetime
 import argparse
 import hashlib
 import json
@@ -20,78 +20,96 @@ VERSION = (ROOT / 'packaging/version.txt').read_text().strip()
 PERSISTENT = json.loads((ROOT / 'packaging/persistent-artifacts.json').read_text())
 REPRO = json.loads((ROOT / 'packaging/reproducibility.json').read_text())
 WEEKLY_DIRS = PERSISTENT['artifacts']['weekly_folder_layout']['directories']
-MIGRATION_DOC = 'PERSISTENT MIGRATIONS.docx'
 METADATA_SENTINEL = '1980-01-01T00:00:00Z'
 METADATA_TIMESTAMP = datetime.fromisoformat(REPRO.get('metadata_timestamp', '').replace('Z','+00:00')) if REPRO.get('metadata_timestamp') else None
 ZIP_TIMESTAMP = ((METADATA_TIMESTAMP.year, METADATA_TIMESTAMP.month, METADATA_TIMESTAMP.day,
                   METADATA_TIMESTAMP.hour, METADATA_TIMESTAMP.minute, METADATA_TIMESTAMP.second)
                  if METADATA_TIMESTAMP else None)
-GUIDES = [
-    ('01-setup.md', '01 First time setup.docx'),
-    ('02-monday-inputs.md', '02 Monday - Inputs Due.docx'),
-    ('03-tuesday-start.md', '03 Tuesday - Start the Week.docx'),
-    ('04-tuesday-plan.md', '04 Tuesday - Plan the Week.docx'),
-    ('05-wednesday-build.md', '05 Wednesday - Build the Schedule.docx'),
-    ('06-thursday-qc.md', '06 Thursday - Full Schedule QC.docx'),
-    ('07-thursday-do-review.md', '07 Thursday - DO Adversarial Review.docx'),
-    ('08-thursday-buy-sell.md', '08 Thursday - Schedule Buy-Sell.docx'),
-    ('09-apply-buy-sell-changes.md', '09 Thursday-Friday - Apply Buy-Sell Changes.docx'),
-    ('10-friday-final-qc-publish.md', '10 Friday - Final QC and Publish.docx'),
-    ('11-execution-reflows.md', '11 Execution Week - Reflows.docx'),
-    ('12-handoff.md', '12 Hand Off an Active Week.docx'),
-    ('13-update.md', '13 Update for Next Week.docx'),
-    ('14-check.md', '14 Check the Setup.docx'),
-]
-FORMS = [
-    ('01_run_control_and_manifest.md','01 Run Control and Product Manifest.docx'),
-    ('02_do_weekly_guidance.md','02 DO Weekly Guidance.docx'),
-    ('03_flight_commander_input.md','03 Flight Commander Input.docx'),
-    ('04_stable_local_rules_and_references.md','04 Stable References.docx'),
-    ('05_retrospective_outcomes.md','05 Retrospective Outcomes.docx'),
-    ('06_decision_and_release_record.md','06 Decision and Release Record.docx'),
-    ('07_execution_update.md','07 Execution Update.docx'),
-    ('08_session_handoff.md','08 Session Handoff.docx'),
-    ('09_playbook.md','09 Playbook.docx'),
-]
-REFERENCES = [
-    ('docs/v0.4/phase-guide.md', 'Phase Reference.docx'),
-    ('docs/v0.4/report-contracts.md', 'Report Reference.docx'),
-    ('docs/v0.4/validation-plan.md', 'Validation Plan.docx'),
-    ('docs/data-handling.md', 'Data Handling.docx'),
-    ('examples/v0.4/SYNTHETIC_weekly_cycle.md', 'SYNTHETIC Weekly Cycle.docx'),
-    ('examples/v0.4/SYNTHETIC_leadership_inputs.md', 'SYNTHETIC Leadership Inputs.docx'),
-    ('examples/v0.4/SYNTHETIC_beginner_chat.md', 'SYNTHETIC Beginner Chat.docx'),
-]
-PROMPTS = sorted(p.name for p in (ROOT/'packaging/prompts').glob('*.txt'))
-SETUP_GUIDES = [item for item in GUIDES if item[0] in ('01-setup.md','14-check.md')]
-OPERATIONAL_GUIDES = [item for item in GUIDES if item not in SETUP_GUIDES]
-LOCAL_FORMS = [item for item in FORMS if item[0] in ('04_stable_local_rules_and_references.md','09_playbook.md')]
-OPERATIONAL_FORMS = [item for item in FORMS if item not in LOCAL_FORMS]
-SETUP_REFERENCES = [item for item in REFERENCES if item[0]=='docs/v0.4/validation-plan.md']
-OPERATIONAL_REFERENCES = [item for item in REFERENCES if item not in SETUP_REFERENCES]
-SETUP_PROMPTS = ['01_First_Time_Setup.txt','14_Check_Setup.txt']
-OPERATIONAL_PROMPTS = [name for name in PROMPTS if name not in SETUP_PROMPTS]
-SETUP_FOLDER = 'First Time Setup'
+
+# Operator kit layout.
+KIT = 'Panton Scheduling Assistant'
+FULL_ZIP = 'Panton_Scheduling_Assistant.zip'
+UPDATE_ZIP = 'Update.zip'
+ZIPS = (FULL_ZIP, UPDATE_ZIP)
+TASK_DIR = 'TASK FILES'
+WEEK_TEMPLATE = 'WEEKS/_COPY ME - New week'
+START_DOC = 'START HERE.docx'
+RULES_DOC = 'Squadron Rules.docx'
 INPUT_CHECKLIST = 'INPUT CHECKLIST.docx'
-INPUT_SOURCE = 'packaging/guides/weekly-inputs.md'
+MIGRATION_DOC = 'READ ME - Squadron Rules changes.docx'
+PROFILE_STYLE_DOCS = (RULES_DOC,)
+
+# Maintained sources.
+KIT_SOURCES = ROOT / 'packaging/kit'
+CORE_SOURCE = KIT_SOURCES / 'core.md'
+WEEK_FILE_SOURCE = KIT_SOURCES / 'week-file.md'
+START_SOURCE = KIT_SOURCES / 'start-here.md'
+INPUT_SOURCE = KIT_SOURCES / 'input-checklist.md'
+RULES_SOURCE = KIT_SOURCES / 'squadron-rules.md'
+PROFILE_SOURCE = ROOT / 'local-profiles/pantons.md'
+TASKS = [
+    ('1-tuesday-plan.md', '1 TUESDAY - Plan next week'),
+    ('2-wednesday-check-draft.md', '2 WEDNESDAY - Check my draft'),
+    ('3-thursday-full-qc.md', '3 THURSDAY - Full QC'),
+    ('4-thursday-buy-sell.md', '4 THURSDAY - Buy-Sell'),
+    ('5-thu-fri-changes-publish.md', '5 THU-FRI - Check changes and publish'),
+    ('6-execution-week-change.md', '6 EXECUTION WEEK - Schedule change'),
+    ('do-only-independent-review.md', 'DO ONLY - Independent review'),
+    ('help-next.md', 'HELP - What do I do next'),
+]
+
+# Task-file contract.
 DELEGATION_GUARD = 'Do not delegate to subagents.'
+GUARD = ('Do not delegate to subagents. Do all of this work yourself in this chat: do not hand any part of it to '
+         'another model or agent, launch parallel assistants, or use automatic agent delegation. Looking up '
+         'publications in DoW Policies Beta (GAMECHANGER) is allowed; it is evidence retrieval, not delegation. '
+         'No specific model is required.')
+END_MARKER = '=== END OF TASK FILE ==='
+TASK_FILE_LIMIT = 40000
+NAMED_MODEL = re.compile(r'\bGemini\b|\bTerra\b|\bGrok\b|GPT-?\d', re.I)
+LINK_NAMES = {}
 
 
-def validate_prompt(prompt, name):
-    if not prompt.startswith(DELEGATION_GUARD):
-        raise ValueError('Prompt must start with the no-delegation instruction: '+name)
-    if not prompt[len(DELEGATION_GUARD):].strip():
-        raise ValueError('Prompt needs a task: '+name)
-    if re.search(r'Gemini|Terra|Grok|GPT-?\d|\[|\]|<[^>]+>',prompt,re.I):
-        raise ValueError('Prompt must require no named model or unfilled field: '+name)
-LINK_NAMES = {k:v for k,v in FORMS}
-LINK_NAMES.update({Path(k).name:v for k,v in REFERENCES})
-LINK_NAMES.update({'first-time-setup.md':'01 First time setup.docx',
-                   'setup-primer.md':'SETUP PRIMER.docx',
-                   'system-primer.md':'UPLOAD THIS TO START.docx',
-                   'local_profile_template.md':'Local Profile.docx',
-                   'pantons-v0.4.md':'Local Profile.docx',
-                   'README.md':'START HERE.docx'})
+def task_file_text(source, title):
+    """Assemble one self-contained task file: guard, header, core, task script, WEEK FILE format, end marker."""
+    header = ('=== PANTON SCHEDULING ASSISTANT - TASK FILE ===\n'
+              f'THIS TASK: {title}\n'
+              f'Kit version: {VERSION}\n'
+              'Read this whole file before you reply. It has three parts: Part 1, core instructions that are the same '
+              "in every task file; Part 2, this task's step-by-step script; Part 3, the WEEK FILE format. It ends "
+              'with an end marker.')
+    parts = [GUARD, header, CORE_SOURCE.read_text().strip(), (KIT_SOURCES / 'tasks' / source).read_text().strip(),
+             WEEK_FILE_SOURCE.read_text().strip(), END_MARKER]
+    return '\n\n'.join(parts) + '\n'
+
+
+def validate_task_file(text, name):
+    if not text.startswith(DELEGATION_GUARD):
+        raise ValueError('Task file must start with the no-delegation instruction: ' + name)
+    lines = text.rstrip('\n').splitlines()
+    if not lines or lines[-1] != END_MARKER:
+        raise ValueError('Task file must end with the END marker: ' + name)
+    if len(text.encode('utf-8')) > TASK_FILE_LIMIT:
+        raise ValueError(f'Task file exceeds the {TASK_FILE_LIMIT}-byte size budget: ' + name)
+    if NAMED_MODEL.search(text):
+        raise ValueError('Task file must require no named model: ' + name)
+    if '{{' in text or '}}' in text:
+        raise ValueError('Task file has an unfilled template field: ' + name)
+    try:
+        text.encode('ascii')
+    except UnicodeEncodeError as exc:
+        raise ValueError('Task file must be plain ASCII: ' + name) from exc
+
+
+def squadron_rules_source():
+    """Squadron Rules = the maintained frame with the approved Pantons profile as Section 1."""
+    profile = PROFILE_SOURCE.read_text()
+    body = profile.split('\n', 1)[1].strip()
+    body = re.sub(r'^## ', '### ', body, flags=re.M)
+    frame = RULES_SOURCE.read_text()
+    if frame.count('{{PROFILE}}') != 1:
+        raise ValueError('packaging/kit/squadron-rules.md must contain exactly one {{PROFILE}} marker')
+    return frame.replace('{{PROFILE}}', body)
 
 
 def validate_reproducibility_contract():
@@ -114,42 +132,47 @@ def actionable_migrations():
     return [item for item in PERSISTENT['migrations'] if item['action'] != 'none' and item['id'] not in superseded]
 
 
-def update_instructions_source():
-    change_note=(ROOT/'packaging/update-note.md').read_text().strip()
-    if not change_note:
-        raise ValueError('packaging/update-note.md must describe this release')
-    change_note=change_note.split('## What to do',1)[0].replace('# What changed\n\n','',1).strip()
-    return ('# Update to package '+VERSION+'\n\n'
-        'Adopt this update before next week’s planning. The package number in document headers identifies the installed version.\n\n'
-        '- [ ] Extract this update into a temporary folder.\n'
-        '- [ ] Back up your existing System folder and START HERE.docx.\n'
-        '- [ ] Replace the entire existing System folder with the supplied System.\n'
-        '- [ ] Replace START HERE.docx with the supplied copy.\n'
-        '- [ ] Review any PERSISTENT MIGRATIONS.docx in the temporary update.\n'
-        '- [ ] Merge only the listed persistent changes after human review.\n'
-        '- [ ] Keep Local Guidance, the weekly-folder template and all weekly work in place.\n'
-        '- [ ] Start next week with 03 Tuesday - Start the Week.docx.\n\n'
-        'This update does not alter an existing chat, approval, waiver, published schedule or completed result. Never save completed work inside System.\n\n'
-        'For rollback, use the prior release’s update ZIP and replace only System and START HERE. Preserve human-maintained local rules and operational records. An urgent active-week System change uses the handoff/resume checklist.\n\n'
-        'Moving from the older Markdown layout? Use the appropriate full setup once and carry your approved guidance and weekly work into it.\n\n'
-        '## What changed\n\n'+change_note+'\n\n'
-        'Static package and layout checks are separate from live GenAI.mil/connector and novice-scheduler trials. Those remain Not run until observed and reviewed.\n')
+def _demote(source):
+    return re.sub(r'^(#{1,5}) ', lambda m: '#' + m.group(1) + ' ', source, flags=re.M)
+
+
+def migration_reference_sources():
+    """Reference-only copies for active migrations, keyed by title. Squadron Rules is shown fully assembled."""
+    refs = {}
+    for item in actionable_migrations():
+        for artifact in item['artifacts']:
+            spec = PERSISTENT['artifacts'][artifact]
+            if 'source' not in spec:
+                continue
+            if artifact in ('pantons_local_profile', 'squadron_rules_frame'):
+                refs.setdefault('Squadron Rules', squadron_rules_source())
+            elif artifact == 'weekly_input_checklist':
+                refs.setdefault('Input checklist', INPUT_SOURCE.read_text())
+            else:
+                raise ValueError('No reference copy rule for persistent artifact: ' + artifact)
+    return refs
 
 
 def persistent_migration_source():
-    migrations=actionable_migrations()
+    migrations = actionable_migrations()
     if not migrations:
         return ''
-    lines=[
-        '# Persistent migration review',
+    lines = [
+        '# Squadron Rules changes',
         '',
-        'This document appears only when a release deliberately changes persistent installed state. Do not overwrite Local Guidance or weekly work. Review each migration, compare any reference-only copy with your current human-maintained file, and merge only changes that the appropriate human authority accepts.',
-        ''
+        'This file comes with an update only when a release changes Squadron Rules, the input checklist or the weekly folder. '
+        'Nothing in your Squadron Rules or WEEKS was changed automatically. Follow each item that applies to you, '
+        'have the DO confirm any change to Squadron Rules, then delete this file.',
+        '',
     ]
     for item in migrations:
-        lines += [f'## {item["id"]} package {item["introduced_in"]}', '', item['summary'], '', 'Required actions:']
-        lines += ['- [ ] '+instruction for instruction in item['instructions']]
-        lines += ['', 'Reference-only source copies, when applicable, are provided under **Persistent Migration Sources**. They are comparison material, not installed replacements and not evidence of approval.', '']
+        lines += [f'## {item["id"]} (package {item["introduced_in"]})', '', item['summary'], '']
+        lines += ['- [ ] ' + instruction for instruction in item['instructions']]
+        lines += ['']
+    for title, source in migration_reference_sources().items():
+        lines += [f'## Reference copy: {title}', '',
+                  'Comparison material only. It is not an approved replacement for your current file.', '',
+                  _demote(_demote(source)).strip(), '']
     return '\n'.join(lines)
 
 
@@ -253,11 +276,8 @@ def title_text(text):
 
 def write_doc(source, destination, subtitle=None, checklist=False):
     doc=Document();configure(doc,checklist);lines=source.splitlines();i=0;seq=100;checkbox_number=0
-    if destination.name in ('09 Playbook.docx', 'Playbook.docx'):
-        # Keep the short blank record together without changing its type size.
-        doc.styles['Normal'].paragraph_format.space_after=Pt(4)
-    if destination.name in ('Local Profile.docx', 'Pantons Local Profile - REFERENCE ONLY.docx', 'Blank Local Profile - REFERENCE ONLY.docx'):
-        # Avoid a final page containing only the profile's closing sentence.
+    if destination.name in PROFILE_STYLE_DOCS:
+        # Long rules text: slightly tighter spacing keeps the document compact.
         doc.styles['Normal'].paragraph_format.space_after=Pt(4)
         doc.styles['List Bullet'].paragraph_format.space_after=Pt(2)
         for style in ('Normal', 'List Bullet', 'List Number'):
@@ -302,7 +322,10 @@ def write_doc(source, destination, subtitle=None, checklist=False):
             else: inline(doc.add_paragraph(style='Heading '+str(min(level-1,3))),title)
             i+=1;continue
         if re.match(r'^\d+\. ',line):
-            seq+=1;n=el('num',numId=seq);n.append(el('abstractNumId',val=71));doc.part.numbering_part.element.append(n)
+            seq+=1;n=el('num',numId=seq);n.append(el('abstractNumId',val=71))
+            # Each separate numbered list restarts at 1.
+            override=el('lvlOverride',ilvl=0);override.append(el('startOverride',val=1));n.append(override)
+            doc.part.numbering_part.element.append(n)
             while i<len(lines) and re.match(r'^\d+\. ',lines[i].strip()):
                 listpara(doc,re.sub(r'^\d+\. ','',lines[i].strip()),seq);i+=1
             continue
@@ -337,74 +360,44 @@ def make_zip(folder,destination):
             z.writestr(info,b'' if p.is_dir() else p.read_bytes())
 
 
+def write_text(destination, text):
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    destination.write_bytes(text.encode('utf-8'))
+
+
 def build(out):
     validate_reproducibility_contract()
     staging=out/'build';downloads=out/'downloads'
     if staging.exists(): shutil.rmtree(staging)
-    common=staging/'common';system=common/'System'
-    write_doc((ROOT/'packaging/guides/start.md').read_text(),common/'START HERE.docx',checklist=True)
-    for source,name in OPERATIONAL_GUIDES:
-        write_doc((ROOT/'packaging/guides'/source).read_text(),system/'Instructions'/name,checklist=True)
-    if not PROMPTS:
-        raise ValueError('No complete operator prompts found')
-    for name in OPERATIONAL_PROMPTS:
-        prompt=(ROOT/'packaging/prompts'/name).read_text()
-        validate_prompt(prompt,name)
-        dest=system/'Prompts'/name;dest.parent.mkdir(parents=True,exist_ok=True);dest.write_text(prompt)
-    primer=(ROOT/'docs/v0.4/system-primer.md').read_text().split('## START OF PRIMER',1)[1].split('## END OF PRIMER',1)[0]
-    intro='# Upload this to start\n\nUpload this file with current local guidance and sources, then paste the complete prompt on your task checklist. This file is for the assistant to read; operators follow the numbered checklists. No specific model is required. These advisory instructions establish no scheduling approval.\n\n'
-    write_doc(intro+primer,system/'UPLOAD THIS TO START.docx')
-    for source,name in OPERATIONAL_FORMS:
-        write_doc((ROOT/'templates/v0.4'/source).read_text(),system/'Blank Forms'/name)
-    for source,name in OPERATIONAL_REFERENCES:
-        write_doc((ROOT/source).read_text(),system/'Reference'/name)
-    seeds=staging/'local-seeds'
-    for source,name in LOCAL_FORMS:
-        write_doc((ROOT/'templates/v0.4'/source).read_text(),seeds/name)
-    write_doc((ROOT/INPUT_SOURCE).read_text(),staging/INPUT_CHECKLIST,checklist=True)
-    release=update_instructions_source()
-    write_doc(release,staging/'UPDATE INSTRUCTIONS.docx',checklist=True)
-    for variant,label,profile in [('Pantons','Pantons Scheduling Assistant','local-profiles/pantons-v0.4.md'),('First_Time_Squadron','Squadron Scheduling Assistant','templates/setup/local_profile_template.md')]:
-        dest=staging/variant/label;shutil.copytree(common,dest)
-        local=dest/'Local Guidance';write_doc((ROOT/profile).read_text(),local/'Local Profile.docx', 'Pantons approved local profile' if variant=='Pantons' else 'DRAFT — local rules must be supplied and approved')
-        for src,name in [('04 Stable References.docx','Stable References.docx'),('09 Playbook.docx','Playbook.docx')]:
-            shutil.copy2(seeds/src,local/name)
-        for directory in WEEKLY_DIRS:
-            (dest/'COPY THIS FOLDER FOR EACH NEW WEEK'/directory).mkdir(parents=True)
-        shutil.copy2(staging/INPUT_CHECKLIST,dest/'COPY THIS FOLDER FOR EACH NEW WEEK'/'Inputs'/INPUT_CHECKLIST)
-        if variant=='First_Time_Squadron':
-            write_doc((ROOT/'packaging/guides/start-first-time.md').read_text(),dest/'START HERE.docx',checklist=True)
-            setup=dest/SETUP_FOLDER
-            for source,name in SETUP_GUIDES:
-                write_doc((ROOT/'packaging/guides'/source).read_text(),setup/'Instructions'/name,checklist=True)
-            for name in SETUP_PROMPTS:
-                prompt=(ROOT/'packaging/prompts'/name).read_text();validate_prompt(prompt,name)
-                target=setup/'Prompts'/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_text(prompt)
-            write_doc((ROOT/'docs/v0.4/setup-primer.md').read_text(),setup/'SETUP PRIMER.docx')
-            for source,name in SETUP_REFERENCES:
-                write_doc((ROOT/source).read_text(),setup/'Reference'/name)
-        make_zip(staging/variant,downloads/(variant+'_Setup.zip'))
-    update=staging/'Update';shutil.copytree(common,update)
-    shutil.copy2(staging/'UPDATE INSTRUCTIONS.docx',update/'UPDATE INSTRUCTIONS.docx')
-    migrations=actionable_migrations()
-    if migrations:
-        write_doc(persistent_migration_source(),update/MIGRATION_DOC,'Human-reviewed persistent-state migration',checklist=True)
-        included=set()
-        for item in migrations:
-            for artifact in item['artifacts']:
-                spec=PERSISTENT['artifacts'][artifact]
-                if 'source' not in spec or artifact in included:
-                    continue
-                included.add(artifact)
-                subtitle='REFERENCE ONLY — review before installing' if artifact=='weekly_input_checklist' else 'REFERENCE ONLY — compare and merge; do not overwrite local guidance'
-                write_doc((ROOT/spec['source']).read_text(),update/'Persistent Migration Sources'/spec['migration_filename'],subtitle,checklist=artifact=='weekly_input_checklist')
-    make_zip(update,downloads/'Update_Existing_Setup.zip')
+    if downloads.exists(): shutil.rmtree(downloads)
+    replaceable=staging/'replaceable'
+    write_doc(START_SOURCE.read_text(),replaceable/START_DOC,checklist=True)
+    for source,title in TASKS:
+        text=task_file_text(source,title);validate_task_file(text,title)
+        write_text(replaceable/TASK_DIR/(title+'.txt'),text)
+
+    full=staging/'full'/KIT
+    shutil.copytree(replaceable,full)
+    write_doc(squadron_rules_source(),full/RULES_DOC,'Approved local rules - the DO approves changes')
+    week=full/WEEK_TEMPLATE
+    for directory in WEEKLY_DIRS:
+        (week/directory).mkdir(parents=True)
+    write_doc(INPUT_SOURCE.read_text(),week/INPUT_CHECKLIST,checklist=True)
+    make_zip(staging/'full',downloads/FULL_ZIP)
+
+    update=staging/'update'
+    shutil.copytree(replaceable,update)
+    if actionable_migrations():
+        write_doc(persistent_migration_source(),update/MIGRATION_DOC,'Read, act on what applies, then delete',checklist=True)
+    make_zip(update,downloads/UPDATE_ZIP)
+
     manifests={}
-    for p in sorted(downloads.glob('*.zip')):
+    for name in ZIPS:
+        p=downloads/name
         with zipfile.ZipFile(p) as z: entries=z.namelist()
-        manifests[p.name]={'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'files':entries}
+        manifests[name]={'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'files':entries}
     (downloads/'manifest.json').write_text(json.dumps({'package_version':VERSION,'packages':manifests},indent=2)+'\n')
-    print(json.dumps({p.name:p.stat().st_size for p in downloads.iterdir()},indent=2))
+    print(json.dumps({p.name:p.stat().st_size for p in sorted(downloads.iterdir())},indent=2))
 
 
 if __name__=='__main__':

@@ -1,8 +1,0 @@
-PRACTICE DATA - FICTIONAL. Not real people, units or direction.
-
-Training phase and configuration plan (DOW), as of 5 Oct 2026
-
-- BFM phase: through Wed 21 Oct 2026. Aircraft in BFM clean configuration.
-- A/G phase (tanks): Thu 22 Oct through Fri 6 Nov 2026.
-- BFM-tied events must be done by Wed 21 Oct. Any BFM event after that needs BFM-configured jets kept back from the A/G pool. That needs a DO decision and MX coordination.
-- Events tied to the BFM phase this week: COUGAR MQT-4.

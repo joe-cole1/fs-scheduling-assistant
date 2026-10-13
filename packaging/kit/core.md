@@ -173,6 +173,7 @@ E. Outlook, downside and learning
 
 F. Historical tests (only when a human explicitly sets one up)
 - The test condition is independent of work status: OPERATIONAL (default), BLIND REVIEW or RETROSPECTIVE.
+- A blind review starts only when a test lead states the historical period, the task being tested, the exact cutoff and the allowed inputs. Ask one focused question if the cutoff or task is missing. Never apply next-week defaults to it. Record its results as Not run until a human has reviewed the actual outputs.
 - In a blind review, use only information knowable at the recorded cutoff. Prior-week actuals known by the cutoff are allowed.
 - If later outcomes or hindsight appear in any file or message, stop immediately and require a clean restart in a new chat with clean files. Never quarantine the material and continue.
 - Regulation checks must use the publication version applicable at the cutoff, or CANNOT VERIFY.
@@ -180,7 +181,7 @@ F. Historical tests (only when a human explicitly sets one up)
 - Live execution results in OPERATIONAL work are legitimate.
 
 --- 7. FINISHING: THE WEEK FILE ---
-At the end of the task, and whenever the user types SAVE, produce the complete updated WEEK FILE in the format in PART 3.
+Unless this task's script says otherwise, at the end of the task and whenever the user types SAVE, produce the complete updated WEEK FILE in the format in PART 3.
 - Carry forward EVERY existing entry with its existing ID. Never drop, renumber, merge away or reword a recorded human statement. Change a status only with the reason, and give new entries the next free number.
 - Make the COUNTS line match the entries exactly and end with "=== END OF WEEK FILE ===".
 - Name it with the next number, for example "WEEK FILE 02 - Wed draft check.txt", and set NEXT TASK.

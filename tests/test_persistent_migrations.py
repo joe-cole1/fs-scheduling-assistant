@@ -15,7 +15,8 @@ class PersistentMigrationTests(unittest.TestCase):
     def test_current_manifest_matches_registered_sources(self):
         manifest = p.validate_current()
         self.assertIn('pantons_local_profile', manifest['artifacts'])
-        self.assertEqual(manifest['artifacts']['weekly_folder_layout']['directories'], ['Inputs','Schedules','Working Record'])
+        self.assertEqual(manifest['artifacts']['weekly_folder_layout']['directories'], ['Inputs','Schedules'])
+        self.assertIn('squadron_rules_frame', manifest['artifacts'])
 
     def test_source_fingerprint_detects_undeclared_edit(self):
         manifest = p.load_manifest()
@@ -79,6 +80,21 @@ class PersistentMigrationTests(unittest.TestCase):
         manifest['migrations'][-1]['supersedes']=['PERSIST-FUTURE']
         with self.assertRaisesRegex(ValueError,'earlier record'):
             p.validate_current(manifest=manifest)
+
+
+    def test_retired_artifact_keeps_history_valid_but_cannot_carry_a_source(self):
+        manifest = copy.deepcopy(p.load_manifest())
+        self.assertEqual(manifest['artifacts']['playbook_template']['retired_in'], '0.7.0')
+        manifest['artifacts']['playbook_template']['source'] = 'templates/v0.4/09_playbook.md'
+        with self.assertRaisesRegex(ValueError, 'Retired persistent artifact'):
+            p.validate_current(manifest=manifest)
+
+    def test_retiring_an_artifact_requires_a_migration(self):
+        previous = p.load_manifest()
+        current = copy.deepcopy(previous)
+        current['artifacts']['weekly_input_checklist'] = {'retired_in': '0.7.1'}
+        with self.assertRaisesRegex(ValueError, 'appended migration record'):
+            p.validate_change_declaration(previous, current, '0.7.0', '0.7.1')
 
 
 if __name__ == '__main__':

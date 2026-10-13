@@ -92,7 +92,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for file in Pantons_Setup.zip First_Time_Squadron_Setup.zip Update_Existing_Setup.zip manifest.json; do
+          for file in Panton_Scheduling_Assistant.zip Update.zip manifest.json; do
             cmp "$PACKAGE_OUTPUT/downloads/$file" "$PACKAGE_OUTPUT_B/downloads/$file"
           done
 

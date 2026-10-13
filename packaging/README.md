@@ -7,10 +7,10 @@ Operators use the root README's **latest release** links, download a named ZIP a
 The normal release path is a single manual GitHub Actions workflow. **Do not manually create a tag or click Publish release first.**
 
 1. **Prepare the source change in a PR.** Update `packaging/update-note.md`, CHANGELOG.md and `packaging/version.txt`. The version file is the intended stable release identity. If a persistent installed artifact changes, also update `packaging/persistent-artifacts.json` and append the required migration record.
-2. **Review and merge.** The PR runs **Validate operator packages** and **Validate GitHub workflows** when applicable. Package validation checks persistent-state declarations, builds all three ZIPs twice, byte-compares them, checks package integrity/source coverage and runs regression tests. Visual Word review and GenAI.mil/operational validation remain separate when applicable.
+2. **Review and merge.** The PR runs **Validate operator packages** and **Validate GitHub workflows** when applicable. Package validation checks persistent-state declarations, builds both ZIPs twice, byte-compares them, checks package integrity, the task-file contract and source coverage, and runs the regression tests, including contract coverage. Visual Word review and GenAI.mil/operational validation remain separate when applicable.
 3. **Open Actions → Publish release → Run workflow.** Leave the workflow branch on the repository default branch (`main`). Normally leave **Version** blank; the workflow uses the stable version already committed in `packaging/version.txt`. If you enter Version as an extra confirmation, it must exactly match the source version.
 4. **Let the workflow own the transaction.** It validates the source-controlled version, current default-branch commit and release slot, builds and checks the packages twice, runs regression tests, generates the release notes, creates or resumes a matching **draft** release, uploads every release asset with bounded transient-failure retries, verifies existing/uploaded bytes, writes the final notes, and only then publishes the draft.
-5. **Confirm the workflow is green before distribution.** The published release should already contain `Pantons_Setup.zip`, `First_Time_Squadron_Setup.zip`, `Update_Existing_Setup.zip`, `manifest.json`, `SHA256SUMS.txt`, generated release notes and download links. GitHub's automatic Source code archives are not the operator kit.
+5. **Confirm the workflow is green before distribution.** The published release should already contain `Panton_Scheduling_Assistant.zip`, `Update.zip`, `manifest.json`, `SHA256SUMS.txt`, generated release notes and download links. GitHub's automatic Source code archives are not the operator kit.
 
 With immutable releases enabled, publication is intentionally the **last** mutation. Users should never see a newly published release waiting for its operator ZIPs to appear.
 
@@ -74,9 +74,9 @@ This preserves source integrity with zero routine version entry:
 - stored ZIP members (`archive_mode: stored`) for generated DOCX containers and outer operator ZIPs; and
 - a deterministic metadata sentinel of **1980-01-01 00:00:00 UTC**.
 
-The 1980 value is intentionally not a release/build/install date. Operators identify an installed System by the package number printed in generated document headers.
+The 1980 value is intentionally not a release/build/install date. Operators identify an installed kit by the "Kit version" line in each task file and the package number in Word document headers.
 
-Both PR validation and release publication build the packages twice and compare the generated ZIPs/manifest byte-for-byte. The package checker also validates ZIP/DOCX structure, metadata, source coverage, common System contents and update/rollback preservation.
+Both PR validation and release publication build the packages twice and compare the generated ZIPs/manifest byte-for-byte. The package checker also validates ZIP/DOCX structure, metadata, the task-file contract, source coverage, operator jargon, update contents and update/rollback preservation.
 
 `v0.4.1` remains the documented legacy dependency exception. Later releases use the reproducibility contract present in the exact source commit being released.
 
@@ -85,43 +85,49 @@ Both PR validation and release publication build the packages twice and compare 
 Two read-only PR/main checks cover different risks:
 
 - **Validate GitHub workflows** runs checksum-pinned actionlint when workflow definitions change.
-- **Validate operator packages** runs for package/release-workflow-affecting sources. It validates persistent-state declarations, builds all operator downloads twice, byte-compares them, checks package integrity/source coverage and runs the package/release regression tests. It does not publish anything.
+- **Validate operator packages** runs for package/release-workflow-affecting sources. It validates persistent-state declarations, builds both operator downloads twice, byte-compares them, checks package integrity and source coverage, and runs the package/release regression tests. It does not publish anything.
 
 A green hosted gate verifies repository/build behavior, not native Word rendering, GenAI.mil instruction-following or operational readiness.
 
 ## Persistent installed-state migrations
 
-`packaging/persistent-artifacts.json` declares files/layout that survive a routine System update: profile seeds, stable-reference/playbook templates and the reusable weekly-folder layout. Source-backed entries store their current Git blob fingerprint.
+`packaging/persistent-artifacts.json` declares what survives a routine update:
+- the Pantons profile and the Squadron Rules frame (together they make Squadron Rules.docx)
+- the input checklist
+- the weekly folder layout
 
-Persistent installed-state changes require an explicit package-version change and append-only migration declaration. The update ZIP may include **PERSISTENT MIGRATIONS.docx** and reference-only comparison copies. These are instructions/material for human review, never automatic replacements for Local Guidance or weekly work.
+Source-backed entries store their current Git blob fingerprint. Artifacts that are no longer installed stay registered with `retired_in`, so migration history remains valid.
+
+A persistent installed-state change requires an explicit package-version change and an append-only migration declaration. When an unsuperseded migration exists, `Update.zip` carries **READ ME - Squadron Rules changes.docx**. It holds the instructions plus reference-only copies for human review and merge, and never replaces Squadron Rules or weekly work automatically.
 
 ## Installed layout, updates and rollback
 
 | Folder or file | Contents | Update/rollback behavior |
 | --- | --- | --- |
-| START HERE.docx | Short day/step entry instructions | Replaced by an update or prior-release rollback |
-| System | Weekly upload primer, operational guides 02–13, weekly prompts/forms and operational references | Replaced next week; contains no first-time setup materials |
-| First Time Setup (first-time full package only) | Guides 01/14, setup prompts/primer and validation reference | Outside System; absent from the Pantons full package and update |
-| Local Guidance | Human-maintained profile, references and playbook | Preserved; never automatically rolled back |
-| COPY THIS FOLDER FOR EACH NEW WEEK | Inputs with INPUT CHECKLIST.docx; empty Schedules and Working Record | Preserved; the checklist is a registered persistent artifact with a manual migration |
-| Week of date | Weekly sources, schedules and records | Never included in update/rollback |
-| PERSISTENT MIGRATIONS.docx (when present) | Persistent-state review instructions | Read from temporary update; do not install as local policy |
+| START HERE.docx | One page: the 4 moves, which task file for which day, update steps | Replaced by an update or a prior-release rollback |
+| TASK FILES | 8 self-contained task files | Deleted, then replaced from the update; contains no human work |
+| Squadron Rules.docx | Human-maintained Pantons rules, reference index and DO-approved lessons | Never in an update; preserved and never automatically rolled back |
+| WEEKS/_COPY ME - New week | INPUT CHECKLIST.docx, empty Inputs and Schedules | Preserved; the checklist is a registered persistent artifact |
+| WEEKS/Week of date | Inputs, Schedules and saved WEEK FILEs | Never included in an update or rollback |
+| READ ME - Squadron Rules changes.docx (when present) | Migration instructions and reference copies | Read, act on what applies, then delete |
 
-For rollback, operators use **System → Instructions → 13 Update for Next Week.docx** and download the exact prior release's `Update_Existing_Setup.zip`. Replace only `System` and `START HERE`. Preserve Local Guidance, weekly schedules/records, buy/sell approvals, publication records and completed actuals.
+For rollback, download the exact prior release's `Update.zip`, delete TASK FILES, and copy that update in. Squadron Rules, weekly folders, WEEK FILEs, approvals and completed actuals are untouched.
 
 ## Sources and local build
 
-- `guides/`: operational START HERE, distinct first-time START HERE, one-page task checklists and the weekly input checklist. The builder routes 01/14 outside System.
-- `prompts/`: complete short UTF-8 text prompts, mirrored on relevant checklists. Each starts with `Do not delegate to subagents.` and requires no named model.
-- The operational System is byte-identical across all packages. The Pantons and update START HERE copies enter weekly work; the first-time copy enters its separate setup folder. Stable-reference/playbook seed forms are generated directly into Local Guidance, without duplicate blanks in System.
+- `kit/core.md`: shared instructions in every task file.
+- `kit/tasks/`: one step-by-step script per task.
+- `kit/week-file.md`: the WEEK FILE format.
+- `kit/start-here.md`, `kit/input-checklist.md`: operator Word documents.
+- `kit/squadron-rules.md` + `../local-profiles/pantons.md`: Squadron Rules.docx.
 - `version.txt`: reviewed stable release/package identity used by the publish workflow.
-- `update-note.md`: release/change summary embedded in update instructions and used for release notes.
-- `release-notes-template.md`: maintained explanation of automatically generated release-note structure.
+- `update-note.md`: release/change summary used for release notes.
+- `release-notes-template.md`: explanation of the generated release-note structure.
 - `persistent-artifacts.json`: persistent-state fingerprints, weekly-folder layout and migration history.
 - `reproducibility.json` / `requirements.txt`: package runtime/dependency contract.
-- `../scripts/build_packages.py` and `check_packages.py`: deterministic generation and package checks.
-- `../scripts/prepare_release.py`: reads/validates the source version, validates any explicit confirmation, validates default-branch source and checks the resumable release slot without publishing anything.
-- `../scripts/release_packages.py`: generates release notes, creates/resumes the draft, safely retries/reconciles asset uploads, verifies assets and performs the final publication.
+- `../scripts/build_packages.py` and `check_packages.py`: deterministic generation and package checks. Each task file is assembled as: the no-delegation guard, a header, `core.md`, the task script, `week-file.md` and the end marker. Each must stay plain ASCII and within the size budget.
+- `../scripts/prepare_release.py`: reads and validates the source version and any explicit confirmation, checks the default-branch source, and checks the resumable release slot. It publishes nothing.
+- `../scripts/release_packages.py`: generates release notes, creates or resumes the draft, safely retries and reconciles asset uploads, verifies assets and performs the final publication.
 
 From the repository root, use CPython 3.12.14:
 
@@ -133,10 +139,10 @@ python scripts/check_packages.py /path/to/temporary/package-output
 python -m unittest discover -s tests -v
 ```
 
-The temporary output has a `build` folder of DOCX documents and `downloads` with the three ZIPs and manifest. Keep generated files out of Git. Native Word/GenAI.mil behavior needs separate validation; build success is not proof of operational readiness.
+The temporary output has a `build` folder and `downloads` with both ZIPs and the manifest. Keep generated files out of Git. Render START HERE (one page), the input checklist and Squadron Rules for visual review when they change.
 
-All three distributions share identical System checklists, startup instructions, forms, references and plain-text prompts. The checker verifies prompt guards, exact checklist/text-file agreement, model-neutral current package content, genuine checkbox glyphs, source coverage and deterministic metadata. Render the current checklists and all delivered Word documents for visual review; one-page checklist counts are a separate layout check. Every operational and test prompt retains the no-delegation instruction.
+A new non-negotiable rule needs a phrase in `tests/test_contract_coverage.py`, so the compressed task files are proven to carry it. Native Word and GenAI.mil behavior need separate validation; build success is not proof of operational readiness.
 
-Migration history stays append-only. An appended consolidated migration may name earlier IDs in `supersedes` only if it covers all their artifacts. The current migration document shows unsuperseded actions, preventing obsolete named-model guidance from being reintroduced while preserving historical records in source.
+Migration history stays append-only. An appended consolidated migration may name earlier IDs in `supersedes` only if it covers all their artifacts.
 
-GitHub Releases retain past versions/source tags. There are no current-tree archive folders or committed ZIP copies. For a fork, update repository URLs in the root README before distribution.
+GitHub Releases retain past versions and source tags. There are no current-tree archive folders or committed ZIP copies. For a fork, update the repository URLs in the root README before distribution.

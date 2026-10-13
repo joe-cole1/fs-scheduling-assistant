@@ -10,7 +10,7 @@ Taken from `packaging/update-note.md` in the exact source commit being released.
 
 ## What you need to do
 
-Generated from the standard update/install procedure plus any persistent migration declared for the requested version. Existing setups are never told to overwrite Local Guidance automatically.
+Generated from the standard install and update procedure plus any persistent migration declared for the requested version. Existing installs are never told to overwrite Squadron Rules or weekly work automatically.
 
 ## Validation and known limitations
 
@@ -22,6 +22,6 @@ GitHub-generated merged-PR/contributor notes are appended automatically using Gi
 
 ## Downloads and verification
 
-The workflow appends a generated block with the three operator ZIP links, manifest, SHA-256 file, source commit and per-ZIP checksums. It verifies the draft asset bytes before publishing.
+The workflow appends a generated block with the full-kit and update links, manifest, SHA-256 file, source commit and per-ZIP checksums. It verifies the draft asset bytes before publishing.
 
 Do not manually edit an in-progress draft or click **Publish release** while the workflow is incomplete. If a run fails after draft creation, rerun the same version to resume the matching draft. An already-published immutable release is never repaired or replaced; use a new version instead.

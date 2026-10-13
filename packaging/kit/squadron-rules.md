@@ -4,9 +4,9 @@ Drag this file into every scheduling chat together with the task file. It holds 
 
 **When you change this file:** save a copy of the old version first, then record the change below.
 
-- Version: kit 0.7.0 starter
-- Last change: combined the former Local Profile, Stable References and Playbook into this one file
-- DO approval of the last change: record it here when given
+- Version: 0.7.0
+- Last change: combined the former Local Profile, Stable References and Playbook into this one file. New-chat-per-task wording approved by the DO on 2026-10-12.
+- Next change: record what changed, the date and the DO approval here
 
 ## Section 1 - Approved local scheduling rules
 

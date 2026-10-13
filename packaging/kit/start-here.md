@@ -23,10 +23,15 @@ The assistant checks and advises. People build, approve and publish the schedule
 ## Good to know
 
 - New task, new chat. The WEEK FILE remembers the week, so anyone can do the next task.
+- Each week has its own folder. Changes during the execution week go in that week's folder; next week's planning starts a new one.
 - Save every schedule version in the week's Schedules folder under a new name (example: Draft 2 - Wed).
 - If anything looks wrong, start a new chat and drag in the same files again.
 - Never save your work inside TASK FILES. Updates replace that folder.
 
 ## Updating
 
-Delete the TASK FILES folder, then extract **Update.zip** into this folder. Squadron Rules and WEEKS are never touched.
+1. Delete the TASK FILES folder.
+2. Double-click **Update.zip**, press Ctrl+A, and drag everything into this folder.
+3. If a READ ME file came with it, follow it, then delete it.
+
+Squadron Rules and WEEKS are never touched.
