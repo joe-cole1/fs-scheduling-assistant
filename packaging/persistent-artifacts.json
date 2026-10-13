@@ -2,36 +2,37 @@
   "schema_version": 1,
   "artifacts": {
     "pantons_local_profile": {
-      "source": "local-profiles/pantons-v0.4.md",
-      "git_blob_sha": "065d1c997e546c00efe0068bca722caaac051956",
-      "migration_filename": "Pantons Local Profile - REFERENCE ONLY.docx"
+      "source": "local-profiles/pantons.md",
+      "git_blob_sha": "46daa84fb3bc387e4e5cd0cae92fbc3c330677b5",
+      "migration_filename": "Squadron Rules - REFERENCE ONLY.docx"
     },
     "generic_local_profile": {
-      "source": "templates/setup/local_profile_template.md",
-      "git_blob_sha": "84a8902a5add2cf0e5dec91d54858391c4dda884",
-      "migration_filename": "Blank Local Profile - REFERENCE ONLY.docx"
+      "retired_in": "0.7.0",
+      "note": "First-time squadron package removed; Git history keeps the blank profile."
     },
     "stable_references_template": {
-      "source": "templates/v0.4/04_stable_local_rules_and_references.md",
-      "git_blob_sha": "c3e056d8bd2a7f0b28f2ff5a3e6a7c49c6841d8e",
-      "migration_filename": "Stable References Template - REFERENCE ONLY.docx"
+      "retired_in": "0.7.0",
+      "note": "Merged into Squadron Rules Section 2."
     },
     "playbook_template": {
-      "source": "templates/v0.4/09_playbook.md",
-      "git_blob_sha": "ece80552b3ae7ecf4d560f203eeeb08f624fa1f2",
-      "migration_filename": "Playbook Template - REFERENCE ONLY.docx"
+      "retired_in": "0.7.0",
+      "note": "Merged into Squadron Rules Section 3."
     },
     "weekly_folder_layout": {
       "directories": [
         "Inputs",
-        "Schedules",
-        "Working Record"
+        "Schedules"
       ]
     },
     "weekly_input_checklist": {
-      "source": "packaging/guides/weekly-inputs.md",
-      "git_blob_sha": "1e23684c3ee732039d1dbff5a2cc4286bee44105",
-      "migration_filename": "Weekly Inputs Checklist - REFERENCE ONLY.docx"
+      "source": "packaging/kit/input-checklist.md",
+      "git_blob_sha": "692d37d0a48785110af1a4d7ba776ba1e7ab18fa",
+      "migration_filename": "Input Checklist - REFERENCE ONLY.docx"
+    },
+    "squadron_rules_frame": {
+      "source": "packaging/kit/squadron-rules.md",
+      "git_blob_sha": "2e75884f6f8c0a65fd39bbae29fd6644ae108c67",
+      "migration_filename": "Squadron Rules - REFERENCE ONLY.docx"
     }
   },
   "migrations": [
@@ -111,6 +112,32 @@
         "Copy that document into COPY THIS FOLDER FOR EACH NEW WEEK/Inputs and name the copy INPUT CHECKLIST.docx. Keep any existing collection notes and source files.",
         "New weekly folder copies will include the checklist. Existing weekly sources, schedules and decisions stay in place.",
         "Replace the entire System folder and START HERE using the normal update instructions. One-time setup materials are outside System and are supplied only in the first-time squadron package. Do not restart guidance setup or replace Local Guidance."
+      ]
+    },
+    {
+      "id": "PERSIST-005",
+      "introduced_in": "0.7.0",
+      "artifacts": [
+        "pantons_local_profile",
+        "generic_local_profile",
+        "stable_references_template",
+        "playbook_template",
+        "weekly_folder_layout",
+        "weekly_input_checklist",
+        "squadron_rules_frame"
+      ],
+      "action": "review-and-merge",
+      "supersedes": [
+        "PERSIST-003",
+        "PERSIST-004"
+      ],
+      "summary": "Package 0.7.0 replaces the System folder with TASK FILES and combines the Local Profile, Stable References and Playbook into one Squadron Rules file. The weekly folder now holds Inputs, Schedules and the saved WEEK FILEs (no Working Record folder). Squadron Rules carries the new-chat-per-task wording the DO approved on 2026-10-12. This is a one-time move from 0.6.x; an update cannot convert the old layout.",
+      "instructions": [
+        "Coming from 0.6.x: do not extract an update over your old folder. Download Panton_Scheduling_Assistant.zip, extract it, and put the new Panton Scheduling Assistant folder next to your old one.",
+        "If your squadron edited its old Local Guidance (Local Profile, Stable References or Playbook), copy those edits into the matching section of the new Squadron Rules.docx, then have the DO confirm the merged file. Never replace human-maintained rules automatically.",
+        "The new Squadron Rules already includes the DO-approved new-chat-per-task wording. If you merge by hand instead, use the reference copy at the end of this file.",
+        "Finish an active week with the kit you started it on. Start the next week with the new kit; keep old week folders as records.",
+        "Already on package 0.7.0 or later: nothing to do for this item."
       ]
     }
   ]

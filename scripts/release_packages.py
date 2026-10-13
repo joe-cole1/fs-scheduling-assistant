@@ -12,7 +12,7 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
-ZIPS = ('Pantons_Setup.zip', 'First_Time_Squadron_Setup.zip', 'Update_Existing_Setup.zip')
+ZIPS = ('Panton_Scheduling_Assistant.zip', 'Update.zip')
 FILES = (*ZIPS, 'manifest.json', 'SHA256SUMS.txt')
 START = '<!-- scheduling-downloads:start -->'
 END = '<!-- scheduling-downloads:end -->'
@@ -204,11 +204,12 @@ def release_summary(state):
     migrations = current_version_migrations(state)
     if migrations:
         migration_action = (
-            'This version includes a declared persistent migration. Existing setups must read '
-            '**PERSISTENT MIGRATIONS.docx** and merge only the human-approved changes; do not overwrite Local Guidance.'
+            'This version includes a declared Squadron Rules or weekly-folder change. Read '
+            '**READ ME - Squadron Rules changes.docx** in Update.zip and merge only the DO-approved changes; '
+            'nothing overwrites Squadron Rules or weekly work automatically.'
         )
     else:
-        migration_action = 'No new persistent installed-state migration is declared for this version.'
+        migration_action = 'This version declares no new Squadron Rules or weekly-folder change.'
     run_link = state.get('workflow_run_url')
     validation_link = f' [Workflow run]({run_link}).' if run_link else ''
     return f'''## What changed
@@ -217,9 +218,9 @@ def release_summary(state):
 
 ## What you need to do
 
-Existing setups: use **Update_Existing_Setup.zip** at the normal next-week boundary if adopting this release. Replace System and START HERE; preserve Local Guidance and weekly work. {migration_action}
+New install, or moving from 0.6.x: download **Panton_Scheduling_Assistant.zip**, extract it to your approved scheduling location and open START HERE.docx.
 
-Pantons with established guidance: extract **Pantons_Setup.zip**, open START HERE.docx, and start weekly work with 02 or 03. A new squadron establishing guidance uses **First_Time_Squadron_Setup.zip** and its separate First Time Setup folder. System contains weekly materials only.
+Existing 0.7 or later install: at the next-week boundary, delete the TASK FILES folder, then copy everything in **Update.zip** into your Panton Scheduling Assistant folder. Squadron Rules and WEEKS are never touched. {migration_action}
 
 ## Validation and known limitations
 
@@ -243,7 +244,7 @@ def notes(body, state, folder):
         raise ValueError('Release notes are missing the required structured summary headings.')
     base = f'https://github.com/{state["repo"]}'
     assets = f'{base}/releases/download/{state["tag"]}'
-    labels = ('Pantons — guidance already established', 'First-time squadron setup', 'Update existing setup')
+    labels = ('Full kit (new install, or moving from 0.6.x)', 'Update an existing 0.7+ install')
     links = '\n'.join(f'- [{label}]({assets}/{name})' for label, name in zip(labels, ZIPS))
     checks = '\n'.join(f'| {name} | `{digest(folder / name)}` |' for name in ZIPS)
     block = f'''{START}
@@ -251,9 +252,9 @@ def notes(body, state, folder):
 
 {links}
 
-Download a named setup ZIP, extract it, and open START HERE.docx. GitHub's automatic "Source code" ZIP is for maintainers and does not contain the built Word kit.
+Download the full kit, extract it, and open START HERE.docx. GitHub's automatic "Source code" ZIP is for maintainers and does not contain the built kit.
 
-Existing setups use the update at the next-week boundary. It replaces System and START HERE while preserving Local Guidance and weekly work.
+Existing 0.7+ installs use Update.zip at the next-week boundary. It replaces only TASK FILES and START HERE; Squadron Rules and weekly work are never touched.
 
 ## Build verification
 

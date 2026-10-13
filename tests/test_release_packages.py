@@ -122,7 +122,7 @@ class ReleaseTests(unittest.TestCase):
 
     def test_checksum_and_inventory(self):
         r.verify_build(self.folder, '0.5.3')
-        self.assertEqual(len((self.folder / 'SHA256SUMS.txt').read_text().splitlines()), 4)
+        self.assertEqual(len((self.folder / 'SHA256SUMS.txt').read_text().splitlines()), len(r.ZIPS) + 1)
         (self.folder / r.ZIPS[0]).write_bytes(b'changed')
         with self.assertRaises(ValueError):
             r.verify_build(self.folder, '0.5.3')
@@ -164,7 +164,7 @@ class ReleaseTests(unittest.TestCase):
 
         self.assertEqual(result['id'], 99)
         self.assertTrue(seen['url'].startswith('https://uploads.github.com/repos/synthetic/example/releases/7/assets?'))
-        self.assertIn('name=Pantons_Setup.zip', seen['url'])
+        self.assertIn('name=Panton_Scheduling_Assistant.zip', seen['url'])
         self.assertEqual(seen['data'], path.read_bytes())
         self.assertEqual(seen['authorization'], 'Bearer synthetic-token')
         self.assertEqual(seen['content_type'], 'application/zip')
@@ -223,7 +223,7 @@ class ReleaseTests(unittest.TestCase):
         result = r.notes(summary, self.state, self.folder)
         self.assertTrue(r.has_structured_summary(result))
         self.assertEqual(result.count(r.START), 1)
-        self.assertIn('/releases/download/v0.5.3/Pantons_Setup.zip', result)
+        self.assertIn('/releases/download/v0.5.3/Panton_Scheduling_Assistant.zip', result)
         self.assertIn(hashlib.sha256((self.folder / r.ZIPS[0]).read_bytes()).hexdigest(), result)
 
     def test_malformed_or_unstructured_notes_fail(self):
@@ -246,7 +246,7 @@ class ReleaseTests(unittest.TestCase):
         with patch.object(r, 'git_show_bytes', side_effect=source_bytes):
             result = r.release_summary(self.state)
         self.assertIn('Automation changed.', result)
-        self.assertIn('PERSISTENT MIGRATIONS.docx', result)
+        self.assertIn('READ ME - Squadron Rules changes.docx', result)
         self.assertIn('Passed in this release workflow', result)
 
     def test_ensure_draft_retargets_empty_untagged_draft(self):

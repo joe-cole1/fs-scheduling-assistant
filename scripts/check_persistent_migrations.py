@@ -25,6 +25,8 @@ def load_manifest(path: Path | None = None) -> dict:
 
 
 def _artifact_state(spec: dict) -> dict:
+    if 'retired_in' in spec:
+        return {'retired_in': spec['retired_in']}
     if 'source' in spec:
         return {'source': spec['source'], 'git_blob_sha': spec['git_blob_sha']}
     return {'directories': spec.get('directories', [])}
@@ -40,7 +42,11 @@ def validate_current(root: Path | None = None, manifest: dict | None = None) -> 
         raise ValueError('persistent-artifacts.json must declare persistent artifacts')
 
     for name, spec in artifacts.items():
-        if 'source' in spec:
+        if 'retired_in' in spec:
+            # A retired artifact is no longer installed; its name stays so migration history remains valid.
+            if set(spec) - {'retired_in', 'note'}:
+                raise ValueError(f'Retired persistent artifact must not declare a source or layout: {name}')
+        elif 'source' in spec:
             source = root / spec['source']
             if not source.is_file():
                 raise ValueError(f'Persistent source is missing: {name}: {spec["source"]}')

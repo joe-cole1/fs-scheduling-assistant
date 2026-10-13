@@ -1,5 +1,16 @@
 # Change log
 
+## [0.7.0] — 2026-10-13
+
+- **Same 4 moves for every task:** open a new chat; drag in the task file, Squadron Rules and the newest WEEK FILE; follow the assistant one step at a time; save the new WEEK FILE. Design decisions V070-01 to V070-07 record this change.
+- **Eight self-contained task files** (Tuesday plan, Wednesday draft check, Thursday full QC, Buy/Sell, changes and publication, execution change, DO-only review, help). They replace the upload primer, 12 checklists, 20 prompts and 9 forms. Each starts with "Do not delegate to subagents", ends with an end marker, and carries the shared core plus its own script.
+- **Plain-English guidance:** a first-reply file check, step counters, one next action per reply, HELP/EVIDENCE/STATUS/SAVE keywords, and plain-language labels with the exact status in brackets.
+- **WEEK FILE** replaces the weekly working record and the handoff procedure, with stable IDs, a COUNTS line and an end marker to catch truncation.
+- **Squadron Rules** combines the Pantons profile, reference index and DO-approved lessons. It carries the DO-approved new-chat-per-task wording. PERSIST-005 covers the one-time move from 0.6.x and supersedes PERSIST-003 and PERSIST-004.
+- **New downloads:** `Panton_Scheduling_Assistant.zip` and `Update.zip`. The update contains only TASK FILES and START HERE. The first-time squadron package is retired.
+- **New checks:** a task-file contract test (guard, end marker, ASCII, 40 KB budget, no named model), a contract-coverage test for every non-negotiable rule, an operator-jargon check, and update-only-replaceable checks. AGENTS.md now carries a simplicity budget.
+- **Removed from the tree** (Git history keeps them): superseded guides, prompts, forms, primers, examples, the prototype ZIP and the fictional practice week. Scheduling rules, authority, waiver routing and the GAMECHANGER source gate are unchanged.
+
 ## [0.6.1] — 2026-10-02
 
 - Separate already-configured Pantons use from first-time squadron setup. System contains weekly operational materials only; one-time setup ships outside System in the first-time package only.

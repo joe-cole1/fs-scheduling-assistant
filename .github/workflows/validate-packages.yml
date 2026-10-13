@@ -9,9 +9,7 @@ on:
       - 'scripts/**'
       - 'tests/**'
       - 'docs/**'
-      - 'templates/**'
       - 'local-profiles/**'
-      - 'examples/**'
   push:
     branches: [main]
     paths:
@@ -21,9 +19,7 @@ on:
       - 'scripts/**'
       - 'tests/**'
       - 'docs/**'
-      - 'templates/**'
       - 'local-profiles/**'
-      - 'examples/**'
   workflow_dispatch:
 
 permissions:
@@ -68,7 +64,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for file in Pantons_Setup.zip First_Time_Squadron_Setup.zip Update_Existing_Setup.zip manifest.json; do
+          for file in Panton_Scheduling_Assistant.zip Update.zip manifest.json; do
             cmp "$RUNNER_TEMP/package-output-a/downloads/$file" "$RUNNER_TEMP/package-output-b/downloads/$file"
           done
       - name: Run release and packaging regression tests

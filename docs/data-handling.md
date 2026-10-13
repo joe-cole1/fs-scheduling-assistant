@@ -2,7 +2,7 @@
 
 This repository is for reusable instructions, blank forms, releasable local workflow rules, and fully synthetic examples. Its current private visibility is not authorization to store operational data here.
 
-Keep actual schedules, rosters, qualification/currency records, leave and personnel information, aircraft/support details, operational weather packets, real handoffs, and analysis derived from real operations outside version control. Ignored directories are a convenience, not an access control. Review staged changes before any push. Public distribution requires a human release review; the assistant cannot certify releasability.
+Keep actual schedules, rosters, qualification/currency records, leave and personnel information, aircraft/support details, operational weather packets, real WEEK FILEs, and analysis derived from real operations outside version control. Ignored directories are a convenience, not an access control. Review staged changes before any push. Public distribution requires a human release review; the assistant cannot certify releasability.
 
 Use only systems and locations authorized for the particular material. Verify the current in-product handling banner and applicable local guidance before operational uploads. This package makes no blanket platform authorization claim.
 
@@ -12,4 +12,4 @@ Humans retain source-file modification, scheduling, coordination, publication, a
 
 No automatic playbook promotion. Preserve stable candidate IDs and Pending, Approved, and Rejected decisions. A weekly exception does not become standing policy without explicit DO approval.
 
-For handoffs, a human saves the current-state handoff and chooses the actual source files to transfer. No account or CAC credential sharing is part of this workflow. A shared snapshot or exported transcript is not evidence that users share one live conversation.
+When someone else picks up a week, a human chooses which week folder files (WEEK FILEs, inputs and schedules) to share through an authorized location. No account or CAC credential sharing is part of this workflow. A shared snapshot or exported transcript is not evidence that users share one live conversation.
