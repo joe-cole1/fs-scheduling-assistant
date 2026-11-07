@@ -25,7 +25,7 @@ Package 0.7.0 replaces the upload primer, 12 checklists, 20 prompts and 9 forms 
 | 30-day outlook; one moderate downside; recommendation format (primer §8) | Core rule E; WEEK FILE section 7 |
 | Playbook governance (primer §9) | Core rule E; WEEK FILE section 9; Squadron Rules Section 3 |
 | Blind-test integrity and historical publication versions (primer §10) | Core rule F |
-| One next action; all material issues visible; complete weekly record (primer §11) | Core sections 3 and 7; the WEEK FILE replaces the weekly working record |
+| One next action; all material issues visible; complete weekly record (primer §11) | Core sections 3 and 7 (since 0.7.1, every material issue is a row in the checklist table, V071-01); the WEEK FILE replaces the weekly working record |
 | Handoff and resume (primer §9, §11; form 08) | The WEEK FILE plus a new chat per task; HELP covers recovery |
 | Wednesday integration review is not approval (primer §11) | Task 2 |
 | Thursday fresh whole-schedule QC and readiness statuses (primer §11) | Task 3 |

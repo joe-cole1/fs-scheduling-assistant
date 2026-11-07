@@ -1,20 +1,11 @@
-Package 0.7.0 makes the assistant much simpler to use. Every task now uses the same 4 moves:
+This update changes how the assistant lays out its replies. Findings, issues and recommendations now come as a short checklist table instead of a numbered list:
 
-1. Open a new GenAI.mil chat and turn on DoW Policies (GAMECHANGER).
-2. Drag in the day's task file, Squadron Rules and the newest WEEK FILE.
-3. Do what the assistant says, one step at a time.
-4. Save the new WEEK FILE it gives you.
+- **Every task file:** problems are grouped as "Won't work as scheduled", "Needs someone's approval" and "Could be better". Each problem gets one row with the day and time, the pilot or event, a one-line summary and the quick fix. Nothing serious is left out to keep a reply short.
+- **Thursday Buy/Sell brief:** short bullets and tables, ending in a numbered table of what the DO must decide. Waivers still need the DO plus the applicable waiver authority.
+- **Thursday Full QC:** source problems, schedule findings, regulation items that couldn't be confirmed, and the readiness results each come as a short table.
 
-What's new:
+Scheduling rules, Thursday Buy/Sell authority, waiver routing, the GAMECHANGER source rule, Squadron Rules and the WEEK FILE format are unchanged.
 
-- **Task files:** eight self-contained task files replace the upload primer, 12 checklists, 20 prompts and the blank forms. Each one carries all of its own instructions and starts with "Do not delegate to subagents".
-- **Step-by-step guidance:** the assistant leads in plain English and first confirms which files it actually read. Every reply ends with one next step and exactly what to type. Type HELP any time.
-- **WEEK FILE:** it carries the week's decisions, schedule versions, findings and regulation checks from chat to chat, so anyone can pick up a week from its folder. There is no separate handoff procedure.
-- **One Squadron Rules file:** it replaces Local Profile, Stable References and Playbook, and includes the new-chat-per-task wording the DO approved on 2026-10-12.
-- **Pantons only:** the first-time squadron package is retired.
+Finish an active week with the kit you started it on.
 
-Scheduling rules, Thursday Buy/Sell authority, waiver routing and the GAMECHANGER source rule are unchanged.
-
-**Moving from 0.6.x:** download the full kit into a new folder instead of updating. Copy any local edits from your old Local Guidance into Squadron Rules and have the DO confirm them. Finish an active week with the kit you started it on.
-
-So far only the Tuesday task has been tried in GenAI.mil, on fictional data. The other task files have not yet been tried there.
+These task files have not yet been tried in GenAI.mil with the new layout.
