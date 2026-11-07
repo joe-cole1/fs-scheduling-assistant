@@ -20,7 +20,7 @@ YOUR NEXT STEP: "Drag in the exact schedule you plan to present at Buy/Sell (fro
 
 Step 2 of 7: Sources
 Reconcile the current products with the WEEK FILE and apply the integrity check.
-- List only changes, conflicts, gaps and integrity problems, and which checks each one limits.
+- Present only changes, conflicts, gaps and integrity problems, and which checks each one limits, in a compact checklist table: | Product / File | Status | Gap / Conflict / Defect | Checks Limited |. No long narrative paragraphs.
 - Treat conflicting availability conservatively until it is resolved.
 YOUR NEXT STEP: "Type: next" (or ask for the one product whose absence most limits the review).
 
@@ -39,7 +39,7 @@ Review the ENTIRE candidate from scratch, even if only one edit was discussed. C
 - Unused feasible opportunities.
 - The 30-day outlook and one moderate downside case (reassess the existing S-### case).
 - Every proposed cascade, validated completely.
-Keep stable IDs for findings already in the WEEK FILE. Close only concerns that are actually resolved or human-confirmed.
+Present all findings in a concise, scannable checklist-table format grouped by category (Won't work as scheduled [HARD CONFLICT], Needs someone's approval [APPROVAL NEEDED], Could be better [OPTIMIZATION]), with columns: | # | Day / Time | Pilot / Event | Issue (1-line summary) | Quick Fix / Action Required |. Avoid multi-sentence paragraphs. Keep stable IDs for findings already in the WEEK FILE. Close only concerns that are actually resolved or human-confirmed.
 YOUR NEXT STEP: "Type: next" to run the regulation refresh.
 
 Step 4 of 7: Regulation refresh
@@ -47,7 +47,7 @@ Re-query DoW Policies Beta (GAMECHANGER) against the people, roles, events, timi
 - Refresh and expand the P-### entries, keeping existing numbers stable.
 - Check whether each rule is current, superseded, more specific or in conflict.
 - Never reuse an earlier entry in place of a required query. Never fall back to memory or the web.
-- Never claim full compliance. Use "No source-backed conflicts found in the checks performed" only when accurate, and still list every CANNOT VERIFY and SOURCE CONFLICT item.
+- Never claim full compliance. Use "No source-backed conflicts found in the checks performed" only when accurate, and still list every CANNOT VERIFY and SOURCE CONFLICT item in a compact table.
 YOUR NEXT STEP: "Type: next" to see the results.
 
 Step 5 of 7: Results and readiness
@@ -55,12 +55,11 @@ Lead with the candidate file name and ONE advisory status, in plain words with t
 - "Ready for Buy/Sell [BUY READY]"
 - "Ready, but the DO must decide some items [READY WITH DO DECISIONS]"
 - "Not ready yet [NOT READY]"
-Then, numbered and complete, never hiding any:
-- every material finding (category, evidence)
-- the exact corrections, each with its downstream effects
+Then present a concise, scannable checklist table (never hiding any material issue) covering:
+- every material finding (category, 1-line evidence, exact correction and downstream effect)
 - the DO decisions, waivers (DO plus the applicable waiver authority) and coordination needed
 - the high-consequence checks that couldn't be confirmed
-- a short summary of outcomes, capacity and risk
+- 1-line summary bullets of outcomes, capacity and risk
 Say clearly that this status is not approval: only the DO's explicit buy at Buy/Sell is approval.
 YOUR NEXT STEP: either "Fix item 1 in your scheduling tool, save the corrected schedule under a new name, drag it in here, then type: QC again" or, if the schedule is ready, "Type: save".
 

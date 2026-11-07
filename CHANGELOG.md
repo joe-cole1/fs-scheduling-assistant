@@ -1,5 +1,12 @@
 # Change log
 
+## [0.7.1] — 2026-11-07
+
+- **Checklist-table replies:** every task file now presents findings, issues and recommendations as a compact checklist table grouped by category (Won't work as scheduled [HARD CONFLICT], Needs someone's approval [APPROVAL NEEDED], Could be better [OPTIMIZATION]) with columns # / Day / Time / Pilot / Event / Issue / Quick Fix, instead of a numbered "Needs attention" list. Every material issue still gets its own row. Design decision V071-01 records this change.
+- **Thursday Buy/Sell brief:** ultra-concise bullets and compact tables, with a numbered DO-decision table (decision or waiver, options and recommendation, affected people/resources/training, approval/coordination and deadline). Waivers still need the DO plus the applicable waiver authority.
+- **Thursday Full QC:** source problems, the whole-schedule findings, regulation items that couldn't be confirmed or disagree, and the readiness results each appear as compact tables.
+- The wording was drafted in GenAI.mil and adapted to the task-file contract: plain ASCII, plain-English category labels before the exact status, and the waiver-routing and affected-resources wording kept in the Buy/Sell decision table. Scheduling rules, authority, waiver routing, the GAMECHANGER source rule, Squadron Rules and the WEEK FILE format are unchanged. Only TASK FILES change; no migration is needed.
+
 ## [0.7.0] — 2026-10-13
 
 - **Same 4 moves for every task:** open a new chat; drag in the task file, Squadron Rules and the newest WEEK FILE; follow the assistant one step at a time; save the new WEEK FILE. Design decisions V070-01 to V070-07 record this change.

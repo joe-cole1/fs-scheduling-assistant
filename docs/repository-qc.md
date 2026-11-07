@@ -2,6 +2,18 @@
 
 This is the current repository-level QC record. The newest package comes first. Earlier records are kept as historical evidence; they do not establish validation of later packages.
 
+## Package 0.7.1 checks completed
+
+- **Scope:** reply layout only (V071-01): the shared core's reply-format rule, the 4 THURSDAY - Buy-Sell brief and four 3 THURSDAY - Full QC steps. The rebuilt Full QC and Buy-Sell task files match the GenAI.mil-drafted revisions except for three deliberate adjustments: an ASCII semicolon in place of an em dash, plain-English category labels before each bracketed status, and the Buy/Sell decision table keeping "Resources" and the waiver-routing sentence.
+- **Persistent state:** `check_persistent_migrations.py --base origin/main` passed. No persistent artifact changed, so no migration is declared.
+- **Reproducible builds:** two independent builds produced byte-identical `Panton_Scheduling_Assistant.zip`, `Update.zip` and `manifest.json`.
+- **Package checker:** passed (ZIP integrity, deterministic metadata, task-file contract, shared core in every task, source coverage, operator jargon, update-only-replaceable, update/rollback preservation).
+- **Unit tests:** all 55 passed. Contract coverage now also requires the checklist-table row rule and plain category labels in every task file, the source-problem table and compact CANNOT VERIFY / SOURCE CONFLICT table in Full QC, and the affected-resources column and waiver-routing sentence in Buy-Sell.
+- **Task file sizes:** 32.5 KB to 35.9 KB, within the 40,000-byte budget.
+- **Local runs:** used the local Python with only the exact-interpreter pin bypassed. CI and the release workflow run the pinned CPython 3.12.14.
+
+GenAI.mil behavior: the new layout is **Not run** (validation plan case V071-A). Earlier 0.7.0 results below are unchanged.
+
 ## Package 0.7.0 checks completed
 
 - **Persistent state:** `check_persistent_migrations.py --base main` passed. PERSIST-005 covers every changed or retired persistent artifact and consolidates PERSIST-003 and PERSIST-004.

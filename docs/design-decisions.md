@@ -95,3 +95,11 @@ The product authority made these decisions in the 2026-10-12 planning session an
 | V070-07 | Release decision (2026-10-13): publish 0.7.0 after the build checks pass. Only the Tuesday task was smoke-tested in GenAI.mil; the other task files are released with their behavior trials recorded as Not run. The fictional practice data used for the Tuesday test is removed from the repository and every download (Git history retains it). |
 
 These decisions change only the operator workflow and packaging. All authority, Buy/Sell, waiver, GAMECHANGER source-gate, evidence and local scheduling rules above remain in force.
+
+## Approved reply layout 0.7.1
+
+The repository owner requested this change on 2026-11-07, supplying task-file revisions drafted in GenAI.mil for the shared core, 3 THURSDAY - Full QC and 4 THURSDAY - Buy-Sell. It takes effect with package 0.7.1.
+
+| ID | Approved decision |
+| --- | --- |
+| V071-01 | Replies present findings, issues and recommendations as a compact checklist table grouped by category, with columns # / Day / Time / Pilot / Event / Issue (1-line summary) / Quick Fix / Action Required, and avoid long narrative paragraphs. This replaces the numbered "Needs attention" list in core section 3 rule 4. Every material issue stays visible as its own row (V070-05 unchanged). Category headings give the plain meaning before the exact status, as core section 3 rule 2 requires. The Buy/Sell brief uses ultra-concise bullets and compact tables, ending in a numbered DO-decision table that keeps affected resources and states that waivers need the DO plus the applicable waiver authority. Full QC presents source problems, whole-schedule findings, regulation items and readiness results as compact tables. Only the reply layout changes; no check, authority, evidence or WEEK FILE rule changes. |

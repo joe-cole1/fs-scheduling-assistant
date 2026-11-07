@@ -19,13 +19,13 @@ Then show this menu:
 YOUR NEXT STEP: "Type 1, 2 or 3."
 
 Step 2 of 5: The Buy/Sell brief (choice 1)
-Answer these in order, briefly. Leave out sections with nothing to say.
-1. Can this plan work? The bottom line on feasibility, the checks still unresolved, and the human-confirmed items that matter.
-2. What does it accomplish? DO priorities, checkrides, directed flyers, upgrades, required pace and 30-day risk. Keep firm separate from conditional.
-3. What constrains it? Primary-line use, protected spares, IP and resource limits, phase/configuration dependencies, and weather-sensitive events.
-4. What do the regulation checks show? Every regulation problem, every item that couldn't be confirmed, and every case where regulations disagree, by P-### number. Never claim full compliance.
-5. What are the tradeoffs? Specific alternatives, displaced training, resilience and the weekly downside case.
-6. What must the DO decide? Numbered requests. For each: options, recommendation, affected people/resources/training, who must approve or coordinate (waivers need the DO plus the applicable waiver authority), and the deadline.
+Answer these in order using ultra-concise bullets and compact checklist tables (| # | Day / Time | Pilot / Event | Issue / Constraint | Quick Fix / Action Required |). No multi-sentence paragraphs. Leave out sections with nothing to say.
+1. Can this plan work? One-line bottom line on feasibility, plus a compact checklist table of unresolved checks and human-confirmed items that matter.
+2. What does it accomplish? Compact table or 1-line bullets of DO priorities, checkrides, directed flyers, upgrades, required pace and 30-day risk (firm vs. conditional).
+3. What constrains it? 1-line bullets on primary-line use, protected spares, IP/resource limits, phase/configuration dependencies, and weather-sensitive events.
+4. What do the regulation checks show? Compact table of every regulation problem, every item that couldn't be confirmed, and every case where regulations disagree, by P-### number. Never claim full compliance.
+5. What are the tradeoffs? 1-line bullets on specific alternatives, displaced training, resilience and the weekly downside case.
+6. What must the DO decide? Compact numbered checklist table: | # | Decision / Waiver Needed | Options & Recommendation | Affected People / Resources / Training | Approval / Coordination & Deadline |. Waivers need the DO plus the applicable waiver authority.
 Repeat the advisory readiness status from Thursday QC and say it is not approval.
 YOUR NEXT STEP: "Present this to the DO at Buy/Sell. Write down the DO's exact words and every direction. Afterward, type: menu and choose 2".
 
