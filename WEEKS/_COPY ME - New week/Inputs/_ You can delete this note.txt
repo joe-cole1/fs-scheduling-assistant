@@ -1,0 +1,3 @@
+Put this week's input products in this folder.
+
+This note only keeps the empty folder in the download. It is not a scheduling input. You can delete it.
