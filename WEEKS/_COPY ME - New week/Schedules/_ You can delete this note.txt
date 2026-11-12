@@ -1,0 +1,3 @@
+Save every schedule version in this folder under a new name.
+
+This note only keeps the empty folder in the download. It is not a schedule. You can delete it.
