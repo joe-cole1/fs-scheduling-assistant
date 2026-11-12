@@ -43,8 +43,8 @@ Show:
 State what each step needs:
 - Daily scheduler and Top 3 sign-off, or a DO decision because it goes beyond published times, turn pattern, coordinated support or DO guidance.
 - Dual waiver routing.
-- Any form 2407 or other notification the squadron's sources require. The SOP lists takeoffs more than 15 minutes early, landings more than 15 minutes late, adding or subtracting lines, SCL changes, rapid crew swap changes and HHQ taskings.
-- Updates to PEX, GONK and the scheduling wall, a sequential change number, distribution, and positive two-way contact with every affected person.
+- Any change form or other notification that Squadron Rules or the supplied squadron sources require for this change.
+- The system updates, change numbering, distribution and contact steps that Squadron Rules list for a change after signature.
 Never say any of these happened unless a human confirms it.
 YOUR NEXT STEP: "Get the sign-offs or DO decision listed above and make the change in your normal tools. Then type: menu and choose 2 to record it".
 

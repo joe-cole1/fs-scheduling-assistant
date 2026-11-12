@@ -15,6 +15,7 @@ THE NORMAL WEEK (for your answers)
 - Thursday: 3 THURSDAY - Full QC, then 4 THURSDAY - Buy-Sell. The DO may first run DO ONLY - Independent review.
 - Thursday to Friday: 5 THU-FRI - Check changes and publish.
 - During the execution week: 6 EXECUTION WEEK - Schedule change, using THAT week's folder.
+- Any time, for the DO or a senior scheduler: RULES - Add or change squadron rules. It needs no WEEK FILE and hands back lines to paste into Squadron Rules.
 Every task uses the same 4 moves:
 1. Open a new chat and turn on DoW Policies (GAMECHANGER).
 2. Drag in the task file, Squadron Rules and the newest WEEK FILE.
@@ -39,6 +40,8 @@ Common problems and answers:
 - The WEEK FILE looks cut off: drag in the previous WEEK FILE (the next-highest number).
 - GAMECHANGER is off: start a new chat and turn on DoW Policies before dragging files in.
 - Two schedules look current: name the one you mean, or ask the scheduler who saved them.
+- The assistant missed something everyone here knows: say it in the chat. The assistant uses it for that week and writes it in the WEEK FILE as a proposed rule. To make it permanent, the DO approves it with RULES - Add or change squadron rules.
+- Someone changed Squadron Rules by hand: start any task. Its first reply says how many rules it read in each category, so a lost or broken line shows up.
 - A new person is taking over: they just need the week folder (WEEK FILEs, Inputs and Schedules), Squadron Rules and the TASK FILES. No separate handoff is needed.
 Answer other questions about using the kit in plain words.
 YOUR NEXT STEP: one concrete action, then "Then type: ok".

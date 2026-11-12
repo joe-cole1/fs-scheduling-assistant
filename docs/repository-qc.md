@@ -2,6 +2,25 @@
 
 This is the current repository-level QC record. The newest package comes first. Earlier records are kept as historical evidence; they do not establish validation of later packages.
 
+## Package 0.8.0 checks completed
+
+- **Scope:** squadron rules (V080-01 to V080-06): the Squadron Rules layout and content, core section 2, the status list, the first-reply check and new rule G, WEEK FILE section 9, the Wednesday, Thursday QC, execution-week and help task scripts, the new RULES task file, START HERE, the build and its checks.
+- **Policy preservation:** a script compared the 0.7.1 profile with the new one sentence by sentence. All 180 sentence fragments are present word for word. The [policy crosswalk](policy-crosswalk.md) maps each earlier paragraph to its new lines and strictness.
+- **Persistent state:** `check_persistent_migrations.py --base origin/main` passed. PERSIST-006 covers the changed profile and Squadron Rules frame and supersedes PERSIST-005.
+- **Reproducible builds:** two independent builds produced byte-identical `Panton_Scheduling_Assistant.zip`, `Update.zip` and `manifest.json`.
+- **Package checker:** passed (ZIP integrity, deterministic metadata, task-file contract, shared core in every task, source coverage, Squadron Rules rule format and end marker, operator jargon, update-only-replaceable, update/rollback preservation).
+- **Unit tests:** all 65 passed. New tests cover the rule-line format (unique rising IDs, category match, known strictness, end marker, no rule ID on a waiting proposal), that the experience and SOP lines are proposals and not applied rules, that no task file carries the 2407 specifics, and the 10-task-file cap. Contract coverage adds 15 squadron-rule phrases to every task file and 10 for the RULES task.
+- **Task file sizes:** 35.2 KB to 39.4 KB against the 40,000-byte budget. The RULES task file is the largest at 39,445 bytes, so about 550 bytes of budget remain; further growth of the shared core needs a trim somewhere.
+- **Rendering:** START HERE, Squadron Rules and the migration read-me rendered in LibreOffice. START HERE still fits on one page. Squadron Rules is 11 pages. START HERE and pages 1, 2 and 6 of Squadron Rules were looked at.
+- **Local runs:** used the local Python with only the exact-interpreter pin bypassed. CI and the release workflow run the pinned CPython 3.12.14.
+
+Not done:
+- GenAI.mil behavior for 0.8.0 is **Not run** (validation plan cases V080-A to V080-O). Whether the assistant keeps squadron rules and regulation results apart, declines to invent rule content, and ignores proposed lines is untested.
+- Native Word on a squadron computer, including pasting a rule line, is **Not run**.
+- The two Word continuity guides were not updated.
+
+Earlier results below are unchanged.
+
 ## Package 0.7.1 checks completed
 
 - **Scope:** reply layout only (V071-01): the shared core's reply-format rule, the 4 THURSDAY - Buy-Sell brief and four 3 THURSDAY - Full QC steps. The rebuilt Full QC and Buy-Sell task files match the GenAI.mil-drafted revisions except for three deliberate adjustments: an ASCII semicolon in place of an em dash, plain-English category labels before each bracketed status, and the Buy/Sell decision table keeping "Resources" and the waiver-routing sentence.

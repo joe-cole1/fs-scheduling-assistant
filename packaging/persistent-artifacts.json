@@ -3,7 +3,7 @@
   "artifacts": {
     "pantons_local_profile": {
       "source": "local-profiles/pantons.md",
-      "git_blob_sha": "46daa84fb3bc387e4e5cd0cae92fbc3c330677b5",
+      "git_blob_sha": "d8d66d7d48205914516bfac86c10a3cadf878d2d",
       "migration_filename": "Squadron Rules - REFERENCE ONLY.docx"
     },
     "generic_local_profile": {
@@ -31,7 +31,7 @@
     },
     "squadron_rules_frame": {
       "source": "packaging/kit/squadron-rules.md",
-      "git_blob_sha": "2e75884f6f8c0a65fd39bbae29fd6644ae108c67",
+      "git_blob_sha": "bde0ee07972235e4b6d3c992e6ae22f9b9935203",
       "migration_filename": "Squadron Rules - REFERENCE ONLY.docx"
     }
   },
@@ -138,6 +138,33 @@
         "The new Squadron Rules already includes the DO-approved new-chat-per-task wording. If you merge by hand instead, use the reference copy at the end of this file.",
         "Finish an active week with the kit you started it on. Start the next week with the new kit; keep old week folders as records.",
         "Already on package 0.7.0 or later: nothing to do for this item."
+      ]
+    },
+    {
+      "id": "PERSIST-006",
+      "introduced_in": "0.8.0",
+      "artifacts": [
+        "pantons_local_profile",
+        "generic_local_profile",
+        "stable_references_template",
+        "playbook_template",
+        "weekly_folder_layout",
+        "weekly_input_checklist",
+        "squadron_rules_frame"
+      ],
+      "action": "review-and-merge",
+      "supersedes": [
+        "PERSIST-005"
+      ],
+      "summary": "Package 0.8.0 reorganizes Squadron Rules into one rule per line, each with an ID and a strictness, grouped by category. No approved rule changed its wording. Proposals that are waiting for the DO now sit in their own part, and the assistant does not apply them. The change-form and change-notice lines moved from the execution-week task file into Squadron Rules. This update did not touch your Squadron Rules; a person adopts the new layout.",
+      "instructions": [
+        "Your Squadron Rules and WEEKS were not changed. The new task files still work with your old Squadron Rules, but they work best with the new layout, and the first reply will say when it sees the old one.",
+        "If nobody edited your Squadron Rules since it was installed: rename the old file (for example Squadron Rules - old), then copy Squadron Rules.docx from the full kit download into this folder. Have the DO confirm it.",
+        "If your squadron did edit it: adopt the new file the same way, then add each of your own edits as a rule line in the right category. The task file RULES - Add or change squadron rules can walk you through it. Have the DO confirm the merged file.",
+        "Part 1 holds the same approved rules as before, one per line. Part 2 holds proposals copied from the squadron SOP and stated by the product authority. Nothing in Part 2 applies until the DO approves it and someone moves it into Part 1.",
+        "The change-form triggers and the steps after a signed schedule changes are now lines PRI-08 and PRI-09 in Squadron Rules. Until you adopt the new file, the assistant lists them only when you supply the SOP.",
+        "Finish an active week with the kit you started it on. Start the next week with the new task files.",
+        "Coming from 0.6.x: do not extract an update over your old folder. Download Panton_Scheduling_Assistant.zip, extract it, put the new Panton Scheduling Assistant folder next to your old one, and copy any edits from your old Local Guidance into the new Squadron Rules as rule lines for the DO to confirm."
       ]
     }
   ]

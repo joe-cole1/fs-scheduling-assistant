@@ -55,6 +55,7 @@ TASKS = [
     ('5-thu-fri-changes-publish.md', '5 THU-FRI - Check changes and publish'),
     ('6-execution-week-change.md', '6 EXECUTION WEEK - Schedule change'),
     ('do-only-independent-review.md', 'DO ONLY - Independent review'),
+    ('rules-add-change.md', 'RULES - Add or change squadron rules'),
     ('help-next.md', 'HELP - What do I do next'),
 ]
 
@@ -65,6 +66,9 @@ GUARD = ('Do not delegate to subagents. Do all of this work yourself in this cha
          'publications in DoW Policies Beta (GAMECHANGER) is allowed; it is evidence retrieval, not delegation. '
          'No specific model is required.')
 END_MARKER = '=== END OF TASK FILE ==='
+RULES_END_MARKER = '=== END OF SQUADRON RULES ==='
+RULE_STRICTNESS = ('Must', 'Ask the DO first', 'Prefer', 'Method')
+RULE_LINE = re.compile(r'^- \*\*([A-Z]{2,5})-(\d{2}) \(([^)]+)\)\.\*\* \S')
 TASK_FILE_LIMIT = 40000
 NAMED_MODEL = re.compile(r'\bGemini\b|\bTerra\b|\bGrok\b|GPT-?\d', re.I)
 LINK_NAMES = {}
@@ -102,14 +106,55 @@ def validate_task_file(text, name):
 
 
 def squadron_rules_source():
-    """Squadron Rules = the maintained frame with the approved Pantons profile as Section 1."""
+    """Squadron Rules = the maintained frame (how to read and change rules) around the Pantons profile (Parts 1 to 5)."""
     profile = PROFILE_SOURCE.read_text()
     body = profile.split('\n', 1)[1].strip()
-    body = re.sub(r'^## ', '### ', body, flags=re.M)
     frame = RULES_SOURCE.read_text()
     if frame.count('{{PROFILE}}') != 1:
         raise ValueError('packaging/kit/squadron-rules.md must contain exactly one {{PROFILE}} marker')
     return frame.replace('{{PROFILE}}', body)
+
+
+def validate_squadron_rules(source):
+    """Part 1 is one rule per line: a category code, a two-digit number and a known strictness. Returns rules per category."""
+    lines = source.rstrip('\n').splitlines()
+    if not lines or lines[-1] != RULES_END_MARKER:
+        raise ValueError('Squadron Rules must end with the END marker')
+    parts = [line for line in lines if line.startswith('## Part ')]
+    expected = ['## Part 1 Rules', '## Part 2 Waiting for DO approval', '## Part 3 Retired or rejected',
+                '## Part 4 Local words', '## Part 5 Ground rules']
+    if len(parts) != len(expected) or not all(p.startswith(e) for p, e in zip(parts, expected)):
+        raise ValueError('Squadron Rules must keep Parts 1 to 5 in order: ' + str(parts))
+    part = 0; category = None; counts = {}; last = {}
+    for line in lines:
+        if line.startswith('## '):
+            part = int(line.split()[2]) if line.startswith('## Part ') else 0
+            category = None
+            continue
+        match = RULE_LINE.match(line)
+        if part == 1 and line.startswith('### '):
+            category = line.split()[1]
+            if not re.fullmatch(r'[A-Z]{2,5}', category) or category in counts:
+                raise ValueError('Part 1 category heading needs a unique code first: ' + line)
+            counts[category] = 0
+        elif part == 1 and line.startswith('- '):
+            if not match:
+                raise ValueError('Part 1 line is not in rule format: ' + line[:60])
+            code, number, strictness = match.groups()
+            if code != category:
+                raise ValueError('Rule is under the wrong category: ' + line[:60])
+            if strictness not in RULE_STRICTNESS:
+                raise ValueError('Unknown strictness: ' + line[:60])
+            counts[category] += 1
+            # A retired rule's number is never reused, so numbers only have to rise.
+            if int(number) <= last.get(category, 0):
+                raise ValueError('Rule IDs must be unique and in order: ' + line[:60])
+            last[category] = int(number)
+        elif part == 2 and match:
+            raise ValueError('A waiting proposal must not carry a rule ID: ' + line[:60])
+    if not counts or not all(counts.values()):
+        raise ValueError('Every Part 1 category needs at least one rule')
+    return counts
 
 
 def validate_reproducibility_contract():
@@ -378,7 +423,8 @@ def build(out):
 
     full=staging/'full'/KIT
     shutil.copytree(replaceable,full)
-    write_doc(squadron_rules_source(),full/RULES_DOC,'Approved local rules - the DO approves changes')
+    validate_squadron_rules(squadron_rules_source())
+    write_doc(squadron_rules_source(),full/RULES_DOC,'Squadron rules by category - the DO approves changes')
     week=full/WEEK_TEMPLATE
     for directory in WEEKLY_DIRS:
         (week/directory).mkdir(parents=True)

@@ -38,9 +38,24 @@ Every task uses the same 4 moves:
 | Thursday to Friday | 5 THU-FRI - Check changes and publish |
 | Execution week | 6 EXECUTION WEEK - Schedule change |
 | Optional, DO only | DO ONLY - Independent review |
+| Any time, DO or a senior scheduler | RULES - Add or change squadron rules |
 | Not sure | HELP - What do I do next |
 
 The WEEK FILE carries the week's decisions, schedule versions, findings and regulation checks from one chat to the next. Anyone who picks up the week, such as a daily scheduler or a relief scheduler, needs only the week folder. Every task file includes **Do not delegate to subagents**, and no specific model is required.
+
+## Squadron rules
+
+**Squadron Rules.docx** is the one file the squadron maintains. It holds one rule per line, each with an ID and how strict it is (Must, Ask the DO first, Prefer or Method), grouped by category. Only the DO approves a rule.
+
+A rule gets written down three ways:
+
+- The **RULES** task file asks questions and hands back lines ready to paste.
+- When someone corrects the assistant during a weekly task, it uses the correction that week and saves it in the WEEK FILE as a proposed rule.
+- A person adds a line by hand.
+
+Proposals sit in their own part of the file and are not applied until the DO approves them. The assistant never edits Squadron Rules and never suggests what a rule should say.
+
+A squadron rule is enforced on the DO's authority and is reported as a squadron rule, never as a regulation result. Regulation checks still run, and a squadron rule that seems to go against a regulation is flagged for the DO.
 
 ## Approval and evidence
 

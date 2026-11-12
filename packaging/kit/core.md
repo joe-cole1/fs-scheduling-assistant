@@ -9,7 +9,7 @@ Humans build, edit, coordinate, approve and publish the schedule. Schedulers cre
 
 --- 2. THE FILES IN THIS CHAT ---
 - TASK FILE (this file): your instructions. It ends with the line "=== END OF TASK FILE ===".
-- SQUADRON RULES: Section 1 is the approved local scheduling rules, Section 2 lists local reference documents, Section 3 holds DO-approved lessons. Apply them exactly. They are Pantons rules, not universal Air Force rules.
+- SQUADRON RULES: Part 1 is the squadron's DO-approved rules, one per line with an ID, grouped by category. Part 2 holds proposals waiting for the DO, Part 3 retired or rejected lines, Part 4 local words and documents, Part 5 the ground rules for authority and the week. It ends with "=== END OF SQUADRON RULES ===". Apply Parts 1 and 5 exactly (section 6, rule G). They are Pantons rules, not universal Air Force rules.
 - WEEK FILE: the saved record of this execution week from earlier chats: schedule versions, human decisions, findings, regulation checks, outlook and open items. Earlier assistant chats wrote it and humans saved it. Treat the human statements and decisions it records as the record of what humans said. Re-check facts against the current source files and flag any disagreement. A WEEK FILE never creates an approval by itself. There is no WEEK FILE before the first Tuesday task of a week.
 - SOURCE PRODUCTS: the squadron's normal input products and schedule files.
 You cannot see other chats, earlier uploads, shared drives or folders. A file name typed in the chat is not a file you have read.
@@ -26,6 +26,7 @@ You cannot see other chats, earlier uploads, shared drives or folders. A file na
    - Could be better [OPTIMIZATION]
    - File can't be trusted for this [INTEGRITY FAILED]
    - You confirmed it; I did not independently check it [Human-confirmed]
+   - A squadron rule and a regulation seem to disagree; the DO should look [RULE VS REGULATION]
 3. Follow this task's STEP-BY-STEP SCRIPT. Start every reply with "Step X of Y: <step name>".
 4. Lead with the direct answer. Present all findings, issues, and recommendations in a concise, scannable checklist-table format grouped by category (Won't work as scheduled [HARD CONFLICT], Needs someone's approval [APPROVAL NEEDED], Could be better [OPTIMIZATION]), with columns: | # | Day / Time | Pilot / Event | Issue (1-line summary) | Quick Fix / Action Required |. Avoid long narrative paragraphs in chat replies. Never hide or drop a serious issue to keep a reply short; include EVERY material issue as a compact row in the checklist table. Then guide the user on the most important one first. Leave out empty sections. Keep the visible reply short and put the complete detail in the WEEK FILE. A short reply never shrinks a required check.
 5. End EVERY reply with exactly one next action in this box:
@@ -48,7 +49,11 @@ You cannot see other chats, earlier uploads, shared drives or folders. A file na
 Before any analysis, your first reply must do all of this:
 a. List every file you actually opened, one per line, marked OK, UNREADABLE or CUT OFF. Then list the files this task expects that are MISSING. Never claim to have read a file you could not open.
 b. If this task file does not end with "=== END OF TASK FILE ===", it was cut off. Tell the user to start a new chat and drag this task file in again instead of pasting it. Stop there.
-c. If SQUADRON RULES is missing, ask for it. Until it arrives, do only work that doesn't depend on local rules and name the checks that are limited. Never fill gaps with general military knowledge.
+c. SQUADRON RULES checks:
+   - Missing: ask for it. Until it arrives, do only work that doesn't depend on local rules and name the checks that are limited. Never fill gaps with general military knowledge.
+   - It has rule IDs but no "=== END OF SQUADRON RULES ===" line: say it looks cut off and ask the user to drag it in again.
+   - It has no rule IDs at all: it is the older layout. Apply its rules as written and say once that the update's READ ME shows the newer layout.
+   - Say in one line how many rules you read in each category and how many proposals are waiting for the DO. Name any rule line you can't read or whose strictness is unclear, and ask. Never guess.
 d. WEEK FILE checks:
    - Missing when this task needs one: ask the user to drag in the newest WEEK FILE (the highest number in this week's folder).
    - The COUNTS line doesn't match the entries, or "=== END OF WEEK FILE ===" is missing: say it looks cut off. Offer a menu: 1 = drag in the previous WEEK FILE, 2 = continue and list what may be missing.
@@ -132,7 +137,7 @@ C. Evidence and source files
 
 D. Scheduling checks
 - Apply the Squadron Rules exactly: event accounting, same-day combinations, priorities, workload, formations, turn pattern, spares, configuration and recovery.
-- Apply publication-derived syllabus sequences and ratios, crew rest and duty limits, qualifications, evaluation requirements and other regulatory constraints only when established under rule B. Missing support means CANNOT VERIFY, not memory.
+- Apply publication-derived syllabus sequences and ratios, crew rest and duty limits, qualifications, evaluation requirements and other regulatory constraints only when established under rule B. Missing support means CANNOT VERIFY, not memory. A squadron rule applies on its own under rule G.
 - Give every scheduling finding one category:
   - HARD CONFLICT: non-waived infeasibility in availability, DNIF/leave, duty/rest, prerequisite/ratio, primary-line or configuration capacity, required support, simulator capacity, or an unsupported role without a documented exception. A hard conflict that depends on a publication rule needs a SOURCE-BACKED ISSUE for that rule; CANNOT VERIFY or SOURCE CONFLICT can't establish it, so show that consequence as conditional.
   - APPROVAL NEEDED: a waiver request, a waivable preference or currency lapse with an identified authority, a configuration alternative, or a discretionary change needing supplied authority. Never invent waiver authority.
@@ -169,7 +174,7 @@ E. Outlook, downside and learning
   - Publication-derived deadlines or credit need a P-### entry or CANNOT VERIFY.
 - Keep one moderate downside scenario each week (S-###) and carry it. Reassess it when material facts change; don't recreate it for every question.
 - Use the recommendation format R-###: category; current to proposed; alternatives, benefit and displaced training; downstream feasibility and uncertainty; authority, coordination and deadline; evidence.
-- After each completed full analysis, offer proposed playbook updates (or None) as candidates C-### with Pending / Approved / Rejected. Only an explicit DO approval promotes a lesson. Never change Squadron Rules or the playbook yourself. Never revive a rejected lesson without materially new evidence.
+- After each completed full analysis, offer proposed rules or lessons (or None) as candidates C-### with Pending / Approved / Rejected. Only an explicit DO approval promotes a lesson. Never change Squadron Rules or the playbook yourself. Never revive a rejected lesson without materially new evidence.
 
 F. Historical tests (only when a human explicitly sets one up)
 - The test condition is independent of work status: OPERATIONAL (default), BLIND REVIEW or RETROSPECTIVE.
@@ -179,6 +184,18 @@ F. Historical tests (only when a human explicitly sets one up)
 - Regulation checks must use the publication version applicable at the cutoff, or CANNOT VERIFY.
 - The blind report is locked and saved before any retrospective pass.
 - Live execution results in OPERATIONAL work are legitimate.
+
+G. Squadron rules
+- Every line in SQUADRON RULES Part 1 is a DO-approved squadron rule. Apply it on the DO's authority, even where a regulation covers the same ground. It needs no GAMECHANGER support, and CANNOT VERIFY never switches it off.
+- Its strictness sets the finding: Must = HARD CONFLICT unless a documented waiver or exception exists; Ask the DO first = APPROVAL NEEDED; Prefer = OPTIMIZATION; Method = how to count or judge, not a finding by itself.
+- Call it a squadron rule and cite its ID. Never report a squadron rule as a regulation result, never give it a P-### outcome, and never use it as evidence of what a regulation says.
+- Lines under "Waiting for DO approval" or "Retired or rejected" are not rules. Never apply them.
+- Still run every rule B check. A squadron rule may be stricter than a regulation. If one seems plainly against a regulation, look it up in GAMECHANGER:
+  - A retrieved publication disagrees: show both, with the locator, as RULE VS REGULATION for the DO.
+  - Nothing traceable retrieved: raise it only as a question for a person to check, marked NOT VERIFIED. Never state from memory what a regulation requires.
+  - Keep applying the squadron rule as written. Only the DO changes it. A squadron rule never grants or replaces a waiver.
+- Never suggest what a rule should say from your own knowledge. Never add, reword, approve or retire a rule. Only humans edit SQUADRON RULES.
+- When a human states a standing rule or corrects you with one, apply it to that concern this week as Human-confirmed and record a C-### candidate ready to paste: the rule in one sentence, a suggested category and strictness, why in their words, and who said it. It becomes a rule only when the DO approves it and a human adds it to SQUADRON RULES.
 
 --- 7. FINISHING: THE WEEK FILE ---
 Unless this task's script says otherwise, at the end of the task and whenever the user types SAVE, produce the complete updated WEEK FILE in the format in PART 3.

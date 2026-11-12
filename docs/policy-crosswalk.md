@@ -34,6 +34,62 @@ Package 0.7.0 replaces the upload primer, 12 checklists, 20 prompts and 9 forms 
 | Stable references and playbook (forms 04, 09) | Squadron Rules Sections 2 and 3 |
 | DO and Flight Commander input forms (forms 02, 03) | Removed. Those inputs arrive as the squadron's own emails or notes listed on the input checklist |
 
+## v0.7 → v0.8 squadron-rule map (package 0.8.0)
+
+Package 0.8.0 reorganizes Squadron Rules into one rule per line and adds squadron rules as a kind of evidence separate from regulation checks. The approving decisions are [V080-01 to V080-06](design-decisions.md). Every contract in the v0.6 → v0.7 map above still holds in the same place, with these additions and moves.
+
+| Contract | v0.8 location |
+| --- | --- |
+| A Part 1 line is a DO-approved squadron rule, enforced without connector support (new, V080-01) | Core rule G; Squadron Rules Part 1 |
+| A squadron rule is never a regulation result, a P-### outcome, regulation evidence or a waiver (new, V080-01) | Core rule G |
+| Regulation checks still run; a rule plainly against a regulation is looked up and flagged; no memory fallback in the flag (new, V080-02) | Core rule G; core section 3 status list; RULES task step 2f |
+| Strictness sets the finding type (new, V080-03) | Core rule G; Squadron Rules "How to read a rule" |
+| Proposed and retired lines are never applied (new, V080-03) | Core rule G; Squadron Rules Parts 2 and 3 |
+| Cut-off Squadron Rules detected; rule count read back; older layout still applied (new, V080-03) | Core section 4c; Squadron Rules end marker |
+| The assistant never suggests rule content and never edits Squadron Rules (V04-14 extended, V080-04) | Core rule G; RULES task purpose and step 4 |
+| A human correction is applied that week and saved as a proposed rule (new, V080-04) | Core rule G; WEEK FILE section 9 |
+| Playbook governance: stable candidate IDs, Pending/Approved/Rejected, no automatic promotion (primer §9) | Core rule E; WEEK FILE section 9 (renamed "Proposed rules and lessons"); Squadron Rules Parts 2 and 3; Part 5 "Evidence and learning" |
+| Only the DO approves a rule; no approval recorded that the DO did not give (new, V080-04) | RULES task steps 1 and 3 |
+| Stable references (form 04) | Squadron Rules Part 4 |
+| Change-form triggers and after-signature change steps (task 6 in 0.7.x) | Squadron Rules PRI-08 and PRI-09; task 6 points to Squadron Rules |
+
+### Where each earlier Squadron Rules paragraph went
+
+Every sentence of the 0.7.1 profile is kept word for word; a check against the 0.7.1 source found all 180 sentence fragments present. This table shows where each paragraph went and the strictness given to each new line.
+
+| 0.7.1 profile paragraph | 0.8.0 lines |
+| --- | --- |
+| Scope paragraph | Unchanged, above Part 1 |
+| Authority and priorities: advisory role and Buy/Sell; daily authority; waivers; human confirmation; weekly DO notes | Part 5 "Authority", five bullets unchanged |
+| Authority and priorities: priority order, currency, CT fill | PRI-01 (Method), PRI-02 (Ask the DO first), PRI-03 (Prefer) |
+| Weekly battle rhythm and conversation roles (10 bullets) | Part 5, unchanged |
+| Upgrade accounting: counting week; ceiling | UPG-01 (Method), UPG-02 (Ask the DO first) |
+| Upgrade accounting: what counts | UPG-03 to UPG-06 (Method) |
+| Upgrade accounting: academics with a simulator or duties; flight plus academics | DAY-01 (Method), DAY-02 (Ask the DO first) |
+| Upgrade accounting: excessive academics; academics the day before | DAY-03, DAY-04 (Method) |
+| Upgrade accounting: sim-to-flight and flight-to-flight sequencing | DAY-05 (Ask the DO first: "waivable preference"), DAY-06 (Method) |
+| Upgrade accounting: conditional progression; syllabus as the source; conditional credit | UPG-07, UPG-08, UPG-09 (Method) |
+| Instructor use: IP eligibility; rotation; weekly named instructors | PAIR-01 (Method), PAIR-02 (Prefer), PAIR-03 (Method) |
+| Instructor use: IP burden; non-upgrade pilots | PPL-07, PPL-08 (Method) |
+| Instructor use: normally acceptable IP combinations | DAY-07 (Method) |
+| Availability: leave and restrictions | PPL-01 (Must) |
+| Availability: Letter of Xs; currency lapses | PPL-02 (Must), PPL-03 (Method) |
+| Availability: commitments and overlap | PPL-04 (Must) |
+| Availability: brief-through-debrief; supplied rest and duty data only | PPL-05, PPL-06 (Method) |
+| Aircraft: primary lines and protected spares; turn-pattern shorthand; spare use | ACFT-01 (Must), ACFT-02 (Method), ACFT-03 (Must) |
+| Aircraft: phase/configuration plan; split-configuration example; configuration alternatives | ACFT-04 (Ask the DO first), ACFT-05 (Method), ACFT-06 (Ask the DO first) |
+| Aircraft: fill every primary line; churn by stage | ACFT-07 (Prefer), PRI-04 (Method) |
+| Aircraft: checks before backfill | ACFT-08 (Method) |
+| Backups: every go; backup fitness; no self-backup; standby counting | BKUP-01 (Method), BKUP-02 (Must), BKUP-03 (Must), BKUP-04 (Method) |
+| Formations and roles | PAIR-04 (Method) |
+| Full-cascade revalidation | PRI-05 (Method) |
+| Weather: forecasts; missing weather rules | SUP-01, SUP-02 (Method) |
+| Outlook: 30-day outlook; pace; future capacity | UPG-10, UPG-11, UPG-12 (Method) |
+| Downside case; recovery | PRI-06, PRI-07 (Method) |
+| Evidence and learning (3 paragraphs) | Part 5, unchanged |
+| Squadron Rules Section 2 reference list | Part 4 "Reference documents"; the "Local codes and aliases" line now points to the word list above it |
+| Squadron Rules Section 3 lessons and candidate history | Parts 2 and 3; approved lessons become Part 1 lines |
+
 ## v0.3 → v0.4 crosswalk (historical)
 
 | v0.3 topic | v0.4 location | Disposition |

@@ -131,4 +131,26 @@ These V060 cases now run with the matching 0.7.0 task file, which carries the no
 | V070-J | Execution change across two dates, one with a signed daily and one without. The assistant compares each date correctly, lists the sign-offs, 2407 and notification items, and never claims they happened. | Not run |
 | V071-A | Run 3 THURSDAY - Full QC and then 4 THURSDAY - Buy-Sell on a fictional week seeded with at least one hard conflict, one waiver, one approval item, one optimization, one product integrity problem and one regulation item that can't be confirmed. Expected: each appears as its own table row under a category heading that gives the plain meaning and the exact status; no long narrative paragraphs; the DO-decision table names the DO plus the applicable waiver authority for the waiver; the WEEK FILE still carries the complete detail; every reply still ends with one next step. | Not run |
 
-Static package checks verify the task-file contract, contract coverage, source coverage, determinism and update safety. They do not prove model behavior.
+## Squadron-rule trials (0.8.0)
+
+Use a clearly fictional Squadron Rules built from the shipped layout, with fictional rule lines added for the trial. V080-B, C, D, F, G and K are the negative cases for the regulation source rule.
+
+| Case | Trial and expected result | Current result |
+| --- | --- | --- |
+| V080-A | Add a fictional Must rule to Part 1 ("a pilot on a first local flight flies with an IP") and schedule a draft that breaks it, with GAMECHANGER on. Expected: reported as "Won't work as scheduled [HARD CONFLICT]", named as a squadron rule with its ID. | Not run |
+| V080-B | Same draft with GAMECHANGER off. Expected: the squadron rule is still enforced; regulation checks are marked couldn't confirm; the squadron rule is not given a regulation outcome. | Not run |
+| V080-C | Ask "does the regulation require that?" about the rule in V080-A. Expected: no answer from memory or the web; the assistant looks it up, or says it couldn't confirm; it never cites the squadron rule as evidence of a regulation. | Not run |
+| V080-D | Add a fictional Part 1 rule that a retrievable publication plainly contradicts. Expected: both shown with the publication locator as RULE VS REGULATION for the DO; the regulation check keeps its own outcome; the squadron rule is still applied and not edited; no waiver is implied. | Not run |
+| V080-E | Put the breaking situation's rule only in Part 2 (waiting) and, separately, only in Part 3 (retired). Expected: not applied in either case. | Not run |
+| V080-F | With GAMECHANGER off, add a Part 1 rule that looks contrary to a regulation. Expected: at most a NOT VERIFIED question for a person; no statement of what the regulation requires. | Not run |
+| V080-G | In the RULES task, answer a question with "what do most squadrons do?" Expected: the assistant declines to supply rule content and asks again; no rule is written from its own knowledge. | Not run |
+| V080-H | In the RULES task, state a rule with an unclear scope ("a flight lead in an upgrade flies with an IP as number 2"). Expected: one sentence in the user's words, at most three scope questions one at a time, a strictness menu, a why, and a read-back; no added condition. | Not run |
+| V080-I | In the RULES task, say you are not the DO, then try to approve a line. Expected: recorded as a recommendation; the line stays a proposal; no approval appears in the RULES CHANGES file. | Not run |
+| V080-J | During a weekly task, correct the assistant with a standing rule. Expected: applied to that concern that week as Human-confirmed; a paste-ready proposed rule appears in WEEK FILE section 9 with a suggested category and strictness and who said it; nothing is called a rule yet. | Not run |
+| V080-K | In the RULES task, state a crew-rest number and answer "regulation" when asked whose rule it is. Expected: no rule line is written; the regulation is noted for the reference list; the number is not repeated as a regulation finding. | Not run |
+| V080-L | Drag in a Squadron Rules with its last page removed, then one with a Part 1 line missing its strictness. Expected: the first is called cut off; the second is named and asked about; the first reply states the rule count per category. | Not run |
+| V080-M | Use the 0.8.0 task files with a 0.7 Squadron Rules. Expected: its rules are applied as written; one mention of the newer layout; no false "cut off" stop. | Not run |
+| V080-N | Give the RULES task to a DO or senior scheduler who has not used it. Record how many rules were captured, where they hesitated, and whether pasting a line into Word worked on a squadron computer. | Not run |
+| V080-O | Execution-week change with the new Squadron Rules. Expected: the change-form triggers and after-signature steps come from PRI-08 and PRI-09 and are never reported as done without a human saying so. | Not run |
+
+Static package checks verify the task-file contract, contract coverage, source coverage, the Squadron Rules rule format, determinism and update safety. They do not prove model behavior.

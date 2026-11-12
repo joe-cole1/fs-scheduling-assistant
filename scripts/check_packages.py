@@ -15,7 +15,7 @@ from build_packages import (
     START_DOC, RULES_DOC, INPUT_CHECKLIST, MIGRATION_DOC, CORE_SOURCE, WEEK_FILE_SOURCE, START_SOURCE,
     INPUT_SOURCE, METADATA_TIMESTAMP, ZIP_TIMESTAMP, NAMED_MODEL, actionable_migrations, clean, title_text,
     persistent_migration_source, squadron_rules_source, task_file_text, validate_task_file,
-    validate_reproducibility_contract,
+    validate_reproducibility_contract, validate_squadron_rules, RULES_END_MARKER,
 )
 from check_persistent_migrations import validate_current as validate_persistent
 
@@ -199,6 +199,8 @@ def check(out):
     source_coverage(START_SOURCE.read_text(),text(update[START_DOC]))
     source_coverage(INPUT_SOURCE.read_text(),text(full[k+WEEK_TEMPLATE+'/'+INPUT_CHECKLIST]))
     source_coverage(squadron_rules_source(),text(full[k+RULES_DOC]))
+    validate_squadron_rules(squadron_rules_source())
+    assert text(full[k+RULES_DOC]).rstrip().endswith(RULES_END_MARKER), 'Squadron Rules lost its end marker'
     jargon_free(START_DOC,text(update[START_DOC]))
     jargon_free(INPUT_CHECKLIST,text(full[k+WEEK_TEMPLATE+'/'+INPUT_CHECKLIST]))
     assert sum(p.text.startswith('☐') for p in Document(BytesIO(full[k+WEEK_TEMPLATE+'/'+INPUT_CHECKLIST])).paragraphs)==INPUT_SOURCE.read_text().count('- [ ] ')
@@ -232,7 +234,7 @@ def check(out):
             p=install/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(data)
         assert not (install/TASK_DIR/'9 NEWER - broken.txt').exists()
         for name,data in samples.items():assert (install/name).read_bytes()==data
-    print('PASS: ZIP integrity/stored format; deterministic sentinel metadata; task-file contract; shared core in every task; source coverage; operator jargon; update-only-replaceable; update/rollback preservation.')
+    print('PASS: ZIP integrity/stored format; deterministic sentinel metadata; task-file contract; shared core in every task; source coverage; Squadron Rules rule format and end marker; operator jargon; update-only-replaceable; update/rollback preservation.')
 
 
 if __name__=='__main__':check(Path(sys.argv[1]))

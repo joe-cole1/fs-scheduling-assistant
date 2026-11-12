@@ -19,6 +19,7 @@ The assistant checks and advises. People build, approve and publish the schedule
 - **During the execution week:** 6 EXECUTION WEEK - Schedule change
 - **Not sure?** HELP - What do I do next
 - **DO only:** DO ONLY - Independent review
+- **Writing down a squadron rule (DO or a senior scheduler):** RULES - Add or change squadron rules. It needs no WEEK FILE and gives you lines to paste into Squadron Rules.
 
 ## Good to know
 
@@ -26,6 +27,7 @@ The assistant checks and advises. People build, approve and publish the schedule
 - Each week has its own folder. Changes during the execution week go in that week's folder; next week's planning starts a new one.
 - Save every schedule version in the week's Schedules folder under a new name (example: Draft 2 - Wed).
 - If anything looks wrong, start a new chat and drag in the same files again.
+- If the assistant misses something everyone here knows, tell it. It uses it that week and writes it down as a proposed rule for the DO.
 - Never save your work inside TASK FILES. Updates replace that folder.
 
 ## Updating

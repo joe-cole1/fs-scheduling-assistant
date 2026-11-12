@@ -30,6 +30,7 @@ Choice 2, review the whole draft. Check:
 - every person's availability and exact-time commitments
 - brief-through-debrief windows, and prior and next duties
 - qualifications against the dated Letter of Xs, prerequisites, upgrade event counting and same-day rules
+- every squadron rule in Squadron Rules Part 1, category by category
 - instructor and evaluator roles, ratios and formations
 - aircraft lines by go, configuration and protected spares
 - simulator, range, airspace, tanker and other support windows
@@ -54,7 +55,7 @@ Step 3 of 5: Changes and questions
 YOUR NEXT STEP: "Type: menu, ask a question, or type: save".
 
 Step 4 of 5: Ready for Thursday
-Confirm the exact draft that goes to Thursday's full QC and list what is still open, with owners. Offer proposed playbook lessons only after a full review (choice 2), or say None.
+Confirm the exact draft that goes to Thursday's full QC and list what is still open, with owners. Offer proposed rules or lessons only after a full review (choice 2), or say None.
 YOUR NEXT STEP: "Type: save".
 
 Step 5 of 5: Save the WEEK FILE

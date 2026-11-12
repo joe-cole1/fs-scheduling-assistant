@@ -12,10 +12,10 @@ The product is a set of instruction files and Word documents for a human-led wor
 
 | Component | Location | Responsibility |
 | --- | --- | --- |
-| Shared task-file core | `packaging/kit/core.md` | Role, plain-English step-by-step talk style, first-reply file check, week and version selection, and every authority, evidence, GAMECHANGER, scheduling, outlook, playbook and blind-test rule |
-| Task scripts | `packaging/kit/tasks/` | One step-by-step script per task: Tuesday plan, Wednesday draft check, Thursday full QC, Buy/Sell, changes and publication, execution changes, DO-only review, help |
+| Shared task-file core | `packaging/kit/core.md` | Role, plain-English step-by-step talk style, first-reply file check, week and version selection, and every authority, evidence, GAMECHANGER, scheduling, outlook, playbook, blind-test and squadron-rule rule |
+| Task scripts | `packaging/kit/tasks/` | One step-by-step script per task: Tuesday plan, Wednesday draft check, Thursday full QC, Buy/Sell, changes and publication, execution changes, DO-only review, squadron-rule capture, help |
 | WEEK FILE format | `packaging/kit/week-file.md` | The saved state carried between chats, with stable IDs, a COUNTS line and an end marker |
-| Squadron Rules | `packaging/kit/squadron-rules.md` + `local-profiles/pantons.md` | Approved Pantons rules (Section 1), local reference index (Section 2), DO-approved lessons (Section 3) |
+| Squadron Rules | `packaging/kit/squadron-rules.md` + `local-profiles/pantons.md` | One rule per line with an ID and a strictness, grouped by category (Part 1); proposals waiting for the DO (Part 2); retired or rejected lines (Part 3); local words and reference documents (Part 4); ground rules for authority and the week (Part 5); an end marker |
 | Operator documents | `packaging/kit/start-here.md`, `packaging/kit/input-checklist.md` | One-page START HERE and the weekly input checklist |
 | Build and checks | `scripts/build_packages.py`, `scripts/check_packages.py`, `tests/` | Deterministic packages; task-file contract, contract coverage, operator jargon, update safety |
 | Release | `.github/workflows/release-packages.yml`, `scripts/release_packages.py`, `scripts/prepare_release.py` | Draft-first immutable release publication |
@@ -34,7 +34,22 @@ Each task file is self-contained: the no-delegation guard, a header, the shared 
 3. The assistant runs the task's numbered steps. Every reply ends with one physical next action and the exact short reply to type, and every material issue stays visible. HELP, EVIDENCE, STATUS and SAVE work at any time.
 4. The assistant hands back the next WEEK FILE as a download (or one copy block). The operator saves it in the week's folder under the name given.
 
-Guards: the end markers detect a cut-off task file or WEEK FILE, and the WEEK FILE's NEXT TASK detects a task run out of order.
+Guards: the end markers detect a cut-off task file, WEEK FILE or Squadron Rules, and the WEEK FILE's NEXT TASK detects a task run out of order. The first reply also says how many rules it read in each category.
+
+## Squadron rules and regulation checks
+
+These are two separate kinds of evidence, and neither stands in for the other.
+
+| | Squadron rule | Regulation check |
+| --- | --- | --- |
+| Authority | The DO, by approving a line in Squadron Rules Part 1 | A publication retrieved through GAMECHANGER in the chat |
+| Works without the connector | Yes | No: the check is CANNOT VERIFY |
+| How it is reported | "Squadron rule" with its ID; the strictness sets the finding type | A P-### entry with one of the four outcomes |
+| What it can never do | State what a regulation says, grant a waiver, or become SOURCE-BACKED OK | Approve, waive, or switch a squadron rule off |
+
+A squadron rule may be stricter than a regulation. When one seems plainly against a regulation, the assistant looks it up: a retrieved publication that disagrees is shown beside the rule as RULE VS REGULATION for the DO, and with nothing retrieved the concern is only a NOT VERIFIED question for a person. The assistant keeps applying the rule as written and never edits Squadron Rules.
+
+Rules reach Part 1 three ways, and each one ends with a DO approval and a human edit: the RULES task file's guided questions, a correction a human makes during a weekly task (applied that week and saved in the WEEK FILE as a proposed rule), and a line a person types by hand.
 
 ## Internal state
 
@@ -58,7 +73,7 @@ The WEEK FILE uses these identifiers:
 | S-### | downside scenario |
 | E-### | events |
 | X-### | changed facts |
-| C-### | playbook candidates |
+| C-### | proposed rules and lessons |
 
 They are human-readable cross-references, not database keys.
 
@@ -92,7 +107,7 @@ A blind review starts only when a test lead states the period, task, cutoff and 
 ```
 Panton Scheduling Assistant/
   START HERE.docx
-  TASK FILES/        8 task files
+  TASK FILES/        9 task files
   Squadron Rules.docx
   WEEKS/_COPY ME - New week/
     INPUT CHECKLIST.docx

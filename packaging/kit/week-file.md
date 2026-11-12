@@ -49,8 +49,8 @@ Checkrides and directed flyers: <list with due date vs recommended window, or No
 Immediate changes by date (vs signed daily or weekly fallback): <list or None>
 Cumulative changes vs published weekly: <list or None>
 
-9. PLAYBOOK CANDIDATES
-| C-### | Pending / Approved / Rejected | Proposed lesson | Evidence / scope / limits | DO decision |
+9. PROPOSED RULES AND LESSONS
+| C-### | Pending / Approved / Rejected | Proposed rule or lesson in one sentence, ready to paste | Suggested category / strictness | Why / who said it / evidence / scope / limits | DO decision |
 
 10. NOTES FOR THE NEXT CHAT
 Open questions with owners, files the next chat will need, and anything waiting on a human.

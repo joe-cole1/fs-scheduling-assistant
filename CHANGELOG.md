@@ -1,5 +1,17 @@
 # Change log
 
+## [0.8.0] — 2026-11-12
+
+- **Squadron rules you can read and edit:** Squadron Rules is now one rule per line, each with an ID and how strict it is (Must, Ask the DO first, Prefer or Method), grouped into eight categories. Proposals waiting for the DO, retired lines, local words and the ground rules for authority and the week each have their own part. No approved rule changed its wording. Design decisions V080-01 to V080-06 record this change.
+- **DO-approved squadron rules are enforced on their own.** A rule the squadron knows from experience no longer depends on a regulation lookup. The assistant reports it as a squadron rule, never as a regulation result. Regulation checks still run, and a squadron rule that seems plainly against a regulation is flagged for the DO.
+- **New task file, RULES - Add or change squadron rules.** It asks questions one category at a time, writes each answer as one rule line, checks for duplicates and conflicts, and hands back lines to paste. It never suggests what a rule should say and never records an approval the DO did not give.
+- **Corrections are no longer lost.** When a human corrects the assistant with a standing rule during a weekly task, the assistant applies it that week and saves it in the WEEK FILE as a proposed rule for the DO.
+- **Safer hand edits:** Squadron Rules has an end marker, and the first reply of every task says how many rules it read in each category.
+- **Moved:** the change-form (AFIMT 2407) triggers and the steps after a signed schedule changes moved from the execution-week task file into Squadron Rules (PRI-08 and PRI-09).
+- **Waiting for the DO, not applied:** eleven lines copied from the Scheduling SOP v4.0 and two experience rules stated by the product authority (the LAO flight with an IP, and a flight lead in an upgrade with an IP as number 2).
+- **New checks:** the build rejects a rule line with a bad ID, category or strictness, a proposal that carries a rule ID, and a Squadron Rules file without its end marker. Contract coverage adds fifteen squadron-rule phrases to every task file. PERSIST-006 declares the Squadron Rules migration and supersedes PERSIST-005.
+- Thursday Buy/Sell authority, waiver routing, the GAMECHANGER source rule and the same 4 moves are unchanged. None of this has been tried in GenAI.mil.
+
 ## [0.7.1] — 2026-11-07
 
 - **Checklist-table replies:** every task file now presents findings, issues and recommendations as a compact checklist table grouped by category (Won't work as scheduled [HARD CONFLICT], Needs someone's approval [APPROVAL NEEDED], Could be better [OPTIMIZATION]) with columns # / Day / Time / Pilot / Event / Issue / Quick Fix, instead of a numbered "Needs attention" list. Every material issue still gets its own row. Design decision V071-01 records this change.

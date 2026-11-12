@@ -31,6 +31,7 @@ Review the ENTIRE candidate from scratch, even if only one edit was discussed. C
 - Prior and next duty boundaries and brief-through-debrief windows.
 - Ground duties covered: SOF, Top 3, SDO and similar.
 - Qualifications against the dated Letter of Xs; prerequisites and upgrade event counting under Squadron Rules; same-day rules.
+- Every squadron rule in Squadron Rules Part 1, category by category.
 - Instructor and evaluator roles, ratios and formations.
 - Directed flyers, checked one by one. Checkrides and evaluations.
 - Every upgradee's flow and backups; comparable IP workload.
@@ -70,7 +71,7 @@ Step 6 of 7: Corrected schedule (repeat as needed)
 YOUR NEXT STEP: "Type: QC again after dragging in the corrected file, or type: save".
 
 Step 7 of 7: Save the WEEK FILE
-Offer proposed playbook lessons (or None). Then produce the next WEEK FILE (Part 1 section 7 and Part 3) with these settings:
+Offer proposed rules or lessons (or None). Then produce the next WEEK FILE (Part 1 section 7 and Part 3) with these settings:
 - Saved after: "3 THURSDAY - Full QC"
 - The candidate recorded as the active schedule
 - The readiness status and every open item recorded

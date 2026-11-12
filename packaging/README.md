@@ -105,8 +105,8 @@ A persistent installed-state change requires an explicit package-version change 
 | Folder or file | Contents | Update/rollback behavior |
 | --- | --- | --- |
 | START HERE.docx | One page: the 4 moves, which task file for which day, update steps | Replaced by an update or a prior-release rollback |
-| TASK FILES | 8 self-contained task files | Deleted, then replaced from the update; contains no human work |
-| Squadron Rules.docx | Human-maintained Pantons rules, reference index and DO-approved lessons | Never in an update; preserved and never automatically rolled back |
+| TASK FILES | 9 self-contained task files | Deleted, then replaced from the update; contains no human work |
+| Squadron Rules.docx | Human-maintained Pantons rules, one per line by category, with proposals, retired lines, local words and ground rules | Never in an update; preserved and never automatically rolled back |
 | WEEKS/_COPY ME - New week | INPUT CHECKLIST.docx, empty Inputs and Schedules | Preserved; the checklist is a registered persistent artifact |
 | WEEKS/Week of date | Inputs, Schedules and saved WEEK FILEs | Never included in an update or rollback |
 | READ ME - Squadron Rules changes.docx (when present) | Migration instructions and reference copies | Read, act on what applies, then delete |
@@ -119,7 +119,7 @@ For rollback, download the exact prior release's `Update.zip`, delete TASK FILES
 - `kit/tasks/`: one step-by-step script per task.
 - `kit/week-file.md`: the WEEK FILE format.
 - `kit/start-here.md`, `kit/input-checklist.md`: operator Word documents.
-- `kit/squadron-rules.md` + `../local-profiles/pantons.md`: Squadron Rules.docx.
+- `kit/squadron-rules.md` + `../local-profiles/pantons.md`: Squadron Rules.docx. The frame explains how to read and change a rule and carries the end marker; the profile holds Parts 1 to 5. The build rejects a Part 1 line that is not in rule format (category code, rising number, known strictness) and a waiting proposal that carries a rule ID.
 - `version.txt`: reviewed stable release/package identity used by the publish workflow.
 - `update-note.md`: release/change summary used for release notes.
 - `release-notes-template.md`: explanation of the generated release-note structure.
